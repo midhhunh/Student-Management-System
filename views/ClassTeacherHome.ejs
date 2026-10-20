@@ -11,74 +11,121 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <link href="/css/classteacherhome.css" rel="stylesheet">
+    <link href="/css/studhome.css" rel="stylesheet">
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+        <div class="container">
+
+            <a class="navbar-brand fw-bold" href="/teacher/home">
+                <span class="logo-icon">🎓</span>
+                EduManage
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#studentNavbar"
+                aria-controls="studentNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="studentNavbar">
+
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/teacher/home">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/teacher/about">
+                            About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/teacher/dashboard">
+                            My Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/teacher/contact">Contact</a>
+                    </li>
+
+                    <li class="nav-item ms-lg-3">
+                        <a href="/teacher/logout" class="btn btn-logout">
+                            Logout
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container">
         <a href="/teacher/dashboard" class="p_link">
-        <div class="welcome-content">
-            <div class="teacher-avatar">
-                <i class="bi bi-person-workspace"></i>
-            </div>
-            <div>
-                <h1>Welcome, <%= teacher.name %>!</h1>
-                <p class="ct_home">Manage your class and view student profiles.</p>
-
-                <span class="class-badge">
-                    <i class="bi bi-book-fill"></i>
-                    Class: <%= teacher.class %>
-                </span>
-            </div>
-            </a>
-        </div>
-        
-        <div class="row g-4" id="studentList">
-
-            <% students.forEach(student=> { %>
-
-                <div class="col-12 col-sm-6 col-lg-4 student-item"
-                    data-search="<%= (student.name + ' ' + student.register_number).toLowerCase() %>">
-
-                    <a class="student-card" href="/teacher/student/<%= encodeURIComponent(student.register_number) %>">
-
-                        <div class="card-top">
-                            <div class="student-avatar">
-                                <i class="bi bi-person-fill"></i>
-                            </div>
-
-                            <span class="profile-status">
-                                <i class="bi bi-check-circle-fill"></i>
-                                Student
-                            </span>
-                        </div>
-
-                        <div class="student-info">
-                            <h3>
-                                <%= student.name %>
-                            </h3>
-
-                            <p class="register-number">
-                                <i class="bi bi-person-vcard"></i>
-                                <%= student.register_number %>
-                            </p>
-
-                            <div class="student-class">
-                                <i class="bi bi-book-half"></i>
-                                Class <%= student.class %>
-                            </div>
-                        </div>
-
-                        <div class="view-profile">
-                            View Student Dashboard
-                            <i class="bi bi-arrow-right-circle-fill"></i>
-                        </div>
-
-                    </a>
+            <div class="welcome-content">
+                <div class="teacher-avatar">
+                    <i class="bi bi-person-workspace"></i>
                 </div>
+                <div>
+                    <h1>Welcome, <%= teacher.name %>!</h1>
+                    <p class="ct_home">Manage your class and view student profiles.</p>
 
-                <% }) %>
+                    <span class="class-badge">
+                        <i class="bi bi-book-fill"></i>
+                        Class: <%= teacher.class %>
+                    </span>
+                </div>
+        </a>
+    </div>
 
-        </div>
+    <div class="row g-4" id="studentList">
+
+        <% students.forEach(student=> { %>
+
+            <div class="col-12 col-sm-6 col-lg-4 student-item"
+                data-search="<%= (student.name + ' ' + student.register_number).toLowerCase() %>">
+
+                <a class="student-card" href="/teacher/student/<%= encodeURIComponent(student.register_number) %>">
+
+                    <div class="card-top">
+                        <div class="student-avatar">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+
+                        <span class="profile-status">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Student
+                        </span>
+                    </div>
+
+                    <div class="student-info">
+                        <h3>
+                            <%= student.name %>
+                        </h3>
+
+                        <p class="register-number">
+                            <i class="bi bi-person-vcard"></i>
+                            <%= student.register_number %>
+                        </p>
+
+                        <div class="student-class">
+                            <i class="bi bi-book-half"></i>
+                            Class <%= student.class %>
+                        </div>
+                    </div>
+
+                    <div class="view-profile">
+                        View Student Dashboard
+                        <i class="bi bi-arrow-right-circle-fill"></i>
+                    </div>
+
+                </a>
+            </div>
+
+            <% }) %>
+
+    </div>
 </body>
 
 </html>

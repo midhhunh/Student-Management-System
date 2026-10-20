@@ -23,6 +23,10 @@ app.use("/admin",admin_router)
 app.use("/students",stud_router)
 app.use("/teacher",teacher_router)
 
+app.get("/about",(req,res)=>{
+    res.render("about.ejs")
+})
+
 let port=1917;
 app.listen(port,(err)=>{
     if(err){

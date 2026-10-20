@@ -131,3 +131,127 @@ body {
         margin-top: 20px;
     }
 }
+
+
+/* Navbar */
+.custom-navbar {
+    background: linear-gradient(90deg, #0f172a, #1e40af);
+    padding: 15px 0;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.15);
+    border-radius: 30px;
+    width: 100%;
+}
+
+.navbar-brand {
+    font-size: 23px;
+    letter-spacing: 0.5px;
+}
+
+.logo-icon {
+    margin-right: 8px;
+}
+
+.custom-navbar .nav-link {
+    color: #e2e8f0 !important;
+    margin-left: 15px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link.active {
+    color: #ffffff !important;
+}
+
+/* Logout button */
+.btn-logout {
+    color: white;
+    border: 1px solid #fca5a5;
+    border-radius: 8px;
+    padding: 8px 18px;
+    transition: 0.3s;
+}
+
+.btn-logout:hover {
+    background-color: #dc2626;
+    color: white;
+}
+
+/* Welcome section */
+.welcome-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 75vh;
+}
+
+.welcome-card {
+    width: 100%;
+    max-width: 700px;
+    border: none;
+    border-radius: 20px;
+    padding: 35px 25px;
+    background: white;
+    box-shadow: 0 12px 35px rgba(30, 64, 175, 0.12);
+    transition: transform 0.3s;
+}
+
+.welcome-card:hover {
+    transform: translateY(-5px);
+}
+
+.student-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.welcome-card .card-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 18px;
+}
+
+.welcome-card .card-text {
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+/* Dashboard button */
+.btn-dashboard {
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    border: none;
+    transition: 0.3s;
+}
+
+.btn-dashboard:hover {
+    background: #1e3a8a;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Mobile responsive */
+@media (max-width: 991px) {
+    .custom-navbar .nav-link {
+        margin: 8px 0;
+    }
+
+    .btn-logout {
+        display: inline-block;
+        margin-top: 5px;
+    }
+
+    .welcome-card {
+        padding: 25px 18px;
+    }
+
+    .welcome-card .card-title {
+        font-size: 25px;
+    }
+}

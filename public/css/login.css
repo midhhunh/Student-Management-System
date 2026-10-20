@@ -42,3 +42,12 @@ body{
 .submit:hover{
     background: #2748ad;
 }
+.foot{
+    text-decoration: none;
+}
+.foot:hover{
+    color: red;
+}
+.footer{
+    text-align: end;
+}
