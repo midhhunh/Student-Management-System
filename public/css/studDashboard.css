@@ -1,0 +1,109 @@
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #eef4ff, #dce8ff, #f8faff);
+    min-height: 100vh;
+    color: #1e293b;
+}
+
+/* ===== Dashboard Heading ===== */
+h1 {
+    text-align: center;
+    font-size: 34px;
+    font-weight: 800;
+    color: #163b75;
+    margin: 35px 0;
+    letter-spacing: 0.5px;
+}
+
+/* ===== Student Profile Card ===== */
+body > h3,
+body > p {
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body > h3 {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: white;
+    font-size: 27px;
+    padding: 30px;
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.18);
+}
+
+/* ===== Student Details ===== */
+body > p {
+    background: white;
+    padding: 19px 25px;
+    border-bottom: 1px solid #e8eef7;
+    font-size: 16px;
+    color: #334155;
+    overflow-wrap: anywhere;
+    transition: background 0.25s ease,
+                padding-left 0.25s ease;
+}
+
+body > p:hover {
+    background: #f0f6ff;
+    padding-left: 32px;
+}
+
+body > p:last-of-type {
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 12px 30px rgba(15, 45, 90, 0.09);
+    margin-bottom: 40px;
+}
+
+/* ===== Smooth Page Animation ===== */
+h1,
+body > h3,
+body > p {
+    animation: slideUp 0.6s ease both;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 27px;
+        margin: 25px 15px;
+    }
+
+    body > h3,
+    body > p {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    body > h3 {
+        font-size: 22px;
+        padding: 23px 18px;
+    }
+
+    body > p {
+        font-size: 14px;
+        padding: 16px 18px;
+    }
+}
+
+@media (max-width: 400px) {
+    h1 {
+        font-size: 23px;
+    }
+
+    body > h3 {
+        font-size: 19px;
+    }
+}

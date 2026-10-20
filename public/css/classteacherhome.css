@@ -1,0 +1,351 @@
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+body > .container {
+    padding-top: 70px;
+}
+body {
+    min-height: 100vh;
+    background: #f1f5f9;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #1e293b;
+}
+
+.p_link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    border-radius: 16px;
+}
+
+.ct_home{
+    color: #2e3d52 !important;
+}
+
+.p_link:hover {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.logout-btn {
+    color: white;
+    text-decoration: none;
+    padding: 10px 17px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: white;
+    color: #1d4ed8;
+}
+
+/* Welcome Header */
+.dashboard-header {
+    padding: 40px 0;
+    color: white;
+    background: linear-gradient(120deg, #2563eb, #6366f1);
+}
+
+.welcome-content {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.teacher-avatar {
+    width: 95px;
+    height: 95px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: #2563eb;
+    background: white;
+    border-radius: 25px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.15);
+}
+
+.welcome-content h1 {
+    font-size: 32px;
+    font-weight: 750;
+    overflow-wrap: anywhere;
+}
+
+.welcome-content p {
+    margin: 9px 0 13px;
+    color: #e0e7ff;
+}
+
+.class-badge {
+    display: inline-block;
+    padding: 7px 15px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    font-size: 14px;
+}
+
+/* Main Section */
+.student-section {
+    padding-top: 40px;
+    padding-bottom: 55px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.section-heading h2 {
+    font-size: 25px;
+    font-weight: 750;
+    color: #1e3a8a;
+}
+
+.section-heading h2 i {
+    color: #4f46e5;
+}
+
+.section-heading p {
+    color: #64748b;
+    margin: 7px 0 0;
+}
+
+.student-count {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 17px;
+    border-radius: 12px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Search */
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 18px;
+    margin-bottom: 30px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+}
+
+.search-box i {
+    color: #64748b;
+    font-size: 19px;
+}
+
+.search-box input {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #1e293b;
+    background: transparent;
+    font-size: 15px;
+}
+
+/* Student Cards */
+.student-card {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.student-card:hover {
+    color: inherit;
+    transform: translateY(-7px);
+    border-color: #93c5fd;
+    box-shadow: 0 15px 35px rgba(37, 99, 235, 0.13);
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 22px 10px;
+}
+
+.student-avatar {
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+    color: #4338ca;
+    font-size: 34px;
+    border-radius: 18px;
+}
+
+.profile-status {
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.student-info {
+    padding: 12px 22px 22px;
+}
+
+.student-info h3 {
+    font-size: 20px;
+    font-weight: 750;
+    overflow-wrap: anywhere;
+    color: #1e293b;
+    margin-bottom: 12px;
+}
+
+.register-number {
+    color: #64748b;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+    margin-bottom: 14px;
+}
+
+.register-number i {
+    color: #4f46e5;
+    margin-right: 6px;
+}
+
+.student-class {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.view-profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 22px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    color: #2563eb;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.view-profile i {
+    font-size: 20px;
+    transition: transform 0.2s;
+}
+
+.student-card:hover .view-profile i {
+    transform: translateX(4px);
+}
+
+/* Empty Search / Student List */
+.no-results,
+.empty-state {
+    text-align: center;
+    padding: 45px 20px;
+    background: white;
+    border-radius: 18px;
+    color: #64748b;
+}
+
+.no-results > i,
+.empty-state > i {
+    display: block;
+    font-size: 45px;
+    color: #94a3b8;
+    margin-bottom: 15px;
+}
+
+.no-results h4,
+.empty-state h3 {
+    color: #334155;
+    font-weight: 700;
+}
+
+/* Footer */
+footer {
+    padding: 22px 15px;
+    text-align: center;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 15px;
+    }
+
+    .logout-btn {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .dashboard-header {
+        padding: 30px 0;
+    }
+
+    .welcome-content {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .teacher-avatar {
+        width: 65px;
+        height: 65px;
+        font-size: 33px;
+        border-radius: 17px;
+    }
+
+    .welcome-content h1 {
+        font-size: 23px;
+    }
+
+    .welcome-content p {
+        font-size: 13px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .section-heading h2 {
+        font-size: 22px;
+    }
+
+    .student-section {
+        padding-top: 28px;
+    }
+}

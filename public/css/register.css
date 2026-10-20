@@ -1,0 +1,274 @@
+
+/* ===== Page Background ===== */
+/* * {
+    box-sizing: border-box;
+} */
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 40px 15px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'Segoe UI', sans-serif;
+
+    background:
+        radial-gradient(circle at 15% 20%, #00d2ff 0%, transparent 35%),
+        radial-gradient(circle at 85% 80%, #a855f7 0%, transparent 35%),
+        linear-gradient(135deg, #071952, #088395, #35a29f);
+
+    background-attachment: fixed;
+}
+
+/* ===== Main Wrapper ===== */
+.register-wrapper {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+}
+
+/* ===== Switching Tabs ===== */
+.form-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 6px;
+    margin-bottom: 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 14px;
+
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+.switch-btn {
+    flex: 1;
+    padding: 13px 8px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.switch-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.switch-btn.active {
+    background: linear-gradient(120deg, #00f5d4, #00bbf9);
+    color: #071952;
+    box-shadow: 0 4px 15px rgba(0, 245, 212, 0.25);
+}
+
+/* ===== Glass Registration Card ===== */
+.reg {
+    width: 100%;
+    padding: 35px 40px;
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 24px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25),
+        inset 0 1px 1px rgba(255, 255, 255, 0.25);
+
+    animation: appear 0.4s ease;
+}
+
+/* Ensure hidden form stays hidden */
+.reg[hidden] {
+    display: none !important;
+}
+
+/* ===== Heading ===== */
+.reg_head {
+    text-align: center;
+    margin-bottom: 30px;
+
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+
+    color: #ffffff;
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+.reg_head::after {
+    content: "";
+    display: block;
+
+    width: 75px;
+    height: 4px;
+    margin: 10px auto 0;
+
+    border-radius: 10px;
+    background: linear-gradient(90deg, #00f5d4, #ffffff);
+}
+
+/* ===== Form Labels ===== */
+.reg_form label {
+    display: block;
+    margin-bottom: 8px;
+
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
+/* ===== Inputs, Select and Textarea ===== */
+.reg_form input:not(.submit),
+.reg_form select,
+.reg_form textarea {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    padding: 13px 15px;
+    margin-bottom: 18px;
+
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 15px;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* ===== Placeholders ===== */
+.reg_form input::placeholder,
+.reg_form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===== Dropdown Options ===== */
+.reg_form select option {
+    color: #172554;
+    background: #ffffff;
+}
+
+/* ===== Focus Effect ===== */
+.reg_form input:focus,
+.reg_form select:focus,
+.reg_form textarea:focus {
+    background: rgba(255, 255, 255, 0.18);
+
+    border-color: #00f5d4;
+    box-shadow: 0 0 15px rgba(0, 245, 212, 0.25);
+
+    transform: translateY(-1px);
+}
+
+/* ===== Address Field ===== */
+.reg_form textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+/* ===== Submit Button ===== */
+.submit {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-top: 5px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: linear-gradient(120deg, #00f5d4, #00bbf9, #9b5de5);
+    background-size: 200% 200%;
+
+    color: #071952;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+    transition: all 0.35s ease;
+}
+
+.submit:hover {
+    background-position: 100% 0;
+    color: #ffffff;
+
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 245, 212, 0.3);
+}
+
+.submit:active {
+    transform: scale(0.98);
+}
+
+/* ===== Animation ===== */
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 576px) {
+    body {
+        padding: 20px 12px;
+        align-items: flex-start;
+    }
+
+    .reg {
+        padding: 25px 20px;
+        border-radius: 18px;
+    }
+
+    .reg_head {
+        font-size: 28px;
+    }
+
+    .reg_form input:not(.submit),
+    .reg_form select,
+    .reg_form textarea {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 400px) {
+    .switch-btn {
+        font-size: 12px;
+        padding: 11px 4px;
+    }
+}
+
+/* ===== Reduced Motion Accessibility ===== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

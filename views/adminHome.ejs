@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <link href="/css/adminhome.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Students Table -->
+    <div class="table-card">
+        <h4 class="mb-3">All Students</h4>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Register Number</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Class</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% if (students.length > 0) { %>
+        <% students.forEach(student => { %>
+            <tr class="clickable-row"
+                onclick="window.location.href='/admin/student/<%= encodeURIComponent(student.register_number) %>'">
+
+                <td><%= student.id %></td>
+                <td><%= student.name %></td>
+                <td><%= student.register_number %></td>
+                <td><%= student.email %></td>
+                <td><%= student.mobile %></td>
+                <td><%= student.class %></td>
+                <td><%= student.address %></td>
+            </tr>
+        <% }) %>
+    <% } else { %>
+        <tr>
+            <td colspan="7" class="text-center">No students found</td>
+        </tr>
+    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Teachers Table -->
+    <div class="table-card">
+        <h4 class="mb-3">All Teachers</h4>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Teacher ID</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Class</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                <% if (teachers.length > 0) { %>
+        <% teachers.forEach(teacher => { %>
+            <tr class="clickable-row"
+                onclick="window.location.href='/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>'">
+
+                <td><%= teacher.id %></td>
+                <td><%= teacher.name %></td>
+                <td><%= teacher.teacher_id %></td>
+                <td><%= teacher.email %></td>
+                <td><%= teacher.mobile %></td>
+                <td><%= teacher.class %></td>
+                <td><%= teacher.address %></td>
+            </tr>
+        <% }) %>
+    <% } else { %>
+        <tr>
+            <td colspan="7" class="text-center">No teachers found</td>
+        </tr>
+    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

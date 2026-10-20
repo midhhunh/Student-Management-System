@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <link href="/css/register.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="register-wrapper">
+
+        <!-- Switching Buttons -->
+        <div class="form-tabs">
+            <button type="button" class="switch-btn active" onclick="showForm('student')">
+                Student Register
+            </button>
+
+            <button type="button" class="switch-btn" onclick="showForm('teacher')">
+                Teacher Register
+            </button>
+        </div>
+
+        <!-- Student Registration -->
+        <div class="reg" id="student-form">
+
+            <h1 class="reg_head">Student Register</h1>
+
+            <form method="post"  class="reg_form" action="/students/register">
+
+                <label for="student-fullname">Full Name</label>
+                <input type="text" id="student-fullname" name="fullname" placeholder="Enter full name" required>
+
+                <label for="reg_no">Register Number</label>
+                <input type="text" id="reg_no" name="reg_no" placeholder="Enter register number" required>
+
+                <label for="student-email">Email</label>
+                <input type="email" id="student-email" name="email" placeholder="Enter email" required>
+
+                <label for="student-pass">Password</label>
+                <input type="password" id="student-pass" name="password" class="password" placeholder="Create a Password" required>
+
+                <label for="student-mob">Mobile</label>
+                <input type="tel" id="student-mob" name="mob" placeholder="Enter mobile number" pattern="[0-9]{10}"
+                    maxlength="10" required>
+
+                <label for="student-classes">Select Class</label>
+                <select id="student-classes" name="classes" required>
+                    <option value="">-- Select Class --</option>
+                    <option value="1">Class 1</option>
+                    <option value="2">Class 2</option>
+                    <option value="3">Class 3</option>
+                    <option value="4">Class 4</option>
+                    <option value="5">Class 5</option>
+                    <option value="6">Class 6</option>
+                    <option value="7">Class 7</option>
+                    <option value="8">Class 8</option>
+                    <option value="9">Class 9</option>
+                    <option value="10">Class 10</option>
+                    <option value="11">Class 11</option>
+                    <option value="12">Class 12</option>
+                </select>
+
+                <label for="student-aadhar">Aadhaar Number</label>
+                <input type="text" id="student-aadhar" name="aadhar" placeholder="Enter Aadhaar number"
+                    pattern="[0-9]{12}" maxlength="12" required>
+
+                <label for="student-address">Address</label>
+                <textarea id="student-address" name="address" placeholder="Enter address" required></textarea>
+
+                <input type="submit" class="submit" value="Register Student">
+
+            </form>
+        </div>
+
+        <!-- Teacher Registration -->
+        <div class="reg" id="teacher-form" hidden>
+
+            <h1 class="reg_head">Teacher Register</h1>
+
+            <form method="post"  class="reg_form" action="/teacher/register">
+
+                <label for="teacher-fullname">Full Name</label>
+                <input type="text" id="teacher-fullname" name="fullname" placeholder="Enter full name" required>
+
+                <label for="tid">Teacher ID</label>
+                <input type="text" id="tid" name="tid" placeholder="Enter teacher ID" required>
+
+                <label for="teacher-email">Email</label>
+                <input type="email" id="teacher-email" name="email" placeholder="Enter email" required>
+
+                <label for="teacher-pass">Password</label>
+                <input type="password" id="teacher-pass" name="password" class="password" placeholder="Create a Password" required>
+
+                <label for="teacher-mob">Mobile</label>
+                <input type="tel" id="teacher-mob" name="mob" placeholder="Enter mobile number" pattern="[0-9]{10}"
+                    maxlength="10" required>
+
+                <label for="teacher-classes">
+                    Select Class (For Class Teachers)
+                </label>
+                <select id="teacher-classes" name="classes">
+                    <option value="">-- No Class Assigned --</option>
+                    <option value="1">Class 1</option>
+                    <option value="2">Class 2</option>
+                    <option value="3">Class 3</option>
+                    <option value="4">Class 4</option>
+                    <option value="5">Class 5</option>
+                    <option value="6">Class 6</option>
+                    <option value="7">Class 7</option>
+                    <option value="8">Class 8</option>
+                    <option value="9">Class 9</option>
+                    <option value="10">Class 10</option>
+                    <option value="11">Class 11</option>
+                    <option value="12">Class 12</option>
+                </select>
+
+                <label for="teacher-aadhar">Aadhaar Number</label>
+                <input type="text" id="teacher-aadhar" name="aadhar" placeholder="Enter Aadhaar number"
+                    pattern="[0-9]{12}" maxlength="12" required>
+
+                <label for="teacher-address">Address</label>
+                <textarea id="teacher-address" name="address" placeholder="Enter address" required></textarea>
+
+                <input type="submit" class="submit" value="Register Teacher">
+
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        function showForm(type) {
+            const studentForm = document.getElementById("student-form");
+            const teacherForm = document.getElementById("teacher-form");
+            const buttons = document.querySelectorAll(".switch-btn");
+
+            studentForm.hidden = type !== "student";
+            teacherForm.hidden = type !== "teacher";
+
+            buttons[0].classList.toggle("active", type === "student");
+            buttons[1].classList.toggle("active", type === "teacher");
+
+            document.getElementById("teacher-form").addEventListener("submit", function () {
+        this.reset();
+    });
+    document.getElementById("student-form").addEventListener("submit",function(){
+        this.reset();
+    })
+        }
+    </script>
+
+</body>
+
+</html>
