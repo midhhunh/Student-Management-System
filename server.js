@@ -14,6 +14,7 @@ app.use(session({
 app.use(express.static(__dirname+"/public"))
 app.use(express.urlencoded({extended:false}))
 
+
 // const log_in=require("./routes/log.jsx")
 const admin_router=require("./routes/admin.jsx")
 const stud_router=require("./routes/student.jsx")

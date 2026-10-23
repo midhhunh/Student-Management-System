@@ -62,4 +62,19 @@ conn.query(`
         console.log("Teachers table created successfully");
     }))
 
+    conn.query(`
+    
+    CREATE TABLE IF NOT EXISTS teacher_ids (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    teacher_id VARCHAR(20) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    is_used TINYINT(1) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)`,((err)=>{
+    if(err){
+        console.log(err);
+        return;
+    }
+}))
+
 module.exports=conn;

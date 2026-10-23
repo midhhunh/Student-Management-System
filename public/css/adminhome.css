@@ -1,213 +1,472 @@
+
+/* ==============================
+   GLOBAL STYLES
+============================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #eff6ff, #f8fafc, #e0e7ff);
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    background:
+        radial-gradient(circle at top left, #dbeafe 0, transparent 35%),
+        linear-gradient(135deg, #f8fafc, #eef2ff);
     color: #1e293b;
     min-height: 100vh;
-    padding: 35px;
 }
 
-/* Dashboard header */
-body::before {
-    content: "ADMIN DASHBOARD";
-    display: block;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 3px;
-    color: #2563eb;
-    margin-bottom: 10px;
+/* ==============================
+   DASHBOARD CONTAINER
+============================== */
+
+.dashboard-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 40px;
 }
 
-body::after {
-    content: "Manage your students and teachers in one place.";
-    display: block;
-    font-size: 14px;
-    color: #64748b;
-    margin-top: -5px;
-    margin-bottom: 35px;
-}
+/* ==============================
+   TABLE CARDS
+============================== */
 
-/* Table cards */
 .table-card {
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(14px);
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    border-radius: 20px;
-    padding: 28px;
-    margin-bottom: 30px;
-    box-shadow: 0 12px 35px rgba(30, 64, 175, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 22px;
+    padding: 30px;
+    margin-bottom: 32px;
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.05),
+        0 2px 8px rgba(37, 99, 235, 0.04);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
     overflow: hidden;
+    scroll-margin-top: 110px;
 }
 
 .table-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 42px rgba(30, 64, 175, 0.13);
+    box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.09),
+        0 5px 15px rgba(37, 99, 235, 0.07);
+    transform: translateY(-2px);
 }
 
-/* Section headings */
+/* ==============================
+   SECTION HEADINGS
+============================== */
+
 .table-card h4 {
-    font-size: 21px;
+    font-size: 22px;
     font-weight: 800;
     color: #172554;
-    margin-bottom: 22px !important;
+    margin-bottom: 25px !important;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 13px;
+    letter-spacing: -0.4px;
 }
 
 .table-card h4::before {
     content: "";
-    display: inline-block;
     width: 5px;
-    height: 27px;
-    border-radius: 10px;
+    min-width: 5px;
+    height: 29px;
+    border-radius: 20px;
     background: linear-gradient(180deg, #2563eb, #818cf8);
+    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
 }
 
-/* Responsive table wrapper */
+/* ==============================
+   TABLE HEADER LAYOUT
+============================== */
+
+.table-card > .d-flex {
+    justify-content: space-between !important;
+    align-items: center;
+    gap: 15px;
+    width: 100% !important;
+    flex-wrap: wrap;
+}
+
+.table-card > .d-flex h4 {
+    margin-bottom: 0 !important;
+}
+
+/* ==============================
+   ADD TEACHER BUTTON / SECTION
+============================== */
+
+.add-teacher {
+    margin-left: auto !important;
+}
+
+.add-teacher .btn,
+.table-card .btn-primary {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 17px;
+    font-size: 13px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    box-shadow: 0 5px 12px rgba(37, 99, 235, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-teacher .btn:hover,
+.table-card .btn-primary:hover {
+    background: linear-gradient(135deg, #1d4ed8, #4338ca);
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+    transform: translateY(-2px);
+}
+
+/* ==============================
+   RESPONSIVE TABLE WRAPPER
+============================== */
+
 .table-responsive {
     width: 100%;
     overflow-x: auto;
-    border-radius: 12px;
+    border: 1px solid #e8edf5;
+    border-radius: 14px;
+    background: #fff;
 }
 
-/* Tables */
+/* ==============================
+   TABLE DESIGN
+============================== */
+
 .table {
     width: 100%;
     min-width: 750px;
     border-collapse: separate;
     border-spacing: 0;
     margin-bottom: 0;
-    background: white;
+    background: #fff;
 }
 
 .table thead th {
-    background: #172554;
-    color: #ffffff;
-    padding: 17px 15px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.7px;
+    background: linear-gradient(135deg, #172554, #263b75);
+    color: #eaf1ff;
+    padding: 18px 16px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
     white-space: nowrap;
     border: none;
 }
 
 .table thead th:first-child {
-    border-top-left-radius: 10px;
+    border-top-left-radius: 12px;
 }
 
 .table thead th:last-child {
-    border-top-right-radius: 10px;
+    border-top-right-radius: 12px;
 }
 
-/* Table cells */
+/* ==============================
+   TABLE CELLS
+============================== */
+
 .table tbody td {
-    padding: 16px 15px;
+    padding: 17px 16px;
     font-size: 13px;
     font-weight: 500;
     color: #475569;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #edf1f7;
     vertical-align: middle;
     white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .table tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* Alternating row colors */
 .table tbody tr:nth-child(even) {
-    background: #f8fafc;
+    background: #f8faff;
 }
 
-/* Clickable rows */
+.table tbody tr {
+    transition: background 0.2s ease;
+}
+
+/* ==============================
+   CLICKABLE ROWS
+============================== */
+
 .clickable-row {
     cursor: pointer;
-    transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .clickable-row:hover {
-    background: #dbeafe !important;
-    box-shadow: inset 4px 0 0 #2563eb;
+    background: #eaf2ff !important;
+    box-shadow: inset 4px 0 0 #3b82f6;
 }
 
 .clickable-row:hover td {
     color: #1d4ed8;
 }
 
-/* First column ID */
+.clickable-row:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: -2px;
+}
+
+/* ==============================
+   ID COLUMN
+============================== */
+
 .table tbody td:first-child {
     color: #2563eb;
     font-weight: 800;
 }
 
-/* Empty table message */
-.table tbody td[colspan] {
-    padding: 35px;
-    color: #94a3b8;
-    text-align: center;
-    font-weight: 600;
+/* ==============================
+   PROFILE LINKS
+============================== */
+
+.profile-link {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s ease;
 }
 
-/* Scrollbar */
+.profile-link:hover {
+    color: #4338ca;
+    text-decoration: underline;
+}
+
+.profile-link i {
+    font-size: 11px;
+    margin-left: 4px;
+}
+
+/* ==============================
+   ACTION BUTTONS
+============================== */
+
+.table td .btn {
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 7px 11px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.table td .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+}
+
+.table td .btn-warning {
+    color: #713f12;
+    border-color: #facc15;
+}
+
+.table td .btn-danger {
+    background: #dc2626;
+    border-color: #dc2626;
+}
+
+.table td .btn-danger:hover {
+    background: #b91c1c;
+    border-color: #b91c1c;
+}
+
+/* ==============================
+   CLASS ASSIGNMENT FORM
+============================== */
+
+.class-form {
+    min-width: 190px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.class-form select {
+    min-width: 100px;
+    border: 1px solid #dbe3f0;
+    border-radius: 8px;
+    padding: 7px 9px;
+    color: #334155;
+    background: #f8fafc;
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.class-form select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.class-form button {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    background: #2563eb;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    transition: background 0.2s ease;
+}
+
+.class-form button:hover {
+    background: #1d4ed8;
+}
+
+/* ==============================
+   FORM INPUTS
+============================== */
+
+.table-card input,
+.table-card select,
+.table-card textarea {
+    border-color: #dbe3f0;
+    border-radius: 9px;
+}
+
+.table-card input:focus,
+.table-card select:focus,
+.table-card textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+/* ==============================
+   EMPTY TABLE MESSAGE
+============================== */
+
+.table tbody td[colspan] {
+    padding: 38px 20px;
+    color: #94a3b8;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    background: #fbfdff;
+}
+
+/* ==============================
+   SCROLLBAR
+============================== */
+
 .table-responsive::-webkit-scrollbar {
     height: 7px;
 }
 
 .table-responsive::-webkit-scrollbar-track {
-    background: #e2e8f0;
+    background: #f1f5f9;
     border-radius: 10px;
 }
 
 .table-responsive::-webkit-scrollbar-thumb {
-    background: #93c5fd;
+    background: #b7c8e8;
     border-radius: 10px;
 }
 
 .table-responsive::-webkit-scrollbar-thumb:hover {
-    background: #2563eb;
+    background: #648bd8;
 }
 
-/* Tablet */
-@media (max-width: 768px) {
-    body {
-        padding: 20px 12px;
+/* ==============================
+   BOOTSTRAP ALERTS
+============================== */
+
+.table-card .alert {
+    border: none;
+    border-radius: 12px;
+    font-size: 13px;
+}
+
+/* ==============================
+   TABLET RESPONSIVE
+============================== */
+
+@media (max-width: 992px) {
+    .dashboard-container {
+        padding: 25px 20px;
     }
 
     .table-card {
+        padding: 24px 20px;
+    }
+}
+
+/* ==============================
+   MOBILE RESPONSIVE
+============================== */
+
+@media (max-width: 768px) {
+    .dashboard-container {
         padding: 18px 12px;
-        border-radius: 15px;
+    }
+
+    .table-card {
+        padding: 20px 13px;
+        border-radius: 16px;
         margin-bottom: 22px;
     }
 
     .table-card h4 {
-        font-size: 18px;
+        font-size: 19px;
     }
 
     .table thead th,
     .table tbody td {
         padding: 13px 12px;
     }
+
+    .table-card > .d-flex {
+        align-items: flex-start;
+    }
 }
 
-/* Mobile */
 @media (max-width: 480px) {
-    body {
-        padding: 18px 8px;
+    .dashboard-container {
+        padding: 14px 8px;
     }
 
     .table-card {
-        padding: 15px 10px;
+        padding: 17px 10px;
     }
 
     .table-card h4 {
-        font-size: 16px;
+        font-size: 17px;
+        gap: 9px;
+    }
+
+    .table-card h4::before {
+        height: 24px;
+    }
+
+    .add-teacher .btn {
+        font-size: 12px;
+        padding: 9px 12px;
+    }
+}
+
+/* ==============================
+   REDUCED MOTION ACCESSIBILITY
+============================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
     }
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher ID Generated</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card shadow p-4 mx-auto text-center" style="max-width: 500px; border-radius: 15px;">
+
+            <h2 class="text-success">Teacher ID Generated!</h2>
+            <p class="text-muted">
+                Share this ID with the teacher to allow registration.
+            </p>
+
+            <h3 id="teacherId" class="text-primary my-3">
+                <%= teacherId %>
+            </h3>
+            <h3 id="teacherId" class="text-primary my-3">
+                <%= email %>
+            </h3>
+
+            <button type="button" class="btn btn-primary" onclick="copyTeacherId()">
+                Copy Teacher ID
+            </button>
+
+            <a href="/admin/home" class="btn btn-outline-secondary mt-3">
+                Back to Admin Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function copyTeacherId() {
+            const id = document.getElementById("teacherId").textContent.trim();
+
+            navigator.clipboard.writeText(id)
+                .then(() => alert("Teacher ID copied!"))
+                .catch(() => alert("Please copy the ID manually."));
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eff6ff, #eef2ff, #f8fafc);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #1e293b;
+        }
+
+        .edit-card {
+            max-width: 650px;
+            margin: 55px auto;
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid #e2e8f0;
+            border-radius: 22px;
+            box-shadow: 0 15px 45px rgba(30, 64, 175, 0.10);
+        }
+
+        .edit-icon {
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-radius: 18px;
+            background: #dbeafe;
+            color: #2563eb;
+            font-size: 28px;
+        }
+
+        .edit-card h2 {
+            font-weight: 800;
+            color: #172554;
+        }
+
+        .form-label {
+            font-weight: 650;
+            font-size: 14px;
+        }
+
+        .form-control {
+            padding: 12px 14px;
+            border: 1px solid #dbe3f0;
+            border-radius: 10px;
+        }
+
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-weight: 700;
+        }
+
+        .btn-save:hover {
+            color: white;
+            background: #1d4ed8;
+        }
+
+        .btn-cancel {
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 576px) {
+            .edit-card {
+                margin: 25px 12px;
+                padding: 24px 18px;
+            }
+        }

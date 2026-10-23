@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student | EduManage</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <link href="/css/edit-s.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="edit-card">
+
+            <div class="edit-icon">
+                <i class="bi bi-person-gear"></i>
+            </div>
+
+            <h2>Edit Student</h2>
+            <p class="text-muted mb-4">
+                Update the details of the student in your assigned class.
+            </p>
+
+            <form action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/edit" method="POST">
+
+                <div class="mb-3">
+                    <label class="form-label">Register Number</label>
+                    <input type="text" class="form-control" value="<%= student.register_number %>" readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-control" value="<%= student.name %>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" value="<%= student.email %>"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="mobile" class="form-label">Mobile Number</label>
+                    <input type="text" id="mobile" name="mobile" class="form-control" value="<%= student.mobile %>"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Class</label>
+                    <input type="text" class="form-control" value="<%= student.class %>" readonly>
+                    <small class="text-muted">
+                        Only the administrator can change a student's class.
+                    </small>
+                </div>
+
+                <div class="mb-4">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea id="address" name="address" class="form-control" rows="3"
+                        required><%= student.address %></textarea>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-save">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Save Changes
+                    </button>
+
+                    <a href="/teacher/home" class="btn btn-outline-secondary btn-cancel">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
