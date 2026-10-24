@@ -1,6 +1,7 @@
 
 const router = require("express").Router();
 const db = require("../db.jsx");
+const crypto = require("node:crypto");
 
 // ==============================
 // TEACHER REGISTER PAGE
@@ -206,15 +207,30 @@ router.get("/home", (req, res) => {
                 console.error("Student query error:", studentErr);
                 return res.status(500).send("Database error");
             }
+            const issuedRegisterNumber =
+                req.session.issuedRegisterNumber || null;
+
+            const generatedRegisterNumber =
+                req.session.generatedRegisterNumber || null;
+
+            const invitedEmail = req.session.invitedEmail || null;
+
+            req.session.issuedRegisterNumber = null;
+            req.session.generatedRegisterNumber = null;
+            req.session.invitedEmail = null;
 
             // Display the class teacher's home if students exist.
-            if (students.length > 0) {
-                return res.render("ClassTeacherHome.ejs", {
-                    teacher,
-                    students,
-                    showStudents: true
-                });
-            }
+
+            return res.render("ClassTeacherHome.ejs", {
+                teacher,
+                students,
+                showStudents: true,         
+                generatedRegisterNumber,
+                invitedEmail
+                // issuedRegisterNumber: req.session.issuedRegisterNumber || null,
+                // invitedStudentEmail: req.session.invitedStudentEmail || null
+            });
+
 
             // No students found for this class.
             return res.render("TeacherDashboard.ejs", {
@@ -509,5 +525,455 @@ router.get("/logout", (req, res) => {
         return res.redirect("/teacher/login");
     });
 });
+
+//student invitation
+
+router.post("/student/invite", (req, res) => {
+    if (!req.session.teacher_id) {
+        return res.redirect("/teacher/login");
+    }
+
+    const email = String(req.body.email || "")
+        .trim()
+        .toLowerCase();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return res.status(400).send("Enter a valid email address.");
+    }
+
+    // Get the logged-in teacher's assigned class
+    db.query(
+        "SELECT class FROM teacher WHERE teacher_id = ?",
+        [req.session.teacher_id],
+        (err, teachers) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send("Database error.");
+            }
+
+            if (!teachers.length) {
+                return res.status(404).send("Teacher account not found.");
+            }
+
+            const assignedClass = String(
+                teachers[0].class || ""
+            ).trim();
+
+            // Stop only when the teacher has no class assigned
+            if (!assignedClass) {
+                return res.status(403).send(
+                    "Your class has not been assigned by the administrator."
+                );
+            }
+
+            const registerNumber =
+                "STU-" +
+                crypto.randomBytes(5).toString("hex").toUpperCase();
+
+            const sql = `
+                INSERT INTO student_invitations
+                    (register_number, email, class, teacher_id)
+                VALUES (?, ?, ?, ?)
+            `;
+
+            db.query(
+                sql,
+                [
+                    registerNumber,
+                    email,
+                    assignedClass,
+                    req.session.teacher_id
+                ],
+                (insertErr) => {
+                    if (insertErr) {
+                        console.error(insertErr);
+                        return res.status(500).send(
+                            "Unable to create invitation. Please try again."
+                        );
+                    }
+
+                    req.session.generatedRegisterNumber = registerNumber;
+                    req.session.invitedEmail = email;
+
+                    return res.redirect("/teacher/home");
+                }
+            );
+        }
+    );
+});
+
+
+router.post("/student/:register_number/change-class", (req, res) => {
+    if (!req.session.teacher_id) {
+        return res.redirect("/teacher/login");
+    }
+
+    const direction = req.body.direction;
+
+    if (!["up", "down"].includes(direction)) {
+        return res.status(400).send("Invalid class change.");
+    }
+
+    db.query(
+        "SELECT class FROM teacher WHERE teacher_id = ?",
+        [req.session.teacher_id],
+        (err, teachers) => {
+            if (err) return res.status(500).send("Database error.");
+
+            if (!teachers.length || !teachers[0].class) {
+                return res.status(403).send("No class assigned.");
+            }
+
+            const assignedClass = Number(teachers[0].class);
+
+            if (
+                !Number.isInteger(assignedClass) ||
+                assignedClass < 1 ||
+                assignedClass > 12
+            ) {
+                return res.status(400).send("Invalid assigned class.");
+            }
+
+            const delta = direction === "up" ? 1 : -1;
+            const newClass = assignedClass + delta;
+
+            if (newClass < 1 || newClass > 12) {
+                return res.status(400).send(
+                    "Class must be between 1 and 12."
+                );
+            }
+
+            db.query(
+                `UPDATE student
+     SET class = ?
+     WHERE register_number = ?
+       AND TRIM(class) = TRIM(?)`,
+                [
+                    String(newClass),
+                    req.params.register_number,
+                    String(assignedClass)
+                ],
+                (updateErr, result) => {
+                    if (updateErr) {
+                        console.error(updateErr);
+                        return res.status(500).send("Unable to change class.");
+                    }
+
+                    if (!result.affectedRows) {
+                        return res.status(404).send(
+                            "Student not found in your assigned class."
+                        );
+                    }
+
+                    return res.redirect("/teacher/home");
+                }
+            );
+        }
+    );
+});
+
+//marks
+
+const PASS_PERCENTAGE = 35;
+
+router.post("/student/:register_number/marks", (req, res) => {
+    if (!req.session.teacher_id) {
+        return res.redirect("/teacher/login");
+    }
+
+    const registerNumber = req.params.register_number;
+    const academicYear = String(req.body.academic_year || "").trim();
+    const marks = Number(req.body.marks);
+    const totalMarks = Number(req.body.total_marks);
+
+    if (
+        !/^\d{4}-\d{4}$/.test(academicYear) ||
+        !Number.isFinite(marks) ||
+        !Number.isFinite(totalMarks) ||
+        totalMarks <= 0 ||
+        marks < 0 ||
+        marks > totalMarks
+    ) {
+        return res.status(400).send("Invalid academic year or marks.");
+    }
+
+    db.query(
+        "SELECT class FROM teacher WHERE teacher_id = ?",
+        [req.session.teacher_id],
+        (err, teachers) => {
+            if (err) return res.status(500).send("Database error.");
+
+            if (!teachers.length || !teachers[0].class) {
+                return res.status(403).send("No class assigned.");
+            }
+
+            const assignedClass = Number(teachers[0].class);
+
+            db.query(
+                `SELECT register_number FROM student
+                 WHERE register_number = ?
+                   AND TRIM(class) = TRIM(?)`,
+                [registerNumber, String(assignedClass)],
+                (studentErr, students) => {
+                    if (studentErr) {
+                        return res.status(500).send("Database error.");
+                    }
+
+                    if (!students.length) {
+                        return res.status(404).send(
+                            "Student not found in your assigned class."
+                        );
+                    }
+
+                    const percentage = (marks / totalMarks) * 100;
+                    const status = percentage >= PASS_PERCENTAGE
+                        ? "Pass"
+                        : "Fail";
+
+                    const sql = `
+                        INSERT INTO annual_results
+                        (register_number, academic_year, class_at_exam,
+                         marks, total_marks, pass_percentage, status)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        ON DUPLICATE KEY UPDATE
+                            marks = IF(finalized = 0, VALUES(marks), marks),
+                            total_marks = IF(finalized = 0,
+                                VALUES(total_marks), total_marks),
+                            pass_percentage = IF(finalized = 0,
+                                VALUES(pass_percentage), pass_percentage),
+                            status = IF(finalized = 0, VALUES(status), status)
+                    `;
+
+                    db.query(
+                        sql,
+                        [
+                            registerNumber,
+                            academicYear,
+                            assignedClass,
+                            marks,
+                            totalMarks,
+                            PASS_PERCENTAGE,
+                            status
+                        ],
+                        (saveErr) => {
+                            if (saveErr) {
+                                console.error(saveErr);
+                                return res.status(500).send(
+                                    "Unable to save annual marks."
+                                );
+                            }
+
+                            return res.redirect("/teacher/home");
+                        }
+                    );
+                }
+            );
+        }
+    );
+});
+
+
+//finalize
+// router.post("/results/finalize", (req, res) => {
+//     if (!req.session.teacher_id) {
+//         return res.redirect("/teacher/login");
+//     }
+
+//     const academicYear = String(req.body.academic_year || "").trim();
+
+//     if (!/^\d{4}-\d{4}$/.test(academicYear)) {
+//         return res.status(400).send("Invalid academic year.");
+//     }
+
+//     db.query(
+//         "SELECT class FROM teacher WHERE teacher_id = ?",
+//         [req.session.teacher_id],
+//         (err, teachers) => {
+//             if (err) return res.status(500).send("Database error.");
+
+//             if (!teachers.length || !teachers[0].class) {
+//                 return res.status(403).send("No class assigned.");
+//             }
+
+//             const assignedClass = Number(teachers[0].class);
+
+//             if (!Number.isInteger(assignedClass) ||
+//                 assignedClass < 1 || assignedClass > 12) {
+//                 return res.status(400).send("Invalid assigned class.");
+//             }
+
+// Mark the assigned class's results as finalized.
+// const finalizeSql = `
+//     UPDATE annual_results ar
+//     JOIN student s
+//       ON s.register_number = ar.register_number
+//     SET ar.finalized = 1
+//     WHERE ar.academic_year = ?
+//       AND ar.class_at_exam = ?
+//       AND ar.finalized = 0
+//       AND CAST(s.class AS UNSIGNED) = ?
+// `;
+
+// db.query(
+//     finalizeSql,
+//     [academicYear, assignedClass, assignedClass],
+//     (finalizeErr, result) => {
+//         if (finalizeErr) {
+//             console.error(finalizeErr);
+//             return res.status(500).send(
+//                 "Unable to finalize results."
+//             );
+//         }
+
+//         if (result.affectedRows === 0) {
+//             return res.status(400).send(
+//                 "No unfinalized results found for this class and year."
+//             );
+//         }
+
+// Promote only students who passed.
+// Class 12 students remain in Class 12.
+//                     const promoteSql = `
+//                         UPDATE student s
+//                         JOIN annual_results ar
+//                           ON ar.register_number = s.register_number
+//                         SET s.class = CAST(s.class AS UNSIGNED) + 1
+//                         WHERE ar.academic_year = ?
+//                           AND ar.class_at_exam = ?
+//                           AND ar.finalized = 1
+//                           AND ar.status = 'Pass'
+//                           AND CAST(s.class AS UNSIGNED) = ?
+//                           AND CAST(s.class AS UNSIGNED) < 12
+//                     `;
+
+//                     db.query(
+//                         promoteSql,
+//                         [academicYear, assignedClass, assignedClass],
+//                         (promoteErr, promoted) => {
+//                             if (promoteErr) {
+//                                 console.error(promoteErr);
+//                                 return res.status(500).send(
+//                                     "Results were finalized, but promotion failed. " +
+//                                     "Please contact the administrator."
+//                                 );
+//                             }
+
+//                             return res.send(
+//                                 `Results finalized. ${promoted.affectedRows} ` +
+//                                 `student(s) promoted. Failed students remain ` +
+//                                 `in their current class.`
+//                             );
+//                         }
+//                     );
+//                 }
+//             );
+//         }
+//     );
+// });
+
+
+router.post("/annual-results/finalize", (req, res) => {
+    if (!req.session.teacher_id) {
+        return res.redirect("/teacher/login");
+    }
+
+    const academicYear = String(req.body.academic_year || "").trim();
+
+    if (!/^\d{4}-\d{4}$/.test(academicYear)) {
+        return res.status(400).send("Enter a valid academic year.");
+    }
+
+    db.query(
+        "SELECT class FROM teacher WHERE teacher_id = ?",
+        [req.session.teacher_id],
+        (err, teachers) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send("Database error.");
+            }
+
+            if (!teachers.length) {
+                return res.status(403).send("Teacher not found.");
+            }
+
+            const assignedClass = Number(teachers[0].class);
+
+            if (
+                !Number.isInteger(assignedClass) ||
+                assignedClass < 1 ||
+                assignedClass > 12
+            ) {
+                return res.status(403).send("Invalid assigned class.");
+            }
+
+            // Do not promote Class 12 to a nonexistent Class 13.
+            const finalizeSql = `
+                UPDATE annual_results
+                SET passed = (marks_obtained / total_marks >= 0.35),
+                    finalized = 1
+                WHERE class_at_exam = ?
+                  AND academic_year = ?
+                  AND finalized = 0
+                  AND total_marks > 0
+            `;
+
+            db.query(
+                finalizeSql,
+                [String(assignedClass), academicYear],
+                (finalizeErr, result) => {
+                    if (finalizeErr) {
+                        console.error(finalizeErr);
+                        return res.status(500).send(
+                            "Unable to finalize annual results."
+                        );
+                    }
+
+                    const promoteSql = `
+                        UPDATE student s
+                        JOIN annual_results ar
+                          ON ar.register_number = s.register_number
+                        SET s.class = ?
+                        WHERE ar.class_at_exam = ?
+                          AND ar.academic_year = ?
+                          AND ar.finalized = 1
+                          AND ar.passed = 1
+                          AND TRIM(s.class) = ?
+                          AND ? < 12
+                    `;
+
+                    db.query(
+                        promoteSql,
+                        [
+                            String(assignedClass + 1),
+                            String(assignedClass),
+                            academicYear,
+                            String(assignedClass),
+                            assignedClass
+                        ],
+                        (promoteErr, promoted) => {
+                            if (promoteErr) {
+                                console.error(promoteErr);
+                                return res.status(500).send(
+                                    "Results were finalized, but promotion " +
+                                    "failed. Contact the administrator."
+                                );
+                            }
+
+                            return res.send(
+                                `Results finalized. ` +
+                                `${result.affectedRows} result(s) finalized; ` +
+                                `${promoted.affectedRows} student(s) promoted. ` +
+                                `Students who failed remain in Class ` +
+                                `${assignedClass}.`
+                            );
+                        }
+                    );
+                }
+            );
+        }
+    );
+});
+
+
 
 module.exports = router;

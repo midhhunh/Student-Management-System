@@ -1,49 +1,318 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher ID Generated</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Teacher ID Generated | EduManage</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 14px;
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #1e293b;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc, #dbeafe);
+        }
+
+        .result-card {
+            width: 100%;
+            max-width: 520px;
+            overflow: hidden;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+        }
+
+        .card-header-custom {
+            padding: 32px 24px 25px;
+            text-align: center;
+            color: #fff;
+            background: linear-gradient(120deg, #047857, #059669, #10b981);
+        }
+
+        .success-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 18px;
+            border: 2px solid rgba(255, 255, 255, 0.45);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.16);
+            font-size: 38px;
+        }
+
+        .card-header-custom h1 {
+            margin-bottom: 9px;
+            font-size: clamp(24px, 5vw, 30px);
+            font-weight: 800;
+        }
+
+        .card-header-custom p {
+            margin: 0;
+            color: #d1fae5;
+        }
+
+        .card-content {
+            padding: 28px;
+        }
+
+        .detail-label {
+            display: block;
+            margin-bottom: 9px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .detail-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            min-width: 0;
+            padding: 14px;
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+
+        .detail-value {
+            min-width: 0;
+            color: #1d4ed8;
+            font-size: 17px;
+            font-weight: 750;
+            overflow-wrap: anywhere;
+        }
+
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            gap: 6px;
+            padding: 8px 11px;
+            border: 0;
+            border-radius: 9px;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 13px;
+            font-weight: 700;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #c7d2fe;
+        }
+
+        .notice {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 24px;
+            padding: 14px;
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            background: #fffbeb;
+            color: #92400e;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .notice i {
+            margin-top: 2px;
+            font-size: 17px;
+        }
+
+        .dashboard-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            width: 100%;
+            margin-top: 24px;
+            padding: 13px 18px;
+            border-radius: 11px;
+            background: linear-gradient(120deg, #3730a3, #4f46e5);
+            color: #fff;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .dashboard-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+            color: #fff;
+        }
+
+        .brand-footer {
+            margin-top: 22px;
+            color: #94a3b8;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .card-content {
+                padding: 22px 17px;
+            }
+
+            .detail-box {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .copy-btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-light">
-    <div class="container mt-5">
-        <div class="card shadow p-4 mx-auto text-center" style="max-width: 500px; border-radius: 15px;">
+<body>
 
-            <h2 class="text-success">Teacher ID Generated!</h2>
-            <p class="text-muted">
-                Share this ID with the teacher to allow registration.
+    <main class="result-card">
+
+        <header class="card-header-custom">
+            <div class="success-icon">
+                <i class="bi bi-check-lg"></i>
+            </div>
+
+            <h1>Teacher ID Generated!</h1>
+
+            <p>The teacher account details are ready.</p>
+        </header>
+
+        <section class="card-content">
+
+            <p class="text-secondary text-center mb-4">
+                Share the teacher ID and registered email with the teacher
+                so they can complete registration.
             </p>
 
-            <h3 id="teacherId" class="text-primary my-3">
-                <%= teacherId %>
-            </h3>
-            <h3 id="teacherId" class="text-primary my-3">
-                <%= email %>
-            </h3>
+            <div class="mb-4">
+                <label class="detail-label" for="teacherId">
+                    <i class="bi bi-person-badge me-1"></i>
+                    Teacher ID
+                </label>
 
-            <button type="button" class="btn btn-primary" onclick="copyTeacherId()">
-                Copy Teacher ID
-            </button>
+                <div class="detail-box">
+                    <span id="teacherId" class="detail-value"><%= teacherId %></span>
 
-            <a href="/admin/home" class="btn btn-outline-secondary mt-3">
+                    <button
+                        type="button"
+                        class="copy-btn"
+                        onclick="copyValue('teacherId', this)">
+                        <i class="bi bi-copy"></i>
+                        Copy ID
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <label class="detail-label" for="teacherEmail">
+                    <i class="bi bi-envelope me-1"></i>
+                    Teacher Email
+                </label>
+
+                <div class="detail-box">
+                    <span id="teacherEmail" class="detail-value"><%= email %></span>
+
+                    <button
+                        type="button"
+                        class="copy-btn"
+                        onclick="copyValue('teacherEmail', this)">
+                        <i class="bi bi-copy"></i>
+                        Copy Email
+                    </button>
+                </div>
+            </div>
+
+            <div class="notice">
+                <i class="bi bi-shield-exclamation"></i>
+
+                <div>
+                    <strong>Important:</strong>
+                    Keep these details safe. Share them only with the intended
+                    teacher. The teacher ID alone does not replace the
+                    registration and login requirements.
+                </div>
+            </div>
+
+            <a href="/admin/home" class="dashboard-btn">
+                <i class="bi bi-speedometer2"></i>
                 Back to Admin Dashboard
             </a>
-        </div>
-    </div>
+
+            <div class="brand-footer">
+                &copy; 2026 EduManage Student Management System
+            </div>
+
+        </section>
+    </main>
 
     <script>
-        function copyTeacherId() {
-            const id = document.getElementById("teacherId").textContent.trim();
+        async function copyValue(elementId, button) {
+            const value = document.getElementById(elementId).textContent.trim();
+            const originalContent = button.innerHTML;
 
-            navigator.clipboard.writeText(id)
-                .then(() => alert("Teacher ID copied!"))
-                .catch(() => alert("Please copy the ID manually."));
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(value);
+                } else {
+                    const temporaryInput = document.createElement("textarea");
+                    temporaryInput.value = value;
+                    temporaryInput.style.position = "fixed";
+                    temporaryInput.style.opacity = "0";
+
+                    document.body.appendChild(temporaryInput);
+                    temporaryInput.select();
+
+                    const copied = document.execCommand("copy");
+                    temporaryInput.remove();
+
+                    if (!copied) {
+                        throw new Error("Copy failed");
+                    }
+                }
+
+                button.innerHTML = '<i class="bi bi-check-circle-fill"></i> Copied!';
+                button.disabled = true;
+
+                setTimeout(() => {
+                    button.innerHTML = originalContent;
+                    button.disabled = false;
+                }, 1600);
+
+            } catch (error) {
+                alert("Copy failed. Please select and copy this value manually:\n" + value);
+            }
         }
     </script>
-</body>
 
+</body>
 </html>

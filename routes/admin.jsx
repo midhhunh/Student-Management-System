@@ -1,58 +1,139 @@
-const router=require("express").Router()
-let db=require("../db.jsx")
+
+const router = require("express").Router();
+const db = require("../db.jsx");
 const crypto = require("crypto");
 
-const admin_email="midhun@gmail.com";
-const admin_password="midhun@Admin";
+// Admin credentials — retained from your original code.
+const admin_email = "midhun@gmail.com";
+const admin_password = "midhun@Admin";
 
-router.get("/login",(req,res)=>{
-    res.render("login.ejs")
-})
+// --------------------------------------------------
+// HELPER FUNCTIONS
+// --------------------------------------------------
 
-router.post("/login",(req,res)=>{
-    const email=req.body.email;
-    const password=req.body.password;
+const isValidEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-    if(email==admin_email && password==admin_password){
-        req.session.isAdmin=true;
-        return res.redirect("/admin/home")
+const isValidMobile = (mobile) =>
+    /^[0-9]{10}$/.test(mobile);
+
+const isValidClass = (value) =>
+    /^(0?[1-9]|1[0-2])$/.test(String(value || "").trim());
+
+const clean = (value) =>
+    typeof value === "string" ? value.trim() : "";
+
+const databaseError = (res, message, err) => {
+    console.error(message, err);
+    return res.status(500).send(message);
+};
+
+// --------------------------------------------------
+// ADMIN LOGIN
+// --------------------------------------------------
+
+router.get("/login", (req, res) => {
+    if (req.session.isAdmin) {
+        return res.redirect("/admin/home");
     }
-    return res.redirect("/admin/login")
-})
 
-router.use((req,res,next)=>{
-    if(!req.session.isAdmin){
+    res.render("login.ejs");
+});
+
+router.post("/login", (req, res) => {
+    const email = clean(req.body.email).toLowerCase();
+    const password = req.body.password;
+
+    if (
+        email === admin_email.toLowerCase() &&
+        password === admin_password
+    ) {
+        req.session.isAdmin = true;
+
+        return req.session.save((err) => {
+            if (err) {
+                return databaseError(
+                    res,
+                    "Unable to create admin session.",
+                    err
+                );
+            }
+
+            res.redirect("/admin/home");
+        });
+    }
+
+    return res.redirect("/admin/login");
+});
+
+// --------------------------------------------------
+// ADMIN AUTHENTICATION
+// All routes below this middleware require admin login.
+// --------------------------------------------------
+
+router.use((req, res, next) => {
+    if (!req.session || !req.session.isAdmin) {
         return res.redirect("/admin/login");
     }
+
     next();
-})
+});
 
-router.get("/home",(req,res)=>{
-    const stud=`select * from student order by class desc`;
-    const teach=`select * from teacher order by class desc`;
+// --------------------------------------------------
+// ADMIN HOME — FETCH STUDENTS AND TEACHERS
+// --------------------------------------------------
 
-    db.query(stud,(err,studresult)=>{
-        if(err){
-            console.log("Student query error:", err);
-            return res.status(500).send("unable to fetch students")
+router.get("/home", (req, res) => {
+    const studentSql = `
+        SELECT *
+        FROM student
+        ORDER BY CAST(class AS UNSIGNED) DESC, name ASC
+    `;
+
+    const teacherSql = `
+        SELECT *
+        FROM teacher
+        ORDER BY CAST(class AS UNSIGNED) DESC, name ASC
+    `;
+
+    db.query(studentSql, (studentErr, students) => {
+        if (studentErr) {
+            return databaseError(
+                res,
+                "Unable to fetch students.",
+                studentErr
+            );
         }
-        db.query(teach,(err,teachresult)=>{
-            if(err){
-                console.log("Teacher query error",err);
-                return res.status(500).send("Unable to fetch Teachers");
-            }
-            res.render("adminHome.ejs",{
-                students:studresult,
-                teachers:teachresult
-            })
-        })
-    })
-})
-router.post("/add-teacher", (req, res) => {
-    const email = String(req.body.email || "").trim().toLowerCase();
 
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        return res.status(400).send("Enter a valid email address");
+        db.query(teacherSql, (teacherErr, teachers) => {
+            if (teacherErr) {
+                return databaseError(
+                    res,
+                    "Unable to fetch teachers.",
+                    teacherErr
+                );
+            }
+
+            res.render("adminHome.ejs", {
+                students,
+                teachers
+            });
+        });
+    });
+});
+
+// --------------------------------------------------
+// GENERATE A TEACHER ID
+// Requires the existing teacher_ids table.
+// --------------------------------------------------
+
+router.post("/add-teacher", (req, res) => {
+    const email = clean(req.body.email).toLowerCase();
+
+    if (!isValidEmail(email)) {
+        return res.status(400).send(
+            "Please enter a valid email address."
+        );
     }
 
     const teacherId = "TCH" + crypto.randomInt(10000, 100000);
@@ -65,11 +146,16 @@ router.post("/add-teacher", (req, res) => {
     db.query(sql, [teacherId, email], (err) => {
         if (err) {
             if (err.code === "ER_DUP_ENTRY") {
-                return res.status(400).send("This email or Teacher ID already exists");
+                return res.status(400).send(
+                    "This email or Teacher ID already exists."
+                );
             }
 
-            console.error(err);
-            return res.status(500).send("Unable to generate Teacher ID");
+            return databaseError(
+                res,
+                "Unable to generate Teacher ID.",
+                err
+            );
         }
 
         res.render("teacherIdGenerated.ejs", {
@@ -79,93 +165,50 @@ router.post("/add-teacher", (req, res) => {
     });
 });
 
-// Only an administrator can assign or change a teacher's class responsibility.
-router.post("/teacher/:teacher_id/assign-class",(req,res)=>{
-    const teacherId=req.params.teacher_id;
-    const classValue=String(req.body.class || "").trim();
-    if(classValue && !/^(0?[1-9]|1[0-2])$/.test(classValue)){
-        return res.status(400).send("Choose a valid class");
+// --------------------------------------------------
+// ASSIGN OR CHANGE A TEACHER'S CLASS
+// --------------------------------------------------
+
+router.post("/teacher/:teacher_id/assign-class", (req, res) => {
+    const teacherId = clean(req.params.teacher_id);
+    const classValue = clean(req.body.class);
+
+    // An empty value removes the teacher's class responsibility.
+    if (classValue !== "" && !isValidClass(classValue)) {
+        return res.status(400).send(
+            "Please select a valid class between 1 and 12."
+        );
     }
-    const sql="UPDATE teacher SET class=? WHERE teacher_id=?";
-    db.query(sql,[classValue,teacherId],(err,result)=>{
-        if(err){
-            console.log("Teacher class assignment error:",err);
-            return res.status(500).send("Unable to assign class");
-        }
-        if(result.affectedRows===0){
-            return res.status(404).send("Teacher not found");
-        }
-        return res.redirect("/admin/home");
-    });
-})
-
-router.get("/logout",(req,res)=>{
-    req.session.destroy(()=>res.redirect("/admin/login"));
-})
-
-router.get("/student/:register_number",(req,res)=>{
-    const registerNumber=req.params.register_number;
 
     const sql = `
-        SELECT id, name, register_number, email, mobile, class, address
-        FROM student
-        WHERE register_number = ?
+        UPDATE teacher
+        SET class = ?
+        WHERE teacher_id = ?
     `;
-    db.query(sql,[registerNumber],(err,result)=>{
-        if(err){
-            console.log(err);
-            return res.status(500).send("Database error");
-        }
-        if(result.length===0){
-            return res.status(404).send("Student not found");
-        }
-        res.render("studDashboard.ejs",{
-            student:result[0]
-        })
-    })
-})
 
-// Promote an individual student after confirming they passed the year.
-router.post("/student/:register_number/promote",(req,res)=>{
-    const registerNumber=req.params.register_number;
-    const sql=`UPDATE student
-        SET class = CAST(class AS UNSIGNED) + 1
-        WHERE register_number = ?
-          AND TRIM(class) REGEXP '^(0?[1-9]|1[0-2])$'
-          AND CAST(class AS UNSIGNED) BETWEEN 1 AND 11`;
-    db.query(sql,[registerNumber],(err,result)=>{
-        if(err){
-            console.log("Student promotion error:",err);
-            return res.status(500).send("Unable to promote student");
+    db.query(sql, [classValue, teacherId], (err, result) => {
+        if (err) {
+            return databaseError(
+                res,
+                "Unable to assign the teacher's class.",
+                err
+            );
         }
-        if(result.affectedRows===0){
-            return res.status(400).send("Student not found or already in the final class");
-        }
-        res.redirect(`/admin/student/${encodeURIComponent(registerNumber)}`);
-    })
-})
 
-router.get("/teacher/:teacher_id",(req,res)=>{
-    const teacherId=req.params.teacher_id;
-
-    const sql=`select id,name,teacher_id,email,mobile,class,address from teacher where teacher_id=?`;
-    db.query(sql,[teacherId],(err,result)=>{
-        if(err){
-            console.log(err);
-            return res.status(500).send("Database error")
+        if (result.affectedRows === 0) {
+            return res.status(404).send("Teacher not found.");
         }
-        if(result.length===0){
-            return res.status(404).send("Teacher not found")
-        }
-        res.render("TeacherDashboard.ejs",{
-            teacher:result[0]
-        })
-    })
-})
 
-// Open the student edit page
-router.get("/student/:register_number/edit", (req, res) => {
-    const registerNumber = req.params.register_number;
+        res.redirect("/admin/home");
+    });
+});
+
+// --------------------------------------------------
+// VIEW STUDENT DETAILS
+// --------------------------------------------------
+
+router.get("/student/:register_number", (req, res) => {
+    const registerNumber = clean(req.params.register_number);
 
     const sql = `
         SELECT id, name, register_number, email, mobile, class, address
@@ -175,12 +218,104 @@ router.get("/student/:register_number/edit", (req, res) => {
 
     db.query(sql, [registerNumber], (err, result) => {
         if (err) {
-            console.error(err);
-            return res.status(500).send("Database error");
+            return databaseError(res, "Unable to fetch student.", err);
         }
 
         if (result.length === 0) {
-            return res.status(404).send("Student not found");
+            return res.status(404).send("Student not found.");
+        }
+
+        res.render("studDashboard.ejs", {
+            student: result[0]
+        });
+    });
+});
+
+// --------------------------------------------------
+// PROMOTE STUDENT TO THE NEXT CLASS
+// Classes 1–11 can be promoted.
+// --------------------------------------------------
+
+router.post("/student/:register_number/promote", (req, res) => {
+    const registerNumber = clean(req.params.register_number);
+
+    const sql = `
+        UPDATE student
+        SET class = CAST(TRIM(class) AS UNSIGNED) + 1
+        WHERE register_number = ?
+          AND TRIM(class) REGEXP '^(0?[1-9]|1[0-2])$'
+          AND CAST(TRIM(class) AS UNSIGNED) BETWEEN 1 AND 11
+    `;
+
+    db.query(sql, [registerNumber], (err, result) => {
+        if (err) {
+            return databaseError(
+                res,
+                "Unable to promote student.",
+                err
+            );
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(400).send(
+                "Student not found or already in the final class."
+            );
+        }
+
+        res.redirect(
+            `/admin/student/${encodeURIComponent(registerNumber)}`
+        );
+    });
+});
+
+// --------------------------------------------------
+// VIEW TEACHER DETAILS
+// --------------------------------------------------
+
+router.get("/teacher/:teacher_id", (req, res) => {
+    const teacherId = clean(req.params.teacher_id);
+
+    const sql = `
+        SELECT id, name, teacher_id, email, mobile, class, address
+        FROM teacher
+        WHERE teacher_id = ?
+    `;
+
+    db.query(sql, [teacherId], (err, result) => {
+        if (err) {
+            return databaseError(res, "Unable to fetch teacher.", err);
+        }
+
+        if (result.length === 0) {
+            return res.status(404).send("Teacher not found.");
+        }
+
+        res.render("TeacherDashboard.ejs", {
+            teacher: result[0]
+        });
+    });
+});
+
+// --------------------------------------------------
+// OPEN STUDENT EDIT PAGE
+// --------------------------------------------------
+
+router.get("/student/:register_number/edit", (req, res) => {
+    const registerNumber = clean(req.params.register_number);
+
+    const sql = `
+        SELECT id, name, register_number, email, mobile, class, address
+        FROM student
+        WHERE register_number = ?
+    `;
+
+    db.query(sql, [registerNumber], (err, result) => {
+        if (err) {
+            return databaseError(res, "Unable to fetch student.", err);
+        }
+
+        if (result.length === 0) {
+            return res.status(404).send("Student not found.");
         }
 
         res.render("editStudent.ejs", {
@@ -189,12 +324,44 @@ router.get("/student/:register_number/edit", (req, res) => {
     });
 });
 
+// --------------------------------------------------
+// SAVE EDITED STUDENT DETAILS
+// --------------------------------------------------
 
-// Save the edited student details
 router.post("/student/:register_number/edit", (req, res) => {
-    const registerNumber = req.params.register_number;
+    const registerNumber = clean(req.params.register_number);
 
-    const { name, email, mobile, class: studentClass, address } = req.body;
+    const name = clean(req.body.name);
+    const email = clean(req.body.email).toLowerCase();
+    const mobile = clean(req.body.mobile);
+    const studentClass = clean(req.body.class);
+    const address = clean(req.body.address);
+
+    if (!name || name.length > 100) {
+        return res.status(400).send(
+            "Name is required and must not exceed 100 characters."
+        );
+    }
+
+    if (!isValidEmail(email)) {
+        return res.status(400).send("Please enter a valid email address.");
+    }
+
+    if (!isValidMobile(mobile)) {
+        return res.status(400).send(
+            "Mobile number must contain exactly 10 digits."
+        );
+    }
+
+    if (!isValidClass(studentClass)) {
+        return res.status(400).send(
+            "Please select a class between 1 and 12."
+        );
+    }
+
+    if (address.length > 1000) {
+        return res.status(400).send("Address is too long.");
+    }
 
     const sql = `
         UPDATE student
@@ -207,12 +374,43 @@ router.post("/student/:register_number/edit", (req, res) => {
         [name, email, mobile, studentClass, address, registerNumber],
         (err, result) => {
             if (err) {
-                console.error(err);
-                return res.status(500).send("Unable to update student");
+                if (err.code === "ER_DUP_ENTRY") {
+                    return res.status(400).send(
+                        "This email is already in use."
+                    );
+                }
+
+                return databaseError(
+                    res,
+                    "Unable to update student.",
+                    err
+                );
             }
 
             if (result.affectedRows === 0) {
-                return res.status(404).send("Student not found or no changes made");
+                // MySQL can report zero when the row exists but
+                // no values changed, so check whether it exists.
+                return db.query(
+                    "SELECT register_number FROM student WHERE register_number = ?",
+                    [registerNumber],
+                    (checkErr, rows) => {
+                        if (checkErr) {
+                            return databaseError(
+                                res,
+                                "Unable to verify student.",
+                                checkErr
+                            );
+                        }
+
+                        if (rows.length === 0) {
+                            return res.status(404).send(
+                                "Student not found."
+                            );
+                        }
+
+                        res.redirect("/admin/home");
+                    }
+                );
             }
 
             res.redirect("/admin/home");
@@ -220,8 +418,12 @@ router.post("/student/:register_number/edit", (req, res) => {
     );
 });
 
+// --------------------------------------------------
+// DELETE STUDENT
+// --------------------------------------------------
+
 router.post("/student/:register_number/delete", (req, res) => {
-    const registerNumber = req.params.register_number;
+    const registerNumber = clean(req.params.register_number);
 
     const sql = `
         DELETE FROM student
@@ -230,21 +432,23 @@ router.post("/student/:register_number/delete", (req, res) => {
 
     db.query(sql, [registerNumber], (err, result) => {
         if (err) {
-            console.error(err);
-            return res.status(500).send("Unable to delete student");
+            return databaseError(res, "Unable to delete student.", err);
         }
 
         if (result.affectedRows === 0) {
-            return res.status(404).send("Student not found");
+            return res.status(404).send("Student not found.");
         }
 
         res.redirect("/admin/home");
     });
 });
 
-// Open the teacher edit page
+// --------------------------------------------------
+// OPEN TEACHER EDIT PAGE
+// --------------------------------------------------
+
 router.get("/teacher/:teacher_id/edit", (req, res) => {
-    const teacherId = req.params.teacher_id;
+    const teacherId = clean(req.params.teacher_id);
 
     const sql = `
         SELECT id, name, teacher_id, email, mobile, class, address
@@ -254,12 +458,11 @@ router.get("/teacher/:teacher_id/edit", (req, res) => {
 
     db.query(sql, [teacherId], (err, result) => {
         if (err) {
-            console.error(err);
-            return res.status(500).send("Database error");
+            return databaseError(res, "Unable to fetch teacher.", err);
         }
 
         if (result.length === 0) {
-            return res.status(404).send("Teacher not found");
+            return res.status(404).send("Teacher not found.");
         }
 
         res.render("editTeacher.ejs", {
@@ -268,12 +471,45 @@ router.get("/teacher/:teacher_id/edit", (req, res) => {
     });
 });
 
+// --------------------------------------------------
+// SAVE EDITED TEACHER DETAILS
+// --------------------------------------------------
 
-// Save the edited teacher details
 router.post("/teacher/:teacher_id/edit", (req, res) => {
-    const teacherId = req.params.teacher_id;
+    const teacherId = clean(req.params.teacher_id);
 
-    const { name, email, mobile, class: teacherClass, address } = req.body;
+    const name = clean(req.body.name);
+    const email = clean(req.body.email).toLowerCase();
+    const mobile = clean(req.body.mobile);
+    const teacherClass = clean(req.body.class);
+    const address = clean(req.body.address);
+
+    if (!name || name.length > 100) {
+        return res.status(400).send(
+            "Name is required and must not exceed 100 characters."
+        );
+    }
+
+    if (!isValidEmail(email)) {
+        return res.status(400).send("Please enter a valid email address.");
+    }
+
+    if (!isValidMobile(mobile)) {
+        return res.status(400).send(
+            "Mobile number must contain exactly 10 digits."
+        );
+    }
+
+    // Empty class is allowed for teachers without class responsibility.
+    if (teacherClass !== "" && !isValidClass(teacherClass)) {
+        return res.status(400).send(
+            "Please select a valid class between 1 and 12."
+        );
+    }
+
+    if (address.length > 1000) {
+        return res.status(400).send("Address is too long.");
+    }
 
     const sql = `
         UPDATE teacher
@@ -286,12 +522,41 @@ router.post("/teacher/:teacher_id/edit", (req, res) => {
         [name, email, mobile, teacherClass, address, teacherId],
         (err, result) => {
             if (err) {
-                console.error(err);
-                return res.status(500).send("Unable to update teacher");
+                if (err.code === "ER_DUP_ENTRY") {
+                    return res.status(400).send(
+                        "This email is already in use."
+                    );
+                }
+
+                return databaseError(
+                    res,
+                    "Unable to update teacher.",
+                    err
+                );
             }
 
             if (result.affectedRows === 0) {
-                return res.status(404).send("Teacher not found or no changes made");
+                return db.query(
+                    "SELECT teacher_id FROM teacher WHERE teacher_id = ?",
+                    [teacherId],
+                    (checkErr, rows) => {
+                        if (checkErr) {
+                            return databaseError(
+                                res,
+                                "Unable to verify teacher.",
+                                checkErr
+                            );
+                        }
+
+                        if (rows.length === 0) {
+                            return res.status(404).send(
+                                "Teacher not found."
+                            );
+                        }
+
+                        res.redirect("/admin/home");
+                    }
+                );
             }
 
             res.redirect("/admin/home");
@@ -299,8 +564,12 @@ router.post("/teacher/:teacher_id/edit", (req, res) => {
     );
 });
 
+// --------------------------------------------------
+// DELETE TEACHER
+// --------------------------------------------------
+
 router.post("/teacher/:teacher_id/delete", (req, res) => {
-    const teacherId = req.params.teacher_id;
+    const teacherId = clean(req.params.teacher_id);
 
     const sql = `
         DELETE FROM teacher
@@ -309,18 +578,35 @@ router.post("/teacher/:teacher_id/delete", (req, res) => {
 
     db.query(sql, [teacherId], (err, result) => {
         if (err) {
-            console.error(err);
-            return res.status(500).send(
-                "Unable to delete teacher. Check whether related records exist."
+            return databaseError(
+                res,
+                "Unable to delete teacher. Check whether related records exist.",
+                err
             );
         }
 
         if (result.affectedRows === 0) {
-            return res.status(404).send("Teacher not found");
+            return res.status(404).send("Teacher not found.");
         }
 
         res.redirect("/admin/home");
     });
 });
 
-module.exports=router
+// --------------------------------------------------
+// ADMIN LOGOUT
+// --------------------------------------------------
+
+router.get("/logout", (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Admin logout error:", err);
+            return res.status(500).send("Unable to log out.");
+        }
+
+        res.clearCookie("connect.sid");
+        res.redirect("/admin/login");
+    });
+});
+
+module.exports = router;

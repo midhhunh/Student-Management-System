@@ -1,77 +1,378 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Teacher</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Edit Teacher | EduManage</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 35px 15px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #1e293b;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc, #e0f2fe);
+        }
+
+        .edit-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            color: #475569;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #4f46e5;
+        }
+
+        .edit-card {
+            overflow: hidden;
+            border: 0;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 15px 45px rgba(15, 23, 42, 0.12);
+        }
+
+        .edit-header {
+            padding: 28px;
+            color: white;
+            background: linear-gradient(120deg, #172554, #4338ca, #2563eb);
+        }
+
+        .header-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.17);
+            font-size: 26px;
+        }
+
+        .edit-header h1 {
+            margin: 0 0 8px;
+            font-size: clamp(24px, 4vw, 30px);
+            font-weight: 750;
+        }
+
+        .edit-header p {
+            margin: 0;
+            color: #dbeafe;
+        }
+
+        .edit-body {
+            padding: 30px;
+        }
+
+        .form-label {
+            margin-bottom: 8px;
+            color: #334155;
+            font-weight: 650;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 47px;
+            border: 1px solid #dbe3ef;
+            border-radius: 10px;
+            background-color: #f8fafc;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #6366f1;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.13);
+        }
+
+        .form-control[readonly] {
+            color: #64748b;
+            background-color: #f1f5f9;
+        }
+
+        textarea.form-control {
+            min-height: 105px;
+            resize: vertical;
+        }
+
+        .form-text {
+            color: #64748b;
+        }
+
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn {
+            min-height: 45px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 650;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-save {
+            border: none;
+            background: linear-gradient(120deg, #2563eb, #4f46e5);
+            color: #fff;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(120deg, #1d4ed8, #4338ca);
+            color: #fff;
+        }
+
+        .btn-cancel {
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            color: #334155;
+        }
+
+        .btn-cancel:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .brand-footer {
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .edit-header,
+            .edit-body {
+                padding: 22px 18px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body>
 
-    <div class="container mt-5">
-        <div class="card shadow mx-auto" style="max-width: 600px;">
-            <div class="card-header bg-primary text-white">
-                <h3>Edit Teacher Details</h3>
-            </div>
+    <main class="edit-container">
 
-            <div class="card-body">
-                <form action="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>/edit" method="POST">
+        <a href="/admin/home" class="back-link">
+            <i class="bi bi-arrow-left"></i>
+            Back to Admin Dashboard
+        </a>
 
-                    <div class="mb-3">
-                        <label class="form-label">Teacher ID</label>
-                        <input type="text" class="form-control" value="<%= teacher.teacher_id %>" readonly>
+        <section class="edit-card">
+
+            <header class="edit-header">
+                <div class="header-icon">
+                    <i class="bi bi-person-gear"></i>
+                </div>
+
+                <h1>Edit Teacher Details</h1>
+                <p>Update the teacher's information below.</p>
+            </header>
+
+            <div class="edit-body">
+
+                <form
+                    action="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>/edit"
+                    method="POST"
+                    id="editTeacherForm">
+
+                    <div class="mb-4">
+                        <label for="teacher_id" class="form-label">
+                            Teacher ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="teacher_id"
+                            class="form-control"
+                            value="<%= teacher.teacher_id %>"
+                            readonly>
+
+                        <div class="form-text">
+                            <i class="bi bi-lock me-1"></i>
+                            Teacher ID cannot be changed.
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" name="name" class="form-control" value="<%= teacher.name %>" required>
+                    <div class="mb-4">
+                        <label for="name" class="form-label">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="form-control"
+                            value="<%= teacher.name %>"
+                            minlength="2"
+                            maxlength="100"
+                            required>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control" value="<%= teacher.email %>" required>
+                    <div class="mb-4">
+                        <label for="email" class="form-label">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            value="<%= teacher.email %>"
+                            maxlength="150"
+                            required>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Mobile</label>
-                        <input type="text" name="mobile" class="form-control" value="<%= teacher.mobile %>" required>
+                    <div class="mb-4">
+                        <label for="mobile" class="form-label">
+                            Mobile Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="mobile"
+                            name="mobile"
+                            class="form-control"
+                            value="<%= teacher.mobile %>"
+                            pattern="[0-9]{10}"
+                            maxlength="10"
+                            inputmode="numeric"
+                            title="Enter a 10-digit mobile number"
+                            required>
+
+                        <div class="form-text">
+                            Enter a 10-digit mobile number.
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Class Responsibility</label>
-                        <select name="class" class="form-select">
-                            <option value="" <%=!teacher.class ? "selected" : "" %>>
+                    <div class="mb-4">
+                        <label for="class" class="form-label">
+                            Class Responsibility
+                        </label>
+
+                        <select
+                            id="class"
+                            name="class"
+                            class="form-select"
+                            required>
+
+                            <option
+                                value=""
+                                <%= !teacher.class ? "selected" : "" %>>
                                 No class assigned
                             </option>
 
-                            <% for (let i=1; i <=12; i++) { %>
-                                <option value="<%= i %>" <%=String(teacher.class || "" ).trim()===String(i) ? "selected"
-                                    : "" %>>
+                            <% for (let i = 1; i <= 12; i++) { %>
+                                <option
+                                    value="<%= i %>"
+                                    <%= String(teacher.class || "").trim() === String(i) ? "selected" : "" %>>
                                     Class <%= i %>
                                 </option>
-                                <% } %>
+                            <% } %>
+
                         </select>
+
+                        <div class="form-text">
+                            Choose a class or select "No class assigned".
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Address</label>
-                        <textarea name="address" class="form-control" required><%= teacher.address %></textarea>
+                    <div class="mb-4">
+                        <label for="address" class="form-label">
+                            Address
+                        </label>
+
+                        <textarea
+                            id="address"
+                            name="address"
+                            class="form-control"
+                            maxlength="500"
+                            required><%= teacher.address || "" %></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-success">
-                        Save Changes
-                    </button>
+                    <div class="form-actions">
 
-                    <a href="/admin/home" class="btn btn-secondary">
-                        Cancel
-                    </a>
+                        <button type="submit" class="btn btn-save">
+                            <i class="bi bi-check-circle me-2"></i>
+                            Save Changes
+                        </button>
+
+                        <a href="/admin/home" class="btn btn-cancel">
+                            <i class="bi bi-x-circle me-2"></i>
+                            Cancel
+                        </a>
+
+                    </div>
+
                 </form>
+
             </div>
-        </div>
-    </div>
+        </section>
+
+        <footer class="brand-footer">
+            <i class="bi bi-shield-check me-1"></i>
+            EduManage Student Management System
+        </footer>
+
+    </main>
+
+    <script>
+        document.getElementById("editTeacherForm").addEventListener("submit", function (event) {
+            const mobile = document.getElementById("mobile").value.trim();
+
+            if (!/^[0-9]{10}$/.test(mobile)) {
+                event.preventDefault();
+                alert("Please enter a valid 10-digit mobile number.");
+            }
+        });
+    </script>
 
 </body>
-
 </html>

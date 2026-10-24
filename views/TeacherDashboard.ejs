@@ -1,99 +1,420 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Teacher Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-        <link href="/css/teacherhome.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teacher Dashboard | EduManage</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+
+    <link href="/css/teacherhome.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #eef2ff, #f8fafc, #e0f2fe);
+        }
+
+        .top-navbar {
+            padding: 15px 0;
+            background: linear-gradient(110deg, #172554, #3730a3);
+            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.14);
+        }
+
+        .navbar-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff !important;
+            font-size: 22px;
+            font-weight: 750;
+            letter-spacing: 0.3px;
+        }
+
+        .brand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            font-size: 23px;
+        }
+
+        .portal-label {
+            margin-left: auto;
+            color: #c7d2fe;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 45px 20px;
+            flex: 1;
+        }
+
+        .welcome-text {
+            margin-bottom: 28px;
+        }
+
+        .welcome-text h1 {
+            margin-bottom: 10px;
+            font-size: clamp(27px, 4vw, 36px);
+            font-weight: 800;
+            letter-spacing: -0.7px;
+        }
+
+        .welcome-text p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .profile-card {
+            overflow: hidden;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 18px 55px rgba(15, 23, 42, 0.09);
+        }
+
+        .profile-header {
+            position: relative;
+            padding: 35px 30px;
+            color: #fff;
+            background: linear-gradient(115deg, #3730a3, #4f46e5, #2563eb);
+        }
+
+        .profile-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 76px;
+            height: 76px;
+            margin-bottom: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.17);
+            font-size: 38px;
+        }
+
+        .profile-header h2 {
+            margin-bottom: 12px;
+            font-size: clamp(23px, 4vw, 30px);
+            font-weight: 750;
+            overflow-wrap: anywhere;
+        }
+
+        .teacher-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 13px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.14);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .details {
+            padding: 30px;
+        }
+
+        .details-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            font-size: 20px;
+            font-weight: 750;
+        }
+
+        .details-title i {
+            color: var(--primary);
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            height: 100%;
+            min-height: 95px;
+            margin-bottom: 16px;
+            padding: 19px;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            background: #f8fafc;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .detail-item:hover {
+            transform: translateY(-2px);
+            border-color: #c7d2fe;
+        }
+
+        .detail-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: #e0e7ff;
+            color: var(--primary);
+            font-size: 19px;
+        }
+
+        .detail-label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            color: var(--text-dark);
+            font-size: 15px;
+            font-weight: 650;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        .dashboard-footer {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 22px 30px;
+            border-top: 1px solid var(--border);
+            background: #fbfdff;
+        }
+
+        .footer-note {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 20px;
+            border-radius: 10px;
+            background: #dc2626;
+            color: white;
+            font-weight: 650;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-1px);
+            background: #b91c1c;
+            color: white;
+        }
+
+        .page-footer {
+            padding: 20px 15px;
+            border-top: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.75);
+            color: var(--text-muted);
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 576px) {
+            .dashboard {
+                padding: 28px 14px;
+            }
+
+            .profile-header {
+                padding: 27px 22px;
+            }
+
+            .details {
+                padding: 22px 17px;
+            }
+
+            .detail-item {
+                padding: 15px;
+            }
+
+            .dashboard-footer {
+                align-items: stretch;
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .logout-btn {
+                width: 100%;
+            }
+
+            .portal-label {
+                font-size: 11px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<nav class="navbar">
-        <div class="container-fluid">
+
+    <nav class="navbar top-navbar">
+        <div class="container">
             <a class="navbar-brand" href="/teacher/home">
-                <i class="bi bi-mortarboard-fill me-2"></i>
-                Teacher Portal
+                <span class="brand-icon">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </span>
+                EduManage
             </a>
+
+            <span class="portal-label">
+                <i class="bi bi-shield-check me-1"></i>
+                Teacher Portal
+            </span>
         </div>
     </nav>
 
     <main class="dashboard">
 
         <div class="welcome-text">
-            <h1>Welcome to Your Dashboard!</h1>
-            <p>Manage your profile and view your teacher information.</p>
+            <h1>Teacher Dashboard</h1>
+            <p>View your personal information and assigned class details.</p>
         </div>
 
-        <div class="profile-card">
+        <section class="profile-card">
 
-            <div class="profile-header">
+            <header class="profile-header">
+
                 <div class="profile-icon">
-                    <i class="bi bi-person-fill"></i>
+                    <i class="bi bi-person-workspace"></i>
                 </div>
 
-                <h2>Welcome, <%= teacher.name %></h2>
+                <h2>
+                    Welcome, <%= teacher.name %>!
+                </h2>
 
                 <span class="teacher-badge">
-                    <i class="bi bi-patch-check-fill me-1"></i>
-                    Teacher Account
+                    <i class="bi bi-patch-check-fill me-2"></i>
+                    Verified Teacher Account
                 </span>
-            </div>
+
+            </header>
 
             <div class="details">
+
                 <h3 class="details-title">
-                    <i class="bi bi-person-vcard-fill me-2"></i>
+                    <i class="bi bi-person-vcard-fill"></i>
                     Personal Information
                 </h3>
 
-                <div class="row">
+                <div class="row g-3">
 
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <div class="detail-item">
                             <div class="detail-icon">
                                 <i class="bi bi-person-badge"></i>
                             </div>
+
                             <div>
                                 <span class="detail-label">Teacher ID</span>
-                                <div class="detail-value"><%= teacher.teacher_id %></div>
+                                <div class="detail-value">
+                                    <%= teacher.teacher_id || "Not available" %>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <div class="detail-item">
                             <div class="detail-icon">
                                 <i class="bi bi-envelope-fill"></i>
                             </div>
+
                             <div>
                                 <span class="detail-label">Email Address</span>
-                                <div class="detail-value"><%= teacher.email %></div>
+                                <div class="detail-value">
+                                    <%= teacher.email || "Not available" %>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <div class="detail-item">
                             <div class="detail-icon">
                                 <i class="bi bi-telephone-fill"></i>
                             </div>
+
                             <div>
                                 <span class="detail-label">Mobile Number</span>
-                                <div class="detail-value"><%= teacher.mobile %></div>
+                                <div class="detail-value">
+                                    <%= teacher.mobile || "Not available" %>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <div class="detail-item">
                             <div class="detail-icon">
                                 <i class="bi bi-book-fill"></i>
                             </div>
+
                             <div>
                                 <span class="detail-label">Assigned Class</span>
-                                <div class="detail-value"><%= teacher.class %></div>
+                                <div class="detail-value">
+                                    <% if (teacher.class) { %>
+                                        Class <%= teacher.class %>
+                                    <% } else { %>
+                                        Not assigned
+                                    <% } %>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -103,9 +424,12 @@
                             <div class="detail-icon">
                                 <i class="bi bi-geo-alt-fill"></i>
                             </div>
+
                             <div>
                                 <span class="detail-label">Address</span>
-                                <div class="detail-value"><%= teacher.address %></div>
+                                <div class="detail-value">
+                                    <%= teacher.address || "Not provided" %>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -113,19 +437,35 @@
                 </div>
             </div>
 
-            <div class="dashboard-footer">
-                <a href="/teacher/logout" class="logout-btn">
+            <footer class="dashboard-footer">
+
+                <p class="footer-note">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Keep your profile information up to date.
+                </p>
+
+                <a
+                    href="/teacher/logout"
+                    class="logout-btn"
+                    onclick="return confirm('Are you sure you want to log out?');">
+
                     <i class="bi bi-box-arrow-right me-2"></i>
                     Logout
                 </a>
-            </div>
 
-        </div>
+            </footer>
+
+        </section>
 
     </main>
 
-    <footer>
-        &copy; 2026 Student Management System | Teacher Portal
+    <footer class="page-footer">
+        &copy; 2026 EduManage Student Management System
+        <span class="mx-1">|</span>
+        Teacher Portal
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

@@ -1,159 +1,884 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+    <title>Class Teacher Home | EduManage</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <link href="/css/classteacherhome.css" rel="stylesheet">
     <link href="/css/studhome.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --background: #f4f7ff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--background);
+            color: var(--text);
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .custom-navbar {
+            background: linear-gradient(120deg, #172554, #4338ca, #6366f1);
+            box-shadow: 0 5px 22px rgba(30, 41, 59, .16);
+        }
+
+        .navbar-brand {
+            letter-spacing: .4px;
+        }
+
+        .logo-icon {
+            margin-right: 7px;
+        }
+
+        .navbar .nav-link {
+            color: rgba(255, 255, 255, .85);
+            margin: 0 5px;
+            transition: .2s;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            color: #fff;
+        }
+
+        .btn-logout {
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .65);
+            border-radius: 10px;
+            padding: 8px 18px;
+        }
+
+        .btn-logout:hover {
+            color: #312e81;
+            background: #fff;
+        }
+
+        .page-container {
+            max-width: 1250px;
+            padding-top: 32px;
+            padding-bottom: 50px;
+        }
+
+        .welcome-card {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            padding: 30px;
+            margin-bottom: 28px;
+            border-radius: 22px;
+            color: #fff;
+            background: linear-gradient(125deg, #312e81, #4f46e5, #818cf8);
+            box-shadow: 0 14px 35px rgba(79, 70, 229, .2);
+        }
+
+        .welcome-card::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            right: -65px;
+            top: -100px;
+            border: 35px solid rgba(255, 255, 255, .08);
+            border-radius: 50%;
+        }
+
+        .teacher-avatar {
+            width: 76px;
+            height: 76px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 22px;
+            color: #fff;
+            font-size: 36px;
+            background: rgba(255, 255, 255, .17);
+            border: 1px solid rgba(255, 255, 255, .24);
+        }
+
+        .welcome-card h1 {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 750;
+            margin-bottom: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .welcome-card p {
+            color: rgba(255, 255, 255, .85);
+            margin-bottom: 14px;
+        }
+
+        .class-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 13px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, .17);
+            font-weight: 600;
+        }
+
+        .section-card {
+            height: 100%;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, .04);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.15rem;
+            font-weight: 750;
+            margin-bottom: 8px;
+        }
+
+        .heading-icon {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            color: var(--primary);
+            background: #eef2ff;
+            font-size: 19px;
+        }
+
+        .section-description {
+            color: var(--muted);
+            font-size: .92rem;
+            margin-bottom: 20px;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 44px;
+            border-radius: 10px;
+            border-color: #dbe2ee;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 .2rem rgba(99, 102, 241, .13);
+        }
+
+        .btn {
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .student-section {
+            margin-top: 35px;
+        }
+
+        .student-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .student-section-header h2 {
+            font-size: 1.55rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .student-count {
+            color: var(--muted);
+        }
+
+        .search-box {
+            max-width: 340px;
+            width: 100%;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            top: 50%;
+            left: 14px;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .search-box input {
+            padding-left: 40px;
+        }
+
+        .student-card {
+            height: 100%;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, .045);
+            transition: transform .22s ease, box-shadow .22s ease;
+        }
+
+        .student-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 28px rgba(15, 23, 42, .09);
+        }
+
+        .student-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 20px 20px 0;
+        }
+
+        .student-avatar {
+            width: 53px;
+            height: 53px;
+            display: grid;
+            place-items: center;
+            border-radius: 16px;
+            background: #eef2ff;
+            color: var(--primary);
+            font-size: 27px;
+        }
+
+        .profile-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #ecfdf5;
+            color: #047857;
+            font-size: .78rem;
+            font-weight: 700;
+        }
+
+        .student-info {
+            padding: 18px 20px;
+        }
+
+        .student-info h3 {
+            font-size: 1.12rem;
+            font-weight: 750;
+            overflow-wrap: anywhere;
+            margin-bottom: 10px;
+        }
+
+        .register-number {
+            color: var(--muted);
+            font-size: .87rem;
+            overflow-wrap: anywhere;
+            margin-bottom: 12px;
+        }
+
+        .student-class {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 11px;
+            border-radius: 9px;
+            background: #f1f5f9;
+            color: #334155;
+            font-size: .87rem;
+            font-weight: 650;
+        }
+
+        .student-tools {
+            padding: 0 20px 18px;
+        }
+
+        .student-tools-title {
+            font-size: .92rem;
+            font-weight: 750;
+            margin: 0 0 10px;
+        }
+
+        .student-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .student-actions form {
+            margin: 0;
+        }
+
+        .marks-form {
+            margin: 0 20px 18px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: #f8fafc;
+        }
+
+        .marks-form h5 {
+            font-size: .97rem;
+            font-weight: 750;
+            margin-bottom: 14px;
+        }
+
+        .marks-form .form-label {
+            font-size: .83rem;
+            font-weight: 650;
+            margin-bottom: 5px;
+        }
+
+        .marks-form .form-control {
+            min-height: 40px;
+            margin-bottom: 12px;
+        }
+
+        .view-profile {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            width: calc(100% - 40px);
+            margin: 0 20px 20px;
+            padding: 11px;
+            border-radius: 10px;
+            background: #eef2ff;
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+        .view-profile:hover {
+            color: #fff;
+            background: var(--primary);
+        }
+
+        .empty-state {
+            padding: 42px 20px;
+            border: 1px dashed #cbd5e1;
+            border-radius: 18px;
+            background: #fff;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .empty-state i {
+            display: block;
+            margin-bottom: 12px;
+            color: #818cf8;
+            font-size: 42px;
+        }
+
+        .footer-text {
+            margin-top: 35px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: .85rem;
+        }
+
+        @media (max-width: 575.98px) {
+            .page-container {
+                padding-top: 20px;
+            }
+
+            .welcome-card {
+                align-items: flex-start;
+                padding: 22px 18px;
+                gap: 14px;
+            }
+
+            .teacher-avatar {
+                width: 54px;
+                height: 54px;
+                border-radius: 15px;
+                font-size: 27px;
+            }
+
+            .section-card {
+                padding: 19px;
+            }
+
+            .student-section-header {
+                align-items: stretch;
+            }
+
+            .search-box {
+                max-width: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
+
+    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
         <div class="container">
-
             <a class="navbar-brand fw-bold" href="/teacher/home">
-                <span class="logo-icon">🎓</span>
-                EduManage
+                <span class="logo-icon">🎓</span> EduManage
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#studentNavbar"
-                aria-controls="studentNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#teacherNavbar"
+                aria-controls="teacherNavbar" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="studentNavbar">
-
+            <div class="collapse navbar-collapse" id="teacherNavbar">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
-
                     <li class="nav-item">
-                        <a class="nav-link active" href="/teacher/home">
-                            Home
-                        </a>
+                        <a class="nav-link active" href="/teacher/home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/teacher/about">
-                            About
-                        </a>
+                        <a class="nav-link" href="/teacher/about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/teacher/dashboard">
-                            My Dashboard
-                        </a>
+                        <a class="nav-link" href="/teacher/dashboard">My Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/teacher/contact">Contact</a>
                     </li>
-
-                    <li class="nav-item ms-lg-3">
+                    <li class="nav-item ms-lg-3 my-2 my-lg-0">
                         <a href="/teacher/logout" class="btn btn-logout">
-                            Logout
+                            <i class="bi bi-box-arrow-right me-1"></i> Logout
                         </a>
                     </li>
-
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container">
-        <a href="/teacher/dashboard" class="p_link">
-            <div class="welcome-content">
-                <div class="teacher-avatar">
-                    <i class="bi bi-person-workspace"></i>
-                </div>
-                <div>
-                    <h1>Welcome, <%= teacher.name %>!</h1>
-                    <p class="ct_home">Manage your class and view student profiles.</p>
 
-                    <span class="class-badge">
-                        <i class="bi bi-book-fill"></i>
-                        Class: <%= teacher.class %>
-                    </span>
-                </div>
-        </a>
-    </div>
+    <main class="container page-container">
 
-    <div class="row g-4" id="studentList">
+        <!-- Welcome card -->
+        <section class="welcome-card">
+            <div class="teacher-avatar">
+                <i class="bi bi-person-workspace"></i>
+            </div>
 
-        <% students.forEach(student=> { %>
+            <div>
+                <h1>
+                    Welcome, <%= typeof teacher !== 'undefined' && teacher.name
+                        ? teacher.name : 'Teacher' %>!
+                </h1>
 
-            <div class="col-12 col-sm-6 col-lg-4 student-item"
-                data-search="<%= (student.name + ' ' + student.register_number).toLowerCase() %>">
+                <p class="mb-3">
+                    Manage your class, record annual marks, and view student profiles.
+                </p>
 
-                <a class="student-card" href="/teacher/student/<%= encodeURIComponent(student.register_number) %>">
+                <span class="class-badge">
+                    <i class="bi bi-book-fill"></i>
+                    Class:
+                    <%= typeof teacher !== 'undefined' && teacher.class
+                        ? teacher.class : 'Not assigned' %>
+                </span>
+            </div>
+        </section>
 
-                    <div class="card-top">
-                        <div class="student-avatar">
-                            <i class="bi bi-person-fill"></i>
-                        </div>
+        <!-- Teacher actions -->
+        <div class="row g-4">
 
-                        <span class="profile-status">
-                            <i class="bi bi-check-circle-fill"></i>
-                            Student
+            <!-- Add student -->
+            <div class="col-12 col-lg-6">
+                <section class="section-card">
+                    <h2 class="section-heading">
+                        <span class="heading-icon">
+                            <i class="bi bi-person-plus-fill"></i>
                         </span>
+                        Add a Student
+                    </h2>
+
+                    <p class="section-description">
+                        Enter a student's email to generate a registration number.
+                    </p>
+
+                    <form action="/teacher/student/invite" method="POST">
+                        <div class="mb-3">
+                            <label for="studentEmail" class="form-label">
+                                Student Email
+                            </label>
+
+                            <input type="email" id="studentEmail" name="email"
+                                class="form-control"
+                                placeholder="student@example.com" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-key-fill me-2"></i>
+                            Generate Registration Number
+                        </button>
+                    </form>
+
+                    <% if (typeof generatedRegisterNumber !== 'undefined' && generatedRegisterNumber) { %>
+                        <div class="alert alert-success mt-4 mb-0">
+                            <h5 class="alert-heading">
+                                <i class="bi bi-check-circle-fill me-1"></i>
+                                Invitation Created!
+                            </h5>
+
+                            <p class="mb-2">
+                                Email:
+                                <strong><%= typeof invitedEmail !== 'undefined' ? invitedEmail : '' %></strong>
+                            </p>
+
+                            <p class="mb-3">
+                                Registration Number:
+                                <strong id="generatedRegisterNumber"><%= generatedRegisterNumber %></strong>
+                            </p>
+
+                            <button type="button" id="copyRegisterNumber"
+                                class="btn btn-outline-success btn-sm"
+                                data-register-number="<%= generatedRegisterNumber %>">
+                                <i class="bi bi-clipboard me-1"></i>
+                                Copy Registration Number
+                            </button>
+
+                            <div id="copyMessage" class="small mt-2" aria-live="polite"></div>
+                        </div>
+                    <% } %>
+                </section>
+            </div>
+
+            <!-- Finalize annual results -->
+            <div class="col-12 col-lg-6">
+                <section class="section-card">
+                    <h2 class="section-heading">
+                        <span class="heading-icon">
+                            <i class="bi bi-mortarboard-fill"></i>
+                        </span>
+                        Finalize Annual Results
+                    </h2>
+
+                    <p class="section-description">
+                        Confirm all marks are entered before finalizing results.
+                        Students who pass may be promoted according to your server-side rules.
+                    </p>
+
+                    <form action="/teacher/annual-results/finalize" method="POST"
+                        onsubmit="return confirm('Are you sure you want to finalize these annual results? Please verify all marks before continuing.');">
+
+                        <label for="finalAcademicYear" class="form-label">
+                            Academic Year
+                        </label>
+
+                        <input type="text" id="finalAcademicYear"
+                            name="academic_year" class="form-control mb-3"
+                            placeholder="2026-2027"
+                            pattern="[0-9]{4}-[0-9]{4}"
+                            title="Enter the academic year in YYYY-YYYY format."
+                            required>
+
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-check2-circle me-2"></i>
+                            Finalize Results &amp; Promote Students
+                        </button>
+                    </form>
+
+                    <div class="small text-muted mt-3">
+                        <i class="bi bi-info-circle me-1"></i>
+                        This action depends on the annual-results route being implemented.
                     </div>
+                </section>
+            </div>
 
-                    <div class="student-info">
-                        <h3>
-                            <%= student.name %>
-                        </h3>
+        </div>
 
-                        <p class="register-number">
-                            <i class="bi bi-person-vcard"></i>
-                            <%= student.register_number %>
-                        </p>
+        <!-- Student list -->
+        <section class="student-section">
+            <div class="student-section-header">
+                <div>
+                    <h2><i class="bi bi-people-fill me-2"></i>My Students</h2>
+                    <div class="student-count">
+                        Students assigned to your class
+                    </div>
+                </div>
 
-                        <div class="student-class">
-                            <i class="bi bi-book-half"></i>
-                            Class <%= student.class %>
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="search" id="studentSearch"
+                        class="form-control"
+                        placeholder="Search name or register number..."
+                        aria-label="Search students">
+                </div>
+            </div>
+
+            <div class="row g-4" id="studentList">
+
+                <% if (typeof students !== 'undefined' && students.length > 0) { %>
+
+                    <% students.forEach(function(student) { %>
+                        <div class="col-12 col-sm-6 col-xl-4 student-item"
+                            data-search="<%= ((student.name || '') + ' ' + (student.register_number || '')).toLowerCase() %>">
+
+                            <article class="student-card">
+
+                                <div class="student-card-header">
+                                    <div class="student-avatar">
+                                        <i class="bi bi-person-fill"></i>
+                                    </div>
+
+                                    <span class="profile-status">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        Student
+                                    </span>
+                                </div>
+
+                                <div class="student-info">
+                                    <h3><%= student.name || 'Unnamed Student' %></h3>
+
+                                    <p class="register-number">
+                                        <i class="bi bi-person-vcard me-1"></i>
+                                        <%= student.register_number || 'No registration number' %>
+                                    </p>
+
+                                    <div class="student-class">
+                                        <i class="bi bi-book-half"></i>
+                                        Class <%= student.class || 'Not assigned' %>
+                                    </div>
+                                </div>
+
+                                <!-- Change class -->
+                                <div class="student-tools">
+                                    <p class="student-tools-title">
+                                        <i class="bi bi-arrow-up-down me-1"></i>
+                                        Class Management
+                                    </p>
+
+                                    <div class="student-actions">
+                                        <form
+                                            action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/class-change"
+                                            method="POST"
+                                            onsubmit="return confirm('Promote this student to the next class?');">
+
+                                            <input type="hidden" name="direction" value="up">
+
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="bi bi-arrow-up-circle me-1"></i>
+                                                +1 Class
+                                            </button>
+                                        </form>
+
+                                        <form
+                                            action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/class-change"
+                                            method="POST"
+                                            onsubmit="return confirm('Move this student to the previous class?');">
+
+                                            <input type="hidden" name="direction" value="down">
+
+                                            <button type="submit" class="btn btn-warning btn-sm">
+                                                <i class="bi bi-arrow-down-circle me-1"></i>
+                                                -1 Class
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Annual marks form -->
+                                <form
+                                    action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/marks"
+                                    method="POST"
+                                    class="marks-form marks-entry-form">
+
+                                    <h5>
+                                        <i class="bi bi-journal-check me-1"></i>
+                                        Annual Examination
+                                    </h5>
+
+                                    <label class="form-label">Academic Year</label>
+                                    <input type="text" name="academic_year"
+                                        class="form-control"
+                                        placeholder="2026-2027"
+                                        pattern="[0-9]{4}-[0-9]{4}"
+                                        title="Enter the academic year in YYYY-YYYY format."
+                                        required>
+
+                                    <label class="form-label">Marks Obtained</label>
+                                    <input type="number" name="marks_obtained"
+                                        class="form-control marks-obtained"
+                                        min="0" step="0.01"
+                                        placeholder="e.g. 425"
+                                        required>
+
+                                    <label class="form-label">Total Marks</label>
+                                    <input type="number" name="total_marks"
+                                        class="form-control total-marks"
+                                        min="0.01" step="0.01"
+                                        placeholder="e.g. 500"
+                                        required>
+
+                                    <button type="submit" class="btn btn-primary btn-sm w-100">
+                                        <i class="bi bi-save me-1"></i>
+                                        Save Annual Marks
+                                    </button>
+                                </form>
+
+                                <!-- Edit and delete -->
+                                <div class="student-tools">
+                                    <p class="student-tools-title">
+                                        <i class="bi bi-gear-fill me-1"></i>
+                                        Student Actions
+                                    </p>
+
+                                    <div class="student-actions">
+                                        <a class="btn btn-outline-primary btn-sm"
+                                            href="/teacher/student/<%= encodeURIComponent(student.register_number) %>/edit">
+                                            <i class="bi bi-pencil-square me-1"></i>
+                                            Edit
+                                        </a>
+
+                                        <form
+                                            action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/delete"
+                                            method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this student? This action cannot be undone.');">
+
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                <i class="bi bi-trash me-1"></i>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- A real link to the student dashboard -->
+                                <a class="view-profile"
+                                    href="/teacher/student/<%= encodeURIComponent(student.register_number) %>">
+                                    View Student Dashboard
+                                    <i class="bi bi-arrow-right-circle-fill"></i>
+                                </a>
+
+                            </article>
+                        </div>
+                    <% }); %>
+
+                <% } else { %>
+
+                    <div class="col-12">
+                        <div class="empty-state">
+                            <i class="bi bi-people"></i>
+                            <h4 class="fw-bold text-dark">No Students Found</h4>
+                            <p class="mb-0">
+                                There are currently no students in your assigned class.
+                            </p>
                         </div>
                     </div>
 
-                    <div class="student-actions">
+                <% } %>
 
-                        <a class="btn btn-primary btn-sm"
-                            href="/teacher/student/<%= encodeURIComponent(student.register_number) %>/edit">
-                            <i class="bi bi-pencil-square"></i>
-                            Edit
-                        </a>
-
-                        <form action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/delete"
-                            method="POST"
-                            onsubmit="return confirm('Are you sure you want to delete this student? This action cannot be undone.');">
-
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="bi bi-trash"></i>
-                                Delete
-                            </button>
-                        </form>
-
+                <div class="col-12 d-none" id="noSearchResults">
+                    <div class="empty-state">
+                        <i class="bi bi-search"></i>
+                        <h4 class="fw-bold text-dark">No Matching Students</h4>
+                        <p class="mb-0">
+                            Try searching with a different name or registration number.
+                        </p>
                     </div>
-
-                    <div class="view-profile">
-                        View Student Dashboard
-                        <i class="bi bi-arrow-right-circle-fill"></i>
-                    </div>
-
-                </a>
-            </div>
-
-            <% }) %>
-
-            <% if (students.length === 0) { %>
-            <div class="col-12">
-                <div class="alert alert-info text-center">
-                    No students found in your assigned class.
                 </div>
+
             </div>
-        <% } %>
+        </section>
 
-    </div>
+        <footer class="footer-text">
+            © <%= new Date().getFullYear() %> EduManage · Student Management System
+        </footer>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Search students by name or registration number.
+        const studentSearch = document.getElementById("studentSearch");
+        const studentItems = document.querySelectorAll(".student-item");
+        const noSearchResults = document.getElementById("noSearchResults");
+
+        if (studentSearch) {
+            studentSearch.addEventListener("input", function () {
+                const query = this.value.trim().toLowerCase();
+                let visibleCount = 0;
+
+                studentItems.forEach(function (item) {
+                    const searchableText = item.dataset.search || "";
+                    const matches = searchableText.includes(query);
+
+                    item.classList.toggle("d-none", !matches);
+
+                    if (matches) visibleCount++;
+                });
+
+                if (noSearchResults) {
+                    noSearchResults.classList.toggle(
+                        "d-none",
+                        query.length === 0 || visibleCount > 0
+                    );
+                }
+            });
+        }
+
+        // Copy a generated registration number.
+        const copyButton = document.getElementById("copyRegisterNumber");
+        const copyMessage = document.getElementById("copyMessage");
+
+        if (copyButton) {
+            copyButton.addEventListener("click", async function () {
+                const registerNumber = this.dataset.registerNumber;
+
+                try {
+                    await navigator.clipboard.writeText(registerNumber);
+                    copyMessage.textContent = "Registration number copied!";
+                } catch (error) {
+                    copyMessage.textContent =
+                        "Copy unavailable. Please select and copy the registration number manually.";
+                }
+            });
+        }
+
+        // Prevent entering marks greater than the total marks.
+        document.querySelectorAll(".marks-entry-form").forEach(function (form) {
+            form.addEventListener("submit", function (event) {
+                const obtained = Number(
+                    form.querySelector(".marks-obtained").value
+                );
+
+                const total = Number(
+                    form.querySelector(".total-marks").value
+                );
+
+                if (total <= 0 || obtained < 0 || obtained > total) {
+                    event.preventDefault();
+                    alert("Marks obtained must be between 0 and the total marks.");
+                }
+            });
+        });
+    </script>
+
 </body>
-
 </html>

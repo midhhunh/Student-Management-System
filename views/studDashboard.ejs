@@ -4,26 +4,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-        <link href="/css/studDashboard.css" rel="stylesheet">
+
+    <title>My Dashboard | EduManage</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+
+    <link href="/css/studDashboard.css" rel="stylesheet">
 </head>
 
 <body>
-    
-    <h1>Student Dashboard</h1>
 
-    <h3>Name: <%= student.name %></h3>
-    <p>Register Number: <%= student.register_number %></p>
-    <p>Email: <%= student.email %></p>
-    <p>Mobile: <%= student.mobile %></p>
-    <p>Class: <%= student.class %></p>
-    <p>Aadhaar: <%= student.aadhaar %></p>
-    <p>Address: <%= student.address %></p>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+        <div class="container">
 
-    
+            <a class="navbar-brand fw-bold" href="/students/home">
+                🎓 EduManage
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#dashboardNavbar"
+                aria-controls="dashboardNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="dashboardNavbar">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/students/home">
+                            <i class="bi bi-house-door"></i> Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/students/dashboard">
+                            <i class="bi bi-person-vcard"></i> My Dashboard
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a href="/students/logout" class="btn btn-logout">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container dashboard-container">
+
+        <!-- Page Heading -->
+        <div class="page-heading">
+            <div>
+                <p class="eyebrow">STUDENT PORTAL</p>
+                <h1>My Dashboard</h1>
+                <p class="heading-description">
+                    View your personal information and academic details.
+                </p>
+            </div>
+
+            <a href="/students/home" class="btn btn-home">
+                <i class="bi bi-arrow-left"></i> Back to Home
+            </a>
+        </div>
+
+        <!-- Profile Header -->
+        <section class="profile-banner">
+
+            <div class="avatar">
+                <i class="bi bi-person-fill"></i>
+            </div>
+
+            <div class="profile-heading">
+                <span class="profile-label">STUDENT PROFILE</span>
+                <h2><%= student.name %></h2>
+                <p>
+                    <i class="bi bi-person-vcard"></i>
+                    Register Number:
+                    <strong><%= student.register_number %></strong>
+                </p>
+            </div>
+
+            <div class="class-badge">
+                <i class="bi bi-mortarboard-fill"></i>
+                <span>Class</span>
+                <strong><%= student.class || "Not assigned" %></strong>
+            </div>
+
+        </section>
+
+        <!-- Details -->
+        <section class="details-section">
+
+            <div class="section-heading">
+                <div class="heading-icon">
+                    <i class="bi bi-person-lines-fill"></i>
+                </div>
+
+                <div>
+                    <h3>Personal Information</h3>
+                    <p>Your registered student details</p>
+                </div>
+            </div>
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="detail-card">
+                        <div class="detail-icon purple">
+                            <i class="bi bi-person"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <span>Full Name</span>
+                            <strong><%= student.name || "Not provided" %></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-card">
+                        <div class="detail-icon blue">
+                            <i class="bi bi-card-text"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <span>Register Number</span>
+                            <strong><%= student.register_number || "Not provided" %></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-card">
+                        <div class="detail-icon green">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <span>Email Address</span>
+                            <strong class="breakable">
+                                <%= student.email || "Not provided" %>
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-card">
+                        <div class="detail-icon orange">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <span>Mobile Number</span>
+                            <strong><%= student.mobile || "Not provided" %></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-card">
+                        <div class="detail-icon pink">
+                            <i class="bi bi-mortarboard"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <span>Current Class</span>
+                            <strong><%= student.class || "Not assigned" %></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-card">
+                        <div class="detail-icon teal">
+                            <i class="bi bi-person-vcard"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <span>Aadhaar Number</span>
+                            <strong><%= student.aadhaar || "Not provided" %></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="detail-card address-card">
+                        <div class="detail-icon red">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <span>Residential Address</span>
+                            <strong><%= student.address || "Not provided" %></strong>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="dashboard-note">
+            <i class="bi bi-shield-check"></i>
+            Your profile information is displayed from your registered student record.
+        </div>
+
+    </main>
+
+    <footer class="dashboard-footer">
+        &copy; <%= new Date().getFullYear() %> EduManage.
+        Student Management System.
+    </footer>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
 </body>
-
 </html>

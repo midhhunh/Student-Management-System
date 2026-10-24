@@ -1,32 +1,44 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+
+    <title>Admin Dashboard | EduManage</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+
     <link href="/css/adminhome.css" rel="stylesheet">
     <link href="/css/adminnav.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        defer></script>
 </head>
 
 <body>
-    <!-- Navbar -->
+
+    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
-        <div class="container-fluid px-4">
+        <div class="container-fluid px-3 px-lg-4">
 
             <a class="navbar-brand fw-bold" href="/admin/home">
-                <span class="logo-icon">🎓</span>
+                <span class="logo-icon"><i class="bi bi-mortarboard-fill"></i></span>
                 EduManage
                 <span class="admin-badge">ADMIN</span>
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar"
-                aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#adminNavbar"
+                aria-controls="adminNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -35,27 +47,21 @@
 
                     <li class="nav-item">
                         <a class="nav-link active" href="/admin/home">
-                            <i class="bi bi-house-door-fill"></i>
-                            Home
+                            <i class="bi bi-house-door-fill me-1"></i> Home
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/about">
-                            About
-                        </a>
+                        <a class="nav-link" href="/admin/about">About</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/contact">
-                            Contact
-                        </a>
+                        <a class="nav-link" href="/admin/contact">Contact</a>
                     </li>
 
-                    <li class="nav-item ms-lg-3">
+                    <li class="nav-item ms-lg-3 my-2 my-lg-0">
                         <a href="/admin/logout" class="btn btn-logout">
-                            <i class="bi bi-box-arrow-right"></i>
-                            Logout
+                            <i class="bi bi-box-arrow-right me-1"></i> Logout
                         </a>
                     </li>
 
@@ -66,13 +72,82 @@
 
     <main class="dashboard-container">
 
-        <!-- Students Table -->
+        <!-- Page heading -->
+        <section class="dashboard-heading">
+            <div>
+                <span class="eyebrow">ADMINISTRATION</span>
+                <h1>Admin Dashboard</h1>
+                <p>Manage students, teachers and class responsibilities.</p>
+            </div>
+
+            <div class="dashboard-date">
+                <i class="bi bi-shield-check"></i>
+                Administration Panel
+            </div>
+        </section>
+
+        <!-- Statistics -->
+        <section class="stats-grid">
+
+            <article class="stat-card student-stat">
+                <div class="stat-icon">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div>
+                    <p>Total Students</p>
+                    <h2><%= students ? students.length : 0 %></h2>
+                </div>
+            </article>
+
+            <article class="stat-card teacher-stat">
+                <div class="stat-icon">
+                    <i class="bi bi-person-workspace"></i>
+                </div>
+                <div>
+                    <p>Total Teachers</p>
+                    <h2><%= teachers ? teachers.length : 0 %></h2>
+                </div>
+            </article>
+
+            <article class="stat-card class-stat">
+                <div class="stat-icon">
+                    <i class="bi bi-building"></i>
+                </div>
+                <div>
+                    <p>School Classes</p>
+                    <h2>12</h2>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- Students -->
         <section class="table-card">
-            <h4 class="mb-3">All Students</h4>
+
+            <div class="section-heading">
+                <div>
+                    <h2><i class="bi bi-mortarboard me-2"></i>All Students</h2>
+                    <p>View and manage registered student records.</p>
+                </div>
+
+                <span class="record-count">
+                    <%= students ? students.length : 0 %> students
+                </span>
+            </div>
+
+            <div class="table-toolbar">
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="search"
+                        id="studentSearch"
+                        class="form-control"
+                        placeholder="Search students..."
+                        aria-label="Search students">
+                </div>
+            </div>
 
             <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-
+                <table class="table data-table align-middle" id="studentsTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -82,90 +157,158 @@
                             <th>Mobile</th>
                             <th>Class</th>
                             <th>Address</th>
+                            <th class="action-column">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <% if (students && students.length> 0) { %>
+                        <% if (students && students.length > 0) { %>
 
-                            <% students.forEach(student=> { %>
+                            <% students.forEach(student => { %>
 
-                                <tr class="clickable-row" tabindex="0" role="link"
-                                    onclick="window.location.href='/admin/student/<%= encodeURIComponent(student.register_number) %>'"
-                                    onkeydown="if(event.key === 'Enter') window.location.href='/admin/student/<%= encodeURIComponent(student.register_number) %>'">
+                                <tr>
+                                    <td><%= student.id %></td>
+
                                     <td>
-                                        <%= student.id %>
-                                    </td>
-                                    <td>
-                                        <%= student.name %>
-                                    </td>
-                                    <td>
-                                        <%= student.register_number %>
-                                    </td>
-                                    <td>
-                                        <%= student.email %>
-                                    </td>
-                                    <td>
-                                        <%= student.mobile %>
-                                    </td>
-                                    <td>
-                                        <%= student.class %>
-                                    </td>
-                                    <td>
-                                        <%= student.address %>
-                                    </td>
-                                    <td>
-                                        <a href="/admin/student/<%= encodeURIComponent(student.register_number) %>/edit"
-                                            class="btn btn-warning btn-sm">
-                                            Edit
+                                        <a class="profile-link"
+                                            href="/admin/student/<%= encodeURIComponent(student.register_number) %>">
+                                            <i class="bi bi-person-circle me-1"></i>
+                                            <%= student.name %>
                                         </a>
+                                    </td>
 
-                                        <form
-                                            action="/admin/student/<%= encodeURIComponent(student.register_number) %>/delete"
-                                            method="POST" style="display:inline;"
-                                            onsubmit="return confirm('Are you sure you want to delete this student?');">
+                                    <td>
+                                        <span class="id-label">
+                                            <%= student.register_number %>
+                                        </span>
+                                    </td>
 
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                Delete
-                                            </button>
-                                        </form>
+                                    <td class="email-cell"><%= student.email %></td>
+                                    <td><%= student.mobile || '—' %></td>
+
+                                    <td>
+                                        <span class="class-badge">
+                                            Class <%= student.class || 'Unassigned' %>
+                                        </span>
+                                    </td>
+
+                                    <td class="address-cell">
+                                        <%= student.address || '—' %>
+                                    </td>
+
+                                    <td class="action-column">
+                                        <div class="action-buttons">
+
+                                            <a href="/admin/student/<%= encodeURIComponent(student.register_number) %>/edit"
+                                                class="btn btn-edit"
+                                                title="Edit student"
+                                                aria-label="Edit student">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+
+                                            <form
+                                                action="/admin/student/<%= encodeURIComponent(student.register_number) %>/promote"
+                                                method="POST"
+                                                onsubmit="return confirm('Promote <%= String(student.name).replace(/'/g, '\\&#39;') %> to the next class?');">
+
+                                                <button type="submit"
+                                                    class="btn btn-promote"
+                                                    title="Promote student"
+                                                    aria-label="Promote student"
+                                                    <%= Number(student.class) >= 12 ? 'disabled' : '' %>>
+                                                    <i class="bi bi-arrow-up-circle"></i>
+                                                </button>
+                                            </form>
+
+                                            <form
+                                                action="/admin/student/<%= encodeURIComponent(student.register_number) %>/delete"
+                                                method="POST"
+                                                onsubmit="return confirm('Are you sure you want to permanently delete this student?');">
+
+                                                <button type="submit"
+                                                    class="btn btn-delete"
+                                                    title="Delete student"
+                                                    aria-label="Delete student">
+                                                    <i class="bi bi-trash3"></i>
+                                                </button>
+                                            </form>
+
+                                        </div>
                                     </td>
                                 </tr>
 
-                                <% }) %>
+                            <% }); %>
 
-                                    <% } else { %>
+                        <% } else { %>
 
-                                        <tr>
-                                            <td colspan="8" class="text-center">
-                                                No students found
-                                            </td>
-                                        </tr>
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i class="bi bi-person-x"></i>
+                                    <strong>No students found</strong>
+                                    <span>Student records will appear here after registration.</span>
+                                </td>
+                            </tr>
 
-                                        <% } %>
+                        <% } %>
                     </tbody>
-
                 </table>
             </div>
         </section>
 
-        <!-- Teachers Table -->
+        <!-- Teachers -->
         <section class="table-card">
-            <h4 class="mb-3">All Teachers</h4>
 
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="section-heading">
+                <div>
+                    <h2><i class="bi bi-person-workspace me-2"></i>All Teachers</h2>
+                    <p>Manage teacher profiles and class responsibilities.</p>
+                </div>
 
-                <form action="/admin/add-teacher" method="POST" class="d-flex gap-2">
-                    <input type="email" name="email" class="form-control" placeholder="Teacher email" required>
+                <span class="record-count">
+                    <%= teachers ? teachers.length : 0 %> teachers
+                </span>
+            </div>
 
-                    <button type="submit" class="btn btn-primary">
-                        + Add Teacher
+            <!-- Generate teacher ID -->
+            <div class="add-teacher-panel">
+                <div class="add-teacher-description">
+                    <i class="bi bi-person-plus-fill"></i>
+                    <div>
+                        <strong>Generate Teacher ID</strong>
+                        <p>Enter an email address to create a teacher ID.</p>
+                    </div>
+                </div>
+
+                <form action="/admin/add-teacher" method="POST"
+                    class="add-teacher-form">
+
+                    <input type="email"
+                        name="email"
+                        class="form-control"
+                        placeholder="Enter teacher email"
+                        aria-label="Teacher email"
+                        maxlength="254"
+                        required>
+
+                    <button type="submit" class="btn btn-add-teacher">
+                        <i class="bi bi-plus-lg me-1"></i> Generate ID
                     </button>
                 </form>
             </div>
 
+            <div class="table-toolbar">
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="search"
+                        id="teacherSearch"
+                        class="form-control"
+                        placeholder="Search teachers..."
+                        aria-label="Search teachers">
+                </div>
+            </div>
+
             <div class="table-responsive">
-                <table class="table table-bordered table-hover">
+                <table class="table data-table align-middle" id="teachersTable">
 
                     <thead>
                         <tr>
@@ -176,112 +319,148 @@
                             <th>Mobile</th>
                             <th>Class Responsibility</th>
                             <th>Address</th>
+                            <th class="action-column">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <% if (teachers && teachers.length> 0) { %>
+                        <% if (teachers && teachers.length > 0) { %>
 
-                            <% teachers.forEach(teacher=> { %>
+                            <% teachers.forEach(teacher => { %>
 
-                                <tr class="clickable-row" tabindex="0" role="link"
-                                    onclick="window.location.href='/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>'"
-                                    onkeydown="if(event.key === 'Enter') window.location.href='/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>'">
-
-                                    <td>
-                                        <%= teacher.id %>
-                                    </td>
+                                <tr>
+                                    <td><%= teacher.id %></td>
 
                                     <td>
                                         <a class="profile-link"
-                                            href="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>"
-                                            onclick="event.stopPropagation()">
+                                            href="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>">
+                                            <i class="bi bi-person-badge me-1"></i>
                                             <%= teacher.name %>
-                                                <i class="bi bi-box-arrow-up-right"></i>
                                         </a>
                                     </td>
 
                                     <td>
-                                        <%= teacher.teacher_id %>
-                                    </td>
-                                    <td>
-                                        <%= teacher.email %>
-                                    </td>
-                                    <td>
-                                        <%= teacher.mobile %>
+                                        <span class="id-label">
+                                            <%= teacher.teacher_id %>
+                                        </span>
                                     </td>
 
-                                    <td>
-                                        <!-- Prevent clicking the form from opening the profile -->
-                                        <form class="d-flex gap-2 align-items-center class-form" method="post"
-                                            action="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>/assign-class"
-                                            onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">
+                                    <td class="email-cell"><%= teacher.email %></td>
+                                    <td><%= teacher.mobile || '—' %></td>
 
-                                            <select class="form-select form-select-sm" name="class"
+                                    <td>
+                                        <form
+                                            class="class-form"
+                                            method="POST"
+                                            action="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>/assign-class">
+
+                                            <select class="form-select form-select-sm"
+                                                name="class"
                                                 aria-label="Class responsibility for <%= teacher.name %>">
-                                                <option value="">
+
+                                                <option value=""
+                                                    <%= !teacher.class ? 'selected' : '' %>>
                                                     No class assigned
                                                 </option>
 
-                                                <% for (let classNumber=1; classNumber <=12; classNumber++) { %>
+                                                <% for (let classNumber = 1; classNumber <= 12; classNumber++) { %>
 
-                                                    <option value="<%= classNumber %>" <%=String(teacher.class || ''
-                                                        ).trim()===String(classNumber) ? 'selected' : '' %>
-                                                        >
+                                                    <option value="<%= classNumber %>"
+                                                        <%= String(teacher.class || '').trim() === String(classNumber) ? 'selected' : '' %>>
                                                         Class <%= classNumber %>
                                                     </option>
 
-                                                    <% } %>
+                                                <% } %>
+
                                             </select>
 
-                                            <button type="submit" class="btn btn-sm btn-primary text-nowrap">
-                                                Save
-                                            </button>
-
-                                        </form>
-                                    </td>
-
-                                    <td>
-                                        <%= teacher.address %>
-                                    </td>
-                                    <td>
-                                        <a href="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>/edit"
-                                            class="btn btn-warning btn-sm">
-                                            Edit
-                                        </a>
-
-                                        <form
-                                            action="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>/delete"
-                                            method="POST" style="display:inline;"
-                                            onsubmit="return confirm('Are you sure you want to delete this Teacher?');">
-
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                Delete
+                                            <button type="submit"
+                                                class="btn btn-save"
+                                                title="Save class responsibility"
+                                                aria-label="Save class responsibility">
+                                                <i class="bi bi-check-lg"></i>
                                             </button>
                                         </form>
                                     </td>
 
+                                    <td class="address-cell">
+                                        <%= teacher.address || '—' %>
+                                    </td>
+
+                                    <td class="action-column">
+                                        <div class="action-buttons">
+
+                                            <a href="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>/edit"
+                                                class="btn btn-edit"
+                                                title="Edit teacher"
+                                                aria-label="Edit teacher">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+
+                                            <form
+                                                action="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>/delete"
+                                                method="POST"
+                                                onsubmit="return confirm('Are you sure you want to permanently delete this teacher?');">
+
+                                                <button type="submit"
+                                                    class="btn btn-delete"
+                                                    title="Delete teacher"
+                                                    aria-label="Delete teacher">
+                                                    <i class="bi bi-trash3"></i>
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </td>
                                 </tr>
 
-                                <% }) %>
+                            <% }); %>
 
-                                    <% } else { %>
+                        <% } else { %>
 
-                                        <tr>
-                                            <td colspan="8" class="text-center">
-                                                No teachers found
-                                            </td>
-                                        </tr>
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i class="bi bi-person-workspace"></i>
+                                    <strong>No teachers found</strong>
+                                    <span>Registered teachers will appear here.</span>
+                                </td>
+                            </tr>
 
-                                        <% } %>
+                        <% } %>
                     </tbody>
-
                 </table>
             </div>
         </section>
 
+        <footer class="dashboard-footer">
+            <span>© <%= new Date().getFullYear() %> EduManage</span>
+            <span>Student Management System</span>
+        </footer>
+
     </main>
 
-</body>
+    <!-- Search functionality -->
+    <script>
+        function addTableSearch(inputId, tableId) {
+            const searchInput = document.getElementById(inputId);
+            const table = document.getElementById(tableId);
 
+            if (!searchInput || !table) return;
+
+            searchInput.addEventListener("input", function () {
+                const searchText = this.value.toLowerCase().trim();
+                const rows = table.querySelectorAll("tbody tr");
+
+                rows.forEach(function (row) {
+                    const rowText = row.innerText.toLowerCase();
+                    row.style.display = rowText.includes(searchText) ? "" : "none";
+                });
+            });
+        }
+
+        addTableSearch("studentSearch", "studentsTable");
+        addTableSearch("teacherSearch", "teachersTable");
+    </script>
+
+</body>
 </html>
