@@ -28,6 +28,10 @@ app.get("/about",(req,res)=>{
     res.render("about.ejs")
 })
 
+app.get("/",(req,res)=>{
+    res.render("home.ejs")
+})
+
 let port=1917;
 app.listen(port,(err)=>{
     if(err){

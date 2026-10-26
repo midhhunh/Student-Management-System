@@ -309,7 +309,7 @@ router.post("/login", (req, res) => {
                     );
                 }
 
-                return res.redirect("/students/home");
+                return res.redirect("/students/index");
             });
         });
     });
@@ -318,7 +318,7 @@ router.post("/login", (req, res) => {
 // ------------------------------------
 // STUDENT HOME
 // ------------------------------------
-router.get("/home", requireStudent, (req, res) => {
+router.get("/index", requireStudent, (req, res) => {
     const sql = `
         SELECT *
         FROM student
@@ -351,31 +351,58 @@ router.get("/home", requireStudent, (req, res) => {
 // STUDENT DASHBOARD
 // ------------------------------------
 router.get("/dashboard", requireStudent, (req, res) => {
-    const sql = `
+    const studentSql = `
         SELECT *
         FROM student
         WHERE register_number = ?
         LIMIT 1
     `;
 
-    db.query(sql, [req.session.studid], (err, result) => {
+    db.query(studentSql, [req.session.studid], (err, studentRows) => {
         if (err) {
             console.error("Student dashboard error:", err);
-
-            return res.status(500).send(
-                "Unable to load the student dashboard."
-            );
+            return res.status(500).send("Unable to load student dashboard.");
         }
 
-        if (!result || result.length === 0) {
+        if (!studentRows || studentRows.length === 0) {
             return req.session.destroy(() => {
                 res.redirect("/students/login");
             });
         }
 
-        return res.render("studDashboard.ejs", {
-            student: result[0]
-        });
+        const student = studentRows[0];
+
+        const resultsSql = `
+            SELECT
+                academic_year,
+                class_at_exam,
+                marks,
+                total_marks,
+                status,
+                finalized
+            FROM annual_results
+            WHERE register_number = ?
+              AND finalized = 1
+            ORDER BY academic_year DESC
+        `;
+
+        db.query(
+            resultsSql,
+            [student.register_number],
+            (resultsErr, results) => {
+                if (resultsErr) {
+                    console.error("Annual results error:", resultsErr);
+                    return res.status(500).send(
+                        "Unable to load annual examination results."
+                    );
+                }
+
+                return res.render("studDashboard.ejs", {
+                    student: student,
+                    results: results || []
+                });
+            }
+        );
     });
 });
 

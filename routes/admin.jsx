@@ -59,7 +59,7 @@ router.post("/login", (req, res) => {
                 );
             }
 
-            res.redirect("/admin/home");
+            res.redirect("/admin/index");
         });
     }
 
@@ -83,7 +83,7 @@ router.use((req, res, next) => {
 // ADMIN HOME — FETCH STUDENTS AND TEACHERS
 // --------------------------------------------------
 
-router.get("/home", (req, res) => {
+router.get("/index", (req, res) => {
     const studentSql = `
         SELECT *
         FROM student
@@ -199,7 +199,7 @@ router.post("/teacher/:teacher_id/assign-class", (req, res) => {
             return res.status(404).send("Teacher not found.");
         }
 
-        res.redirect("/admin/home");
+        res.redirect("/admin/index");
     });
 });
 
@@ -408,12 +408,12 @@ router.post("/student/:register_number/edit", (req, res) => {
                             );
                         }
 
-                        res.redirect("/admin/home");
+                        res.redirect("/admin/index");
                     }
                 );
             }
 
-            res.redirect("/admin/home");
+            res.redirect("/admin/index");
         }
     );
 });
@@ -439,7 +439,7 @@ router.post("/student/:register_number/delete", (req, res) => {
             return res.status(404).send("Student not found.");
         }
 
-        res.redirect("/admin/home");
+        res.redirect("/admin/index");
     });
 });
 
@@ -554,12 +554,12 @@ router.post("/teacher/:teacher_id/edit", (req, res) => {
                             );
                         }
 
-                        res.redirect("/admin/home");
+                        res.redirect("/admin/index");
                     }
                 );
             }
 
-            res.redirect("/admin/home");
+            res.redirect("/admin/index");
         }
     );
 });
@@ -589,7 +589,7 @@ router.post("/teacher/:teacher_id/delete", (req, res) => {
             return res.status(404).send("Teacher not found.");
         }
 
-        res.redirect("/admin/home");
+        res.redirect("/admin/index");
     });
 });
 

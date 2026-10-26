@@ -150,7 +150,7 @@ router.post("/login", (req, res) => {
 
         req.session.teacher_id = result[0].teacher_id;
 
-        return res.redirect("/teacher/home");
+        return res.redirect("/teacher/index");
     });
 });
 
@@ -158,7 +158,7 @@ router.post("/login", (req, res) => {
 // TEACHER HOME
 // ==============================
 
-router.get("/home", (req, res) => {
+router.get("/index", (req, res) => {
     if (!req.session.teacher_id) {
         return res.redirect("/teacher/login");
     }
@@ -224,7 +224,7 @@ router.get("/home", (req, res) => {
             return res.render("ClassTeacherHome.ejs", {
                 teacher,
                 students,
-                showStudents: true,         
+                showStudents: true,
                 generatedRegisterNumber,
                 invitedEmail
                 // issuedRegisterNumber: req.session.issuedRegisterNumber || null,
@@ -378,7 +378,7 @@ router.post("/student/:register_number/edit", (req, res) => {
                     );
                 }
 
-                return res.redirect("/teacher/home");
+                return res.redirect("/teacher/index");
             }
         );
     });
@@ -439,7 +439,7 @@ router.post("/student/:register_number/delete", (req, res) => {
                     );
                 }
 
-                return res.redirect("/teacher/home");
+                return res.redirect("/teacher/index");
             }
         );
     });
@@ -595,7 +595,7 @@ router.post("/student/invite", (req, res) => {
                     req.session.generatedRegisterNumber = registerNumber;
                     req.session.invitedEmail = email;
 
-                    return res.redirect("/teacher/home");
+                    return res.redirect("/teacher/index");
                 }
             );
         }
@@ -665,7 +665,7 @@ router.post("/student/:register_number/change-class", (req, res) => {
                         );
                     }
 
-                    return res.redirect("/teacher/home");
+                    return res.redirect("/teacher/index");
                 }
             );
         }
@@ -763,7 +763,7 @@ router.post("/student/:register_number/marks", (req, res) => {
                                 );
                             }
 
-                            return res.redirect("/teacher/home");
+                            return res.redirect("/teacher/index");
                         }
                     );
                 }
@@ -772,105 +772,7 @@ router.post("/student/:register_number/marks", (req, res) => {
     );
 });
 
-
-//finalize
-// router.post("/results/finalize", (req, res) => {
-//     if (!req.session.teacher_id) {
-//         return res.redirect("/teacher/login");
-//     }
-
-//     const academicYear = String(req.body.academic_year || "").trim();
-
-//     if (!/^\d{4}-\d{4}$/.test(academicYear)) {
-//         return res.status(400).send("Invalid academic year.");
-//     }
-
-//     db.query(
-//         "SELECT class FROM teacher WHERE teacher_id = ?",
-//         [req.session.teacher_id],
-//         (err, teachers) => {
-//             if (err) return res.status(500).send("Database error.");
-
-//             if (!teachers.length || !teachers[0].class) {
-//                 return res.status(403).send("No class assigned.");
-//             }
-
-//             const assignedClass = Number(teachers[0].class);
-
-//             if (!Number.isInteger(assignedClass) ||
-//                 assignedClass < 1 || assignedClass > 12) {
-//                 return res.status(400).send("Invalid assigned class.");
-//             }
-
-// Mark the assigned class's results as finalized.
-// const finalizeSql = `
-//     UPDATE annual_results ar
-//     JOIN student s
-//       ON s.register_number = ar.register_number
-//     SET ar.finalized = 1
-//     WHERE ar.academic_year = ?
-//       AND ar.class_at_exam = ?
-//       AND ar.finalized = 0
-//       AND CAST(s.class AS UNSIGNED) = ?
-// `;
-
-// db.query(
-//     finalizeSql,
-//     [academicYear, assignedClass, assignedClass],
-//     (finalizeErr, result) => {
-//         if (finalizeErr) {
-//             console.error(finalizeErr);
-//             return res.status(500).send(
-//                 "Unable to finalize results."
-//             );
-//         }
-
-//         if (result.affectedRows === 0) {
-//             return res.status(400).send(
-//                 "No unfinalized results found for this class and year."
-//             );
-//         }
-
-// Promote only students who passed.
-// Class 12 students remain in Class 12.
-//                     const promoteSql = `
-//                         UPDATE student s
-//                         JOIN annual_results ar
-//                           ON ar.register_number = s.register_number
-//                         SET s.class = CAST(s.class AS UNSIGNED) + 1
-//                         WHERE ar.academic_year = ?
-//                           AND ar.class_at_exam = ?
-//                           AND ar.finalized = 1
-//                           AND ar.status = 'Pass'
-//                           AND CAST(s.class AS UNSIGNED) = ?
-//                           AND CAST(s.class AS UNSIGNED) < 12
-//                     `;
-
-//                     db.query(
-//                         promoteSql,
-//                         [academicYear, assignedClass, assignedClass],
-//                         (promoteErr, promoted) => {
-//                             if (promoteErr) {
-//                                 console.error(promoteErr);
-//                                 return res.status(500).send(
-//                                     "Results were finalized, but promotion failed. " +
-//                                     "Please contact the administrator."
-//                                 );
-//                             }
-
-//                             return res.send(
-//                                 `Results finalized. ${promoted.affectedRows} ` +
-//                                 `student(s) promoted. Failed students remain ` +
-//                                 `in their current class.`
-//                             );
-//                         }
-//                     );
-//                 }
-//             );
-//         }
-//     );
-// });
-
+//finalizing
 
 router.post("/annual-results/finalize", (req, res) => {
     if (!req.session.teacher_id) {
@@ -905,17 +807,18 @@ router.post("/annual-results/finalize", (req, res) => {
             ) {
                 return res.status(403).send("Invalid assigned class.");
             }
-
-            // Do not promote Class 12 to a nonexistent Class 13.
             const finalizeSql = `
-                UPDATE annual_results
-                SET passed = (marks_obtained / total_marks >= 0.35),
-                    finalized = 1
-                WHERE class_at_exam = ?
-                  AND academic_year = ?
-                  AND finalized = 0
-                  AND total_marks > 0
-            `;
+    UPDATE annual_results
+    SET status = CASE
+            WHEN (marks / total_marks) >= 0.35 THEN 'Pass'
+            ELSE 'Fail'
+        END,
+        finalized = 1
+    WHERE class_at_exam = ?
+      AND academic_year = ?
+      AND finalized = 0
+      AND total_marks > 0
+`;
 
             db.query(
                 finalizeSql,
@@ -936,7 +839,7 @@ router.post("/annual-results/finalize", (req, res) => {
                         WHERE ar.class_at_exam = ?
                           AND ar.academic_year = ?
                           AND ar.finalized = 1
-                          AND ar.passed = 1
+                          AND ar.status = 'Pass'
                           AND TRIM(s.class) = ?
                           AND ? < 12
                     `;
