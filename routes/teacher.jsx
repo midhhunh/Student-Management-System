@@ -877,6 +877,63 @@ router.post("/annual-results/finalize", (req, res) => {
     );
 });
 
+router.get("/change-password",(req,res)=>{
+    res.render("changePassword",{
+        formAction:"/teacher/change-password",
+        dashboardUrl:"/teacher/dashboard",
+        error:null
+    });
+});
+router.post("/change-password",(req,res)=>{
+    const oldPassword = req.body.oldPassword;
+    const newPassword = req.body.newPassword;
+    const teacherId=req.session.teacher_id;
 
+    if (!oldPassword || !newPassword) {
+        return res.send("Please enter both passwords.");
+    }
+
+    if (newPassword.length < 8) {
+        return res.send("New password must be at least 8 characters.");
+    }
+
+    // old password
+    db.query("select password from teacher where teacher_id=?",
+        [teacherId],(err,result)=>{
+            if (err) {
+                console.error(err);
+                return res.status(500).send("Database error.");
+            }
+
+            if (result.length === 0) {
+                return res.status(404).send("Teacher not found.");
+            }
+            if (result[0].password !== oldPassword) {
+                return res.status(400).render("changePassword", {
+                    formAction: "/teacher/change-password",
+                    dashboardUrl: "/teacher/dashboard",
+                    error: "Incorrect old password!"
+                });
+            }
+// update password
+            db.query(
+                `update teacher set password=? where teacher_id=? and password=?`,
+                [newPassword,teacherId,oldPassword],(updateErr,updateResult)=>{
+                    if(updateErr){
+                        Console.error(updateErr);
+                        return res.status(500).send("Unable to update password.")
+                    }
+                    if(updateResult.affectedRows===0){
+                        return res.status(400).send("Password was not changed please try again.")
+                    }
+                    return res.send(`<script>
+                        alert("Password changed successfully!");
+                        window.location.href="/teacher/index";
+                        </script>`);
+                }
+            )
+        }
+    )
+})
 
 module.exports = router;

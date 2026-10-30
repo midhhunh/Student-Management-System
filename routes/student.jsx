@@ -445,4 +445,79 @@ router.get("/logout", (req, res) => {
     });
 });
 
+router.get("/change-password", requireStudent, (req, res) => {
+    res.render("changePassword", {
+        formAction: "/students/change-password",
+        dashboardUrl:"/students/dashboard",
+        error: null
+    });
+});
+router.post("/change-password", requireStudent, (req, res) => {
+    const oldPassword = req.body.oldPassword;
+    const newPassword = req.body.newPassword;
+    const reg = req.session.studid;
+
+    if (!oldPassword || !newPassword) {
+        return res.send("Please enter both passwords.");
+    }
+
+    if (newPassword.length < 8) {
+        return res.send("New password must be at least 8 characters.");
+    }
+    
+    // First, check the old password
+    db.query(
+        "SELECT password FROM student WHERE register_number = ?",
+        [reg],
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send("Database error.");
+            }
+
+            if (result.length === 0) {
+                return res.status(404).send("Student not found.");
+            }
+
+            // If old password is incorrect, STOP here
+            if (result[0].password !== oldPassword) {
+                return res.status(400).render("changePassword", {
+                    formAction: "/students/change-password",
+                    dashboardUrl: "/students/dashboard",
+                    error: "Incorrect old password!"
+                });
+            }
+
+            // Update password ONLY if old password is correct
+            db.query(
+                `UPDATE student
+                 SET password = ?
+                 WHERE register_number = ?
+                   AND password = ?`,
+                [newPassword, reg, oldPassword],
+                (updateErr, updateResult) => {
+                    if (updateErr) {
+                        console.error(updateErr);
+                        return res.status(500).send("Unable to update password.");
+                    }
+
+                    if (updateResult.affectedRows === 0) {
+                        return res.status(400).send(
+                            "Password was not changed. Please try again."
+                        );
+                    }
+
+                    return res.send(`
+                        <script>
+                            alert("Password changed successfully!");
+                            window.location.href = "/students/index";
+                        </script>
+                    `);
+                }
+            );
+        }
+    );
+});
+
+
 module.exports = router;

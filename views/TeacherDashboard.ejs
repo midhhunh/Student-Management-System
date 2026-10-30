@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,13 +7,9 @@
 
     <title>Teacher Dashboard | EduManage</title>
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <link href="/css/teacherhome.css" rel="stylesheet">
 
@@ -259,6 +254,37 @@
             font-size: 13px;
         }
 
+        .change-password-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 18px !important;
+            color: #e0e7ff !important;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .change-password-link i {
+            font-size: 17px;
+            color: #a5b4fc;
+        }
+
+        .change-password-link:hover {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff !important;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .change-password-link:hover i {
+            color: #ffffff;
+        }
+
         @media (max-width: 576px) {
             .dashboard {
                 padding: 28px 14px;
@@ -292,6 +318,7 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
+
             *,
             *::before,
             *::after {
@@ -312,6 +339,20 @@
                 </span>
                 EduManage
             </a>
+            <!-- <ul>
+                <li class="nav-item ms-lg-3 mt-2 mt-lg-0 ">
+                        <a href="/teacher/change-password">
+                            <i class="bi bi-key me-2"></i>Change Password</a>
+                    </li>
+            </ul> -->
+            <ul class="navbar-nav">
+                <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                    <a href="/teacher/change-password" class="nav-link change-password-link">
+                        <i class="bi bi-key-fill me-2"></i>
+                        Change Password
+                    </a>
+                </li>
+            </ul>
 
             <span class="portal-label">
                 <i class="bi bi-shield-check me-1"></i>
@@ -411,9 +452,9 @@
                                 <div class="detail-value">
                                     <% if (teacher.class) { %>
                                         Class <%= teacher.class %>
-                                    <% } else { %>
-                                        Not assigned
-                                    <% } %>
+                                            <% } else { %>
+                                                Not assigned
+                                                <% } %>
                                 </div>
                             </div>
                         </div>
@@ -444,9 +485,7 @@
                     Keep your profile information up to date.
                 </p>
 
-                <a
-                    href="/teacher/logout"
-                    class="logout-btn"
+                <a href="/teacher/logout" class="logout-btn"
                     onclick="return confirm('Are you sure you want to log out?');">
 
                     <i class="bi bi-box-arrow-right me-2"></i>
@@ -468,4 +507,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
