@@ -511,6 +511,35 @@ router.get("/dashboard", (req, res) => {
     });
 });
 
+// Registration status
+router.get("/registration-status", (req, res) => {
+
+    const pendingStudentSql = `
+        SELECT si.register_number, si.email, si.class, si.created_at
+        FROM student_invitations si
+        LEFT JOIN student s
+        ON si.register_number = s.register_number
+        WHERE s.register_number IS NULL
+        ORDER BY si.created_at DESC
+    `;
+
+    db.query(pendingStudentSql, (studentErr, pendingStudents) => {
+
+        if (studentErr) {
+            return databaseError(
+                res,
+                "Unable to fetch pending students.",
+                studentErr
+            );
+        }
+
+        res.render("teacherRegistrationStatus.ejs", {
+            pendingStudents
+        });
+
+    });
+});
+
 // ==============================
 // TEACHER LOGOUT
 // ==============================

@@ -203,6 +203,94 @@ router.post("/teacher/:teacher_id/assign-class", (req, res) => {
     });
 });
 
+
+// --------------------------------------------------
+// REGISTRATION STATUS
+// --------------------------------------------------
+
+router.get("/registration-status", (req, res) => {
+
+    // Pending students
+    const pendingStudentSql = `
+        SELECT si.register_number, si.email, si.class, si.created_at
+        FROM student_invitations si
+        LEFT JOIN student s
+        ON si.register_number = s.register_number
+        WHERE s.register_number IS NULL
+        ORDER BY si.created_at DESC
+    `;
+
+    // Pending teachers
+    const pendingTeacherSql = `
+        SELECT ti.teacher_id, ti.email, ti.created_at
+        FROM teacher_ids ti
+        LEFT JOIN teacher t
+        ON ti.teacher_id = t.teacher_id
+        WHERE t.teacher_id IS NULL
+        ORDER BY ti.created_at DESC
+    `;
+
+    // Registered students
+    const registeredStudentSql = `
+        SELECT s.name, s.register_number, s.email, s.class
+        FROM student s
+        INNER JOIN student_invitations si
+        ON s.register_number = si.register_number
+        ORDER BY s.name ASC
+    `;
+
+    // Registered teachers
+    const registeredTeacherSql = `
+        SELECT t.name, t.teacher_id, t.email, t.class
+        FROM teacher t
+        INNER JOIN teacher_ids ti
+        ON t.teacher_id = ti.teacher_id
+        ORDER BY t.name ASC
+    `;
+
+    // Fetch pending students
+    db.query(pendingStudentSql, (studentErr, pendingStudents) => {
+
+        if (studentErr) {
+            return databaseError(res, "Unable to fetch pending students.", studentErr);
+        }
+
+        // Fetch pending teachers
+        db.query(pendingTeacherSql, (teacherErr, pendingTeachers) => {
+
+            if (teacherErr) {
+                return databaseError(res, "Unable to fetch pending teachers.", teacherErr);
+            }
+
+            // Fetch registered students
+            db.query(registeredStudentSql, (registeredStudentErr, registeredStudents) => {
+
+                if (registeredStudentErr) {
+                    return databaseError(res, "Unable to fetch registered students.", registeredStudentErr);
+                }
+
+                // Fetch registered teachers
+                db.query(registeredTeacherSql, (registeredTeacherErr, registeredTeachers) => {
+
+                    if (registeredTeacherErr) {
+                        return databaseError(res, "Unable to fetch registered teachers.", registeredTeacherErr);
+                    }
+
+                    // Display all records
+                    res.render("adminRegistrationStatus.ejs", {
+                        pendingStudents,
+                        pendingTeachers,
+                        registeredStudents,
+                        registeredTeachers
+                    });
+
+                });
+            });
+        });
+    });
+});
+
+
 // --------------------------------------------------
 // VIEW STUDENT DETAILS
 // --------------------------------------------------
@@ -225,7 +313,7 @@ router.get("/student/:register_number", (req, res) => {
             return res.status(404).send("Student not found.");
         }
 
-        res.render("studDashboard.ejs", {
+        res.render("studentDetails.ejs", {
             student: result[0]
         });
     });
@@ -290,7 +378,7 @@ router.get("/teacher/:teacher_id", (req, res) => {
             return res.status(404).send("Teacher not found.");
         }
 
-        res.render("TeacherDashboard.ejs", {
+        res.render("teacherDetails.ejs", {
             teacher: result[0]
         });
     });

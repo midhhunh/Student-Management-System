@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,17 +7,14 @@
 
     <title>Admin Dashboard | EduManage</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <link href="/css/adminhome.css" rel="stylesheet">
     <link href="/css/adminnav.css" rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 
 <body>
@@ -33,31 +29,18 @@
                 <span class="admin-badge">ADMIN</span>
             </a>
 
-            <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#adminNavbar"
-                aria-controls="adminNavbar"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar"
+                aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="adminNavbar">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
 
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/admin/index">
-                            <i class="bi bi-house-door-fill me-1"></i> INDEX
-                        </a>
-                    </li>
-
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="/admin/about">About</a>
-                    </li> -->
-
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="/admin/contact">Contact</a>
-                    </li> -->
+                    <a href="/admin/registration-status" class="btn btn-warning">
+                        <i class="bi bi-person-exclamation me-2"></i>
+                        Registration Status
+                    </a>
 
                     <li class="nav-item ms-lg-3 my-2 my-lg-0">
                         <a href="/admin/logout" class="btn btn-logout">
@@ -95,7 +78,9 @@
                 </div>
                 <div>
                     <p>Total Students</p>
-                    <h2><%= students ? students.length : 0 %></h2>
+                    <h2>
+                        <%= students ? students.length : 0 %>
+                    </h2>
                 </div>
             </article>
 
@@ -105,7 +90,9 @@
                 </div>
                 <div>
                     <p>Total Teachers</p>
-                    <h2><%= teachers ? teachers.length : 0 %></h2>
+                    <h2>
+                        <%= teachers ? teachers.length : 0 %>
+                    </h2>
                 </div>
             </article>
 
@@ -138,10 +125,7 @@
             <div class="table-toolbar">
                 <div class="search-box">
                     <i class="bi bi-search"></i>
-                    <input type="search"
-                        id="studentSearch"
-                        class="form-control"
-                        placeholder="Search students..."
+                    <input type="search" id="studentSearch" class="form-control" placeholder="Search students..."
                         aria-label="Search students">
                 </div>
             </div>
@@ -162,12 +146,14 @@
                     </thead>
 
                     <tbody>
-                        <% if (students && students.length > 0) { %>
+                        <% if (students && students.length> 0) { %>
 
-                            <% students.forEach(student => { %>
+                            <% students.forEach(student=> { %>
 
                                 <tr>
-                                    <td><%= student.id %></td>
+                                    <td>
+                                        <%= student.id %>
+                                    </td>
 
                                     <td>
                                         <a class="profile-link"
@@ -183,8 +169,12 @@
                                         </span>
                                     </td>
 
-                                    <td class="email-cell"><%= student.email %></td>
-                                    <td><%= student.mobile || '—' %></td>
+                                    <td class="email-cell">
+                                        <%= student.email %>
+                                    </td>
+                                    <td>
+                                        <%= student.mobile || '—' %>
+                                    </td>
 
                                     <td>
                                         <span class="class-badge">
@@ -200,9 +190,7 @@
                                         <div class="action-buttons">
 
                                             <a href="/admin/student/<%= encodeURIComponent(student.register_number) %>/edit"
-                                                class="btn btn-edit"
-                                                title="Edit student"
-                                                aria-label="Edit student">
+                                                class="btn btn-edit" title="Edit student" aria-label="Edit student">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
 
@@ -211,11 +199,9 @@
                                                 method="POST"
                                                 onsubmit="return confirm('Promote <%= String(student.name).replace(/'/g, '\\&#39;') %> to the next class?');">
 
-                                                <button type="submit"
-                                                    class="btn btn-promote"
-                                                    title="Promote student"
-                                                    aria-label="Promote student"
-                                                    <%= Number(student.class) >= 12 ? 'disabled' : '' %>>
+                                                <button type="submit" class="btn btn-promote" title="Promote student"
+                                                    aria-label="Promote student" <%=Number(student.class)>= 12 ?
+                                                    'disabled' : '' %>>
                                                     <i class="bi bi-arrow-up-circle"></i>
                                                 </button>
                                             </form>
@@ -225,9 +211,7 @@
                                                 method="POST"
                                                 onsubmit="return confirm('Are you sure you want to permanently delete this student?');">
 
-                                                <button type="submit"
-                                                    class="btn btn-delete"
-                                                    title="Delete student"
+                                                <button type="submit" class="btn btn-delete" title="Delete student"
                                                     aria-label="Delete student">
                                                     <i class="bi bi-trash3"></i>
                                                 </button>
@@ -237,19 +221,19 @@
                                     </td>
                                 </tr>
 
-                            <% }); %>
+                                <% }); %>
 
-                        <% } else { %>
+                                    <% } else { %>
 
-                            <tr>
-                                <td colspan="8" class="empty-state">
-                                    <i class="bi bi-person-x"></i>
-                                    <strong>No students found</strong>
-                                    <span>Student records will appear here after registration.</span>
-                                </td>
-                            </tr>
+                                        <tr>
+                                            <td colspan="8" class="empty-state">
+                                                <i class="bi bi-person-x"></i>
+                                                <strong>No students found</strong>
+                                                <span>Student records will appear here after registration.</span>
+                                            </td>
+                                        </tr>
 
-                        <% } %>
+                                        <% } %>
                     </tbody>
                 </table>
             </div>
@@ -279,16 +263,10 @@
                     </div>
                 </div>
 
-                <form action="/admin/add-teacher" method="POST"
-                    class="add-teacher-form">
+                <form action="/admin/add-teacher" method="POST" class="add-teacher-form">
 
-                    <input type="email"
-                        name="email"
-                        class="form-control"
-                        placeholder="Enter teacher email"
-                        aria-label="Teacher email"
-                        maxlength="254"
-                        required>
+                    <input type="email" name="email" class="form-control" placeholder="Enter teacher email"
+                        aria-label="Teacher email" maxlength="254" required>
 
                     <button type="submit" class="btn btn-add-teacher">
                         <i class="bi bi-plus-lg me-1"></i> Generate ID
@@ -299,10 +277,7 @@
             <div class="table-toolbar">
                 <div class="search-box">
                     <i class="bi bi-search"></i>
-                    <input type="search"
-                        id="teacherSearch"
-                        class="form-control"
-                        placeholder="Search teachers..."
+                    <input type="search" id="teacherSearch" class="form-control" placeholder="Search teachers..."
                         aria-label="Search teachers">
                 </div>
             </div>
@@ -324,12 +299,14 @@
                     </thead>
 
                     <tbody>
-                        <% if (teachers && teachers.length > 0) { %>
+                        <% if (teachers && teachers.length> 0) { %>
 
-                            <% teachers.forEach(teacher => { %>
+                            <% teachers.forEach(teacher=> { %>
 
                                 <tr>
-                                    <td><%= teacher.id %></td>
+                                    <td>
+                                        <%= teacher.id %>
+                                    </td>
 
                                     <td>
                                         <a class="profile-link"
@@ -345,38 +322,36 @@
                                         </span>
                                     </td>
 
-                                    <td class="email-cell"><%= teacher.email %></td>
-                                    <td><%= teacher.mobile || '—' %></td>
+                                    <td class="email-cell">
+                                        <%= teacher.email %>
+                                    </td>
+                                    <td>
+                                        <%= teacher.mobile || '—' %>
+                                    </td>
 
                                     <td>
-                                        <form
-                                            class="class-form"
-                                            method="POST"
+                                        <form class="class-form" method="POST"
                                             action="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>/assign-class">
 
-                                            <select class="form-select form-select-sm"
-                                                name="class"
+                                            <select class="form-select form-select-sm" name="class"
                                                 aria-label="Class responsibility for <%= teacher.name %>">
 
-                                                <option value=""
-                                                    <%= !teacher.class ? 'selected' : '' %>>
+                                                <option value="" <%=!teacher.class ? 'selected' : '' %>>
                                                     No class assigned
                                                 </option>
 
-                                                <% for (let classNumber = 1; classNumber <= 12; classNumber++) { %>
+                                                <% for (let classNumber=1; classNumber <=12; classNumber++) { %>
 
-                                                    <option value="<%= classNumber %>"
-                                                        <%= String(teacher.class || '').trim() === String(classNumber) ? 'selected' : '' %>>
+                                                    <option value="<%= classNumber %>" <%=String(teacher.class || ''
+                                                        ).trim()===String(classNumber) ? 'selected' : '' %>>
                                                         Class <%= classNumber %>
                                                     </option>
 
-                                                <% } %>
+                                                    <% } %>
 
                                             </select>
 
-                                            <button type="submit"
-                                                class="btn btn-save"
-                                                title="Save class responsibility"
+                                            <button type="submit" class="btn btn-save" title="Save class responsibility"
                                                 aria-label="Save class responsibility">
                                                 <i class="bi bi-check-lg"></i>
                                             </button>
@@ -391,9 +366,7 @@
                                         <div class="action-buttons">
 
                                             <a href="/admin/teacher/<%= encodeURIComponent(teacher.teacher_id) %>/edit"
-                                                class="btn btn-edit"
-                                                title="Edit teacher"
-                                                aria-label="Edit teacher">
+                                                class="btn btn-edit" title="Edit teacher" aria-label="Edit teacher">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
 
@@ -402,9 +375,7 @@
                                                 method="POST"
                                                 onsubmit="return confirm('Are you sure you want to permanently delete this teacher?');">
 
-                                                <button type="submit"
-                                                    class="btn btn-delete"
-                                                    title="Delete teacher"
+                                                <button type="submit" class="btn btn-delete" title="Delete teacher"
                                                     aria-label="Delete teacher">
                                                     <i class="bi bi-trash3"></i>
                                                 </button>
@@ -414,19 +385,19 @@
                                     </td>
                                 </tr>
 
-                            <% }); %>
+                                <% }); %>
 
-                        <% } else { %>
+                                    <% } else { %>
 
-                            <tr>
-                                <td colspan="8" class="empty-state">
-                                    <i class="bi bi-person-workspace"></i>
-                                    <strong>No teachers found</strong>
-                                    <span>Registered teachers will appear here.</span>
-                                </td>
-                            </tr>
+                                        <tr>
+                                            <td colspan="8" class="empty-state">
+                                                <i class="bi bi-person-workspace"></i>
+                                                <strong>No teachers found</strong>
+                                                <span>Registered teachers will appear here.</span>
+                                            </td>
+                                        </tr>
 
-                        <% } %>
+                                        <% } %>
                     </tbody>
                 </table>
             </div>
@@ -463,4 +434,5 @@
     </script>
 
 </body>
+
 </html>

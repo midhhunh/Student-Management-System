@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teacher Details | EduManage</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.15), transparent 30%),
+                radial-gradient(circle at 90% 90%, rgba(139, 92, 246, 0.15), transparent 30%),
+                #f1f5f9;
+            color: #1e293b;
+        }
+
+        /* Navbar */
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            padding: 16px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .navbar-brand {
+            font-size: 23px;
+            font-weight: 800;
+            color: #2563eb;
+            letter-spacing: -1px;
+            text-decoration: none;
+        }
+
+        .navbar-brand span {
+            color: #7c3aed;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #475569;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Main container */
+
+        .main-container {
+            max-width: 950px;
+            margin: 55px auto;
+            padding: 0 20px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h2 {
+            font-size: 27px;
+            font-weight: 700;
+            color: #172554;
+        }
+
+        .page-heading p {
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        /* Profile card */
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(15, 23, 42, 0.07);
+        }
+
+        .profile-header {
+            background: linear-gradient(120deg, #2563eb, #6366f1, #7c3aed);
+            padding: 35px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .profile-icon {
+            width: 85px;
+            height: 85px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+        }
+
+        .profile-header h3 {
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .profile-header p {
+            font-size: 13px;
+            opacity: 0.85;
+            margin: 0;
+        }
+
+        .details-section {
+            padding: 35px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 23px;
+        }
+
+        /* Details grid */
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .detail-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 19px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            transition: 0.3s ease;
+            min-width: 0;
+        }
+
+        .detail-box:hover {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.07);
+        }
+
+        .detail-icon {
+            width: 43px;
+            height: 43px;
+            min-width: 43px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #dbeafe;
+            color: #2563eb;
+            font-size: 19px;
+        }
+
+        .detail-content {
+            min-width: 0;
+        }
+
+        .detail-content label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 5px;
+        }
+
+        .detail-content p {
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .address-box {
+            grid-column: span 2;
+        }
+
+        /* Footer */
+
+        .card-footer-custom {
+            padding: 22px 35px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-text {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .footer-btn {
+            border: none;
+            text-decoration: none;
+            background: linear-gradient(120deg, #2563eb, #6366f1);
+            color: white;
+            padding: 11px 23px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .footer-btn:hover {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        /* Responsive */
+
+        @media(max-width: 600px) {
+
+            .main-container {
+                margin: 30px auto;
+            }
+
+            .profile-header {
+                padding: 25px 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-header h3 {
+                font-size: 19px;
+            }
+
+            .details-section {
+                padding: 22px 18px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 13px;
+            }
+
+            .address-box {
+                grid-column: span 1;
+            }
+
+            .card-footer-custom {
+                padding: 20px;
+                flex-direction: column;
+                gap: 17px;
+            }
+
+            .page-heading h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand" href="/admin/index">
+                Edu<span>Manage</span>
+            </a>
+
+            <a href="/admin/index" class="back-btn">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back to Admin
+            </a>
+
+        </div>
+    </nav>
+
+
+    <!-- Main content -->
+
+    <div class="main-container">
+
+        <div class="page-heading">
+
+            <h2>Teacher Profile</h2>
+
+            <p>
+                <i class="bi bi-house-door me-1"></i>
+                Admin / Teachers / Teacher Details
+            </p>
+
+        </div>
+
+
+        <div class="profile-card">
+
+            <!-- Profile header -->
+
+            <div class="profile-header">
+
+                <div class="profile-icon">
+                    <i class="bi bi-person-workspace"></i>
+                </div>
+
+                <div>
+                    <h3><%= teacher.name %></h3>
+
+                    <p>
+                        <i class="bi bi-person-badge me-1"></i>
+                        Teacher ID: <%= teacher.teacher_id %>
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Teacher information -->
+
+            <div class="details-section">
+
+                <h5 class="section-title">
+                    <i class="bi bi-person-lines-fill text-primary me-2"></i>
+                    Professional Information
+                </h5>
+
+                <div class="details-grid">
+
+                    <div class="detail-box">
+
+                        <div class="detail-icon">
+                            <i class="bi bi-person"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <label>Full Name</label>
+                            <p><%= teacher.name %></p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-icon">
+                            <i class="bi bi-card-heading"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <label>Teacher ID</label>
+                            <p><%= teacher.teacher_id %></p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-icon">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <label>Email Address</label>
+                            <p><%= teacher.email %></p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-icon">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <label>Mobile Number</label>
+                            <p><%= teacher.mobile %></p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-icon">
+                            <i class="bi bi-mortarboard"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <label>Assigned Class</label>
+                            <p>
+                                <%= teacher.class ? teacher.class : "Not Assigned" %>
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box address-box">
+
+                        <div class="detail-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+
+                        <div class="detail-content">
+                            <label>Residential Address</label>
+                            <p><%= teacher.address %></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+
+            <div class="card-footer-custom">
+
+                <span class="status-text">
+                    <i class="bi bi-shield-check text-success me-1"></i>
+                    Teacher information retrieved from database
+                </span>
+
+                <a href="/admin/index" class="footer-btn">
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Back to Teachers
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

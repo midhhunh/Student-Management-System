@@ -66,7 +66,7 @@
         </form>
     </div>
 
-    <script>
+    <!-- <script>
         function switchRole(selectedRole, button) {
             const form = document.getElementById("loginForm");
             const roleInput = document.getElementById("role");
@@ -108,7 +108,72 @@
 
             button.classList.add("active");
         }
-    </script>
+    </script> -->
+    <script>
+    function switchRole(selectedRole, button = null) {
+
+        const form = document.getElementById("loginForm");
+        const roleInput = document.getElementById("role");
+        const title = document.getElementById("roleTitle");
+        const emailLabel = document.getElementById("emailLabel");
+        const emailInput = document.getElementById("email");
+        const registerFooter = document.getElementById("registerFooter");
+
+        roleInput.value = selectedRole;
+
+        if (selectedRole === "student") {
+            form.action = "/students/login";
+            title.textContent = "Student Login";
+            emailLabel.textContent = "Student Email";
+            emailInput.placeholder = "Enter student email";
+            registerFooter.style.display = "block";
+            registerFooter.querySelector("a").href = "/students/register";
+        }
+
+        else if (selectedRole === "teacher") {
+            form.action = "/teacher/login";
+            title.textContent = "Teacher Login";
+            emailLabel.textContent = "Teacher Email";
+            emailInput.placeholder = "Enter teacher email";
+            registerFooter.style.display = "block";
+            registerFooter.querySelector("a").href = "/teacher/register";
+        }
+
+        else if (selectedRole === "admin") {
+            form.action = "/admin/login";
+            title.textContent = "Admin Login";
+            emailLabel.textContent = "Admin Email";
+            emailInput.placeholder = "Enter admin email";
+            registerFooter.style.display = "none";
+        }
+
+        document.querySelectorAll(".role-btn").forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        if (button) {
+            button.classList.add("active");
+        }
+    }
+
+    // Automatically select role from URL
+    window.addEventListener("DOMContentLoaded", function () {
+
+        const params = new URLSearchParams(window.location.search);
+        const role = params.get("role") || "student";
+
+        const buttons = document.querySelectorAll(".role-btn");
+
+        const selectedButton = Array.from(buttons).find(btn =>
+            btn.textContent.trim().toLowerCase() === role.toLowerCase()
+        );
+
+        if (["student", "teacher", "admin"].includes(role.toLowerCase())) {
+            switchRole(role.toLowerCase(), selectedButton);
+        }
+
+    });
+</script>
 
 </body>
 
