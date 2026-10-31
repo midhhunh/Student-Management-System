@@ -272,3 +272,9 @@ body {
         transition: none !important;
     }
 }
+.reg-foot{
+    color: #00115a;
+}
+.reg-foot:hover{
+    color:rgb(136, 62, 62);
+}

@@ -884,3 +884,33 @@ body {
         transition-duration: 0.01ms !important;
     }
 }
+.dropdown-toggle {
+    border: none;
+    background: transparent;
+    font-size: 24px;
+    color: #333;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.dropdown-menu {
+    min-width: 200px;
+    border: none;
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    background-color: #39405b;
+}
+
+.dropdown-item {
+    padding: 10px 12px;
+    border-radius: 7px;
+    font-size: 14px;
+    color: white;
+}
+
+.dropdown-item:hover {
+    background: #596385;
+}

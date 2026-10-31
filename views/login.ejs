@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-        <link href="/css/login.css" rel="stylesheet">
+    <link href="/css/login.css" rel="stylesheet">
 </head>
 
 <body>
@@ -21,18 +21,15 @@
 
         <!-- Role switch buttons -->
         <div class="role-switch">
-            <button type="button" class="role-btn active"
-                onclick="switchRole('student', this)">
+            <button type="button" class="role-btn active" onclick="switchRole('student', this)">
                 Student
             </button>
 
-            <button type="button" class="role-btn"
-                onclick="switchRole('teacher', this)">
+            <button type="button" class="role-btn" onclick="switchRole('teacher', this)">
                 Teacher
             </button>
 
-            <button type="button" class="role-btn"
-                onclick="switchRole('admin', this)">
+            <button type="button" class="role-btn" onclick="switchRole('admin', this)">
                 Admin
             </button>
         </div>
@@ -40,20 +37,18 @@
         <h3 id="roleTitle">Student Login</h3>
 
         <!-- Login form -->
-        <form method="POST" action="/students/login"
-            class="login_form" id="loginForm">
+        <form method="POST" action="/students/login" class="login_form" id="loginForm">
 
             <input type="hidden" name="role" id="role" value="student">
 
             <label for="email" id="emailLabel">Student Email</label>
-            <input type="email" class="form-control" id="email"
-                name="email" placeholder="Enter your email" required>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
 
             <br>
 
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password"
-                name="password" placeholder="Enter your password" required>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password"
+                required>
 
             <br>
 
@@ -66,50 +61,8 @@
         </form>
     </div>
 
-    <!-- <script>
-        function switchRole(selectedRole, button) {
-            const form = document.getElementById("loginForm");
-            const roleInput = document.getElementById("role");
-            const title = document.getElementById("roleTitle");
-            const emailLabel = document.getElementById("emailLabel");
-            const emailInput = document.getElementById("email");
-            const registerFooter = document.getElementById("registerFooter");
+<script>
 
-            // Save selected role
-            roleInput.value = selectedRole;
-
-            // Change form action and heading
-            if (selectedRole === "student") {
-                form.action = "/students/login";
-                title.textContent = "Student Login";
-                emailLabel.textContent = "Student Email";
-                emailInput.placeholder = "Enter student email";
-                registerFooter.style.display = "block";
-            } 
-            else if (selectedRole === "teacher") {
-                form.action = "/teacher/login";
-                title.textContent = "Teacher Login";
-                emailLabel.textContent = "Teacher Email";
-                emailInput.placeholder = "Enter teacher email";
-                registerFooter.style.display = "block";
-            } 
-            else if (selectedRole === "admin") {
-                form.action = "/admin/login";
-                title.textContent = "Admin Login";
-                emailLabel.textContent = "Admin Email";
-                emailInput.placeholder = "Enter admin email";
-                registerFooter.style.display = "none";
-            }
-
-            // Highlight selected button
-            document.querySelectorAll(".role-btn").forEach(btn => {
-                btn.classList.remove("active");
-            });
-
-            button.classList.add("active");
-        }
-    </script> -->
-    <script>
     function switchRole(selectedRole, button = null) {
 
         const form = document.getElementById("loginForm");
@@ -122,31 +75,43 @@
         roleInput.value = selectedRole;
 
         if (selectedRole === "student") {
+
             form.action = "/students/login";
             title.textContent = "Student Login";
             emailLabel.textContent = "Student Email";
             emailInput.placeholder = "Enter student email";
+
             registerFooter.style.display = "block";
             registerFooter.querySelector("a").href = "/students/register";
+
         }
 
         else if (selectedRole === "teacher") {
+
             form.action = "/teacher/login";
             title.textContent = "Teacher Login";
             emailLabel.textContent = "Teacher Email";
             emailInput.placeholder = "Enter teacher email";
+
             registerFooter.style.display = "block";
             registerFooter.querySelector("a").href = "/teacher/register";
+
         }
 
         else if (selectedRole === "admin") {
+
             form.action = "/admin/login";
             title.textContent = "Admin Login";
             emailLabel.textContent = "Admin Email";
             emailInput.placeholder = "Enter admin email";
+
             registerFooter.style.display = "none";
         }
 
+        // Update browser URL
+        history.replaceState(null, "", form.action);
+
+        // Active button
         document.querySelectorAll(".role-btn").forEach(btn => {
             btn.classList.remove("active");
         });
@@ -154,26 +119,44 @@
         if (button) {
             button.classList.add("active");
         }
+
+        console.log("Selected Role:", selectedRole);
+        console.log("Current URL:", window.location.pathname);
+        console.log("Form Action:", form.action);
     }
 
-    // Automatically select role from URL
+
+    // Automatically select role based on URL
     window.addEventListener("DOMContentLoaded", function () {
 
-        const params = new URLSearchParams(window.location.search);
-        const role = params.get("role") || "student";
+        let role = "student";
+
+        const currentPath = window.location.pathname;
+
+        if (currentPath === "/teacher/login") {
+            role = "teacher";
+        }
+
+        else if (currentPath === "/admin/login") {
+            role = "admin";
+        }
+
+        else if (currentPath === "/students/login") {
+            role = "student";
+        }
 
         const buttons = document.querySelectorAll(".role-btn");
 
         const selectedButton = Array.from(buttons).find(btn =>
-            btn.textContent.trim().toLowerCase() === role.toLowerCase()
+            btn.textContent.trim().toLowerCase() === role
         );
 
-        if (["student", "teacher", "admin"].includes(role.toLowerCase())) {
-            switchRole(role.toLowerCase(), selectedButton);
-        }
+        switchRole(role, selectedButton);
 
     });
+
 </script>
+
 
 </body>
 
