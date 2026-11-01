@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="/css/login.css" rel="stylesheet">
 </head>
 
@@ -46,11 +47,13 @@
 
             <br>
 
+            <div class="password-box">
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password"
                 required>
-
+            <i class="bi bi-eye-slash" id="togglePassword"></i>
             <br>
+            </div>
 
             <button type="submit" class="submit">Login</button>
 
@@ -61,101 +64,118 @@
         </form>
     </div>
 
-<script>
+    <script>
 
-    function switchRole(selectedRole, button = null) {
+        function switchRole(selectedRole, button = null) {
 
-        const form = document.getElementById("loginForm");
-        const roleInput = document.getElementById("role");
-        const title = document.getElementById("roleTitle");
-        const emailLabel = document.getElementById("emailLabel");
-        const emailInput = document.getElementById("email");
-        const registerFooter = document.getElementById("registerFooter");
+            const form = document.getElementById("loginForm");
+            const roleInput = document.getElementById("role");
+            const title = document.getElementById("roleTitle");
+            const emailLabel = document.getElementById("emailLabel");
+            const emailInput = document.getElementById("email");
+            const registerFooter = document.getElementById("registerFooter");
 
-        roleInput.value = selectedRole;
+            roleInput.value = selectedRole;
 
-        if (selectedRole === "student") {
+            if (selectedRole === "student") {
 
-            form.action = "/students/login";
-            title.textContent = "Student Login";
-            emailLabel.textContent = "Student Email";
-            emailInput.placeholder = "Enter student email";
+                form.action = "/students/login";
+                title.textContent = "Student Login";
+                emailLabel.textContent = "Student Email";
+                emailInput.placeholder = "Enter student email";
 
-            registerFooter.style.display = "block";
-            registerFooter.querySelector("a").href = "/students/register";
+                registerFooter.style.display = "block";
+                registerFooter.querySelector("a").href = "/students/register";
 
+            }
+
+            else if (selectedRole === "teacher") {
+
+                form.action = "/teacher/login";
+                title.textContent = "Teacher Login";
+                emailLabel.textContent = "Teacher Email";
+                emailInput.placeholder = "Enter teacher email";
+
+                registerFooter.style.display = "block";
+                registerFooter.querySelector("a").href = "/teacher/register";
+
+            }
+
+            else if (selectedRole === "admin") {
+
+                form.action = "/admin/login";
+                title.textContent = "Admin Login";
+                emailLabel.textContent = "Admin Email";
+                emailInput.placeholder = "Enter admin email";
+
+                registerFooter.style.display = "none";
+            }
+
+            // Update browser URL
+            history.replaceState(null, "", form.action);
+
+            // Active button
+            document.querySelectorAll(".role-btn").forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+            if (button) {
+                button.classList.add("active");
+            }
+
+            console.log("Selected Role:", selectedRole);
+            console.log("Current URL:", window.location.pathname);
+            console.log("Form Action:", form.action);
         }
 
-        else if (selectedRole === "teacher") {
 
-            form.action = "/teacher/login";
-            title.textContent = "Teacher Login";
-            emailLabel.textContent = "Teacher Email";
-            emailInput.placeholder = "Enter teacher email";
+        // Automatically select role based on URL
+        window.addEventListener("DOMContentLoaded", function () {
 
-            registerFooter.style.display = "block";
-            registerFooter.querySelector("a").href = "/teacher/register";
+            let role = "student";
 
-        }
+            const currentPath = window.location.pathname;
 
-        else if (selectedRole === "admin") {
+            if (currentPath === "/teacher/login") {
+                role = "teacher";
+            }
 
-            form.action = "/admin/login";
-            title.textContent = "Admin Login";
-            emailLabel.textContent = "Admin Email";
-            emailInput.placeholder = "Enter admin email";
+            else if (currentPath === "/admin/login") {
+                role = "admin";
+            }
 
-            registerFooter.style.display = "none";
-        }
+            else if (currentPath === "/students/login") {
+                role = "student";
+            }
 
-        // Update browser URL
-        history.replaceState(null, "", form.action);
+            const buttons = document.querySelectorAll(".role-btn");
 
-        // Active button
-        document.querySelectorAll(".role-btn").forEach(btn => {
-            btn.classList.remove("active");
+            const selectedButton = Array.from(buttons).find(btn =>
+                btn.textContent.trim().toLowerCase() === role
+            );
+
+            switchRole(role, selectedButton);
+
+        });
+        const togglePassword = document.getElementById("togglePassword");
+        const password = document.getElementById("password");
+
+        togglePassword.addEventListener("click", function () {
+
+            if (password.type === "password") {
+                password.type = "text";
+                this.classList.remove("bi-eye-slash");
+                this.classList.add("bi-eye");
+            }
+            else {
+                password.type = "password";
+                this.classList.remove("bi-eye");
+                this.classList.add("bi-eye-slash");
+            }
+
         });
 
-        if (button) {
-            button.classList.add("active");
-        }
-
-        console.log("Selected Role:", selectedRole);
-        console.log("Current URL:", window.location.pathname);
-        console.log("Form Action:", form.action);
-    }
-
-
-    // Automatically select role based on URL
-    window.addEventListener("DOMContentLoaded", function () {
-
-        let role = "student";
-
-        const currentPath = window.location.pathname;
-
-        if (currentPath === "/teacher/login") {
-            role = "teacher";
-        }
-
-        else if (currentPath === "/admin/login") {
-            role = "admin";
-        }
-
-        else if (currentPath === "/students/login") {
-            role = "student";
-        }
-
-        const buttons = document.querySelectorAll(".role-btn");
-
-        const selectedButton = Array.from(buttons).find(btn =>
-            btn.textContent.trim().toLowerCase() === role
-        );
-
-        switchRole(role, selectedButton);
-
-    });
-
-</script>
+    </script>
 
 
 </body>

@@ -12,6 +12,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" defer>
     </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -61,10 +62,13 @@
                                 <input type="email" id="student-email" name="email" placeholder="Enter email"
                                     autocomplete="email" required>
 
-                                <label for="student-pass">Password</label>
-                                <input type="password" id="student-pass" name="password" class="password"
-                                    placeholder="Create a password (minimum 8 characters)" minlength="8"
-                                    autocomplete="new-password" required>
+                                <div class="password-box">
+                                    <label for="student-pass">Password</label>
+                                    <input type="password" id="student-pass" name="password" class="password"
+                                        placeholder="Create a password (minimum 8 characters)" minlength="8"
+                                        autocomplete="new-password" required>
+                                    <i class="bi bi-eye-slash" id="toggle"></i>
+                                </div>
 
                                 <label for="student-mob">Mobile</label>
                                 <input type="tel" id="student-mob" name="mob" placeholder="Enter 10-digit mobile number"
@@ -103,10 +107,13 @@
                                 <input type="email" id="teacher-email" name="email" placeholder="Enter email"
                                     autocomplete="email" required>
 
-                                <label for="teacher-pass">Password</label>
-                                <input type="password" id="teacher-pass" name="password" class="password"
-                                    placeholder="Create a password (minimum 8 characters)" minlength="8"
-                                    autocomplete="new-password" required>
+                                <div class="password-box">
+                                    <label for="teacher-pass">Password</label>
+                                    <input type="password" id="teacher-pass" name="password" class="password"
+                                        placeholder="Create a password (minimum 8 characters)" minlength="8"
+                                        autocomplete="new-password" required>
+                                    <i class="bi bi-eye-slash" id="togglePassword"></i>
+                                </div>
 
                                 <label for="teacher-mob">Mobile</label>
                                 <input type="tel" id="teacher-mob" name="mob" placeholder="Enter 10-digit mobile number"
@@ -175,6 +182,34 @@
 
         });
 
+        const togglePassword = document.getElementById("togglePassword");
+        const password = document.getElementById("teacher-pass");
+
+
+        togglePassword.addEventListener("click", function () {
+            if (password.type === "password") {
+                password.type = "text";
+                this.classList.replace("bi-eye-slash", "bi-eye");
+            } else {
+                password.type = "password";
+                this.classList.replace("bi-eye", "bi-eye-slash");
+            }
+        });
+
+        const toggle = document.getElementById("toggle");
+        const studPassword = document.getElementById("student-pass");
+
+
+        toggle.addEventListener("click", function () {
+            if (studPassword.type === "password") {
+                studPassword.type = "text";
+                this.classList.replace("bi-eye-slash", "bi-eye");
+            } else {
+                studPassword.type = "password";
+                this.classList.replace("bi-eye", "bi-eye-slash");
+            }
+        });
+
         // Keep the correct registration tab selected after a server redirect.
         // The server should pass formType as "student" or "teacher".
     <!--  const formType =
@@ -182,6 +217,8 @@
 
     showForm(formType === "teacher" ? "teacher" : "student");
 
+
     </script>
 </body>
+
 </html>

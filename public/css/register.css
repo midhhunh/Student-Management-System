@@ -278,3 +278,41 @@ body {
 .reg-foot:hover{
     color:rgb(136, 62, 62);
 }
+
+.password-box {
+    position: relative;
+    width: 100%;
+}
+
+.password-box label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.password-box .password {
+    width: 100%;
+    padding: 12px 45px 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+.password-box .password:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 5px rgba(99, 102, 241, 0.3);
+}
+
+.password-box i {
+    position: absolute;
+    right: 15px;
+    top: 42px;
+    font-size: 19px;
+    color: #777;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.password-box i:hover {
+    color: #6366f1;
+}
