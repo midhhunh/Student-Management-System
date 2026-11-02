@@ -433,6 +433,16 @@
             .search-box {
                 max-width: none;
             }
+            .btn-danger {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
+}
         }
     </style>
 </head>
@@ -504,6 +514,80 @@
 
         <!-- Teacher actions -->
         <div class="row g-4">
+
+            <!-- Create Exam -->
+<div class="col-12 col-lg-6">
+    <section class="section-card">
+
+        <h2 class="section-heading">
+            <span class="heading-icon">
+                <i class="bi bi-journal-plus"></i>
+            </span>
+            Create New Exam
+        </h2>
+
+        <p class="section-description">
+            Create examinations for your assigned class.
+        </p>
+
+        <form action="/teacher/exams/create" method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Exam Name</label>
+
+                <select name="exam_name" class="form-select" required>
+                    <option value="">Select Exam</option>
+                    <option value="First Term Exam">First Term Exam</option>
+                    <option value="Midterm Exam">Midterm Exam</option>
+                    <option value="Second Term Exam">Second Term Exam</option>
+                    <option value="Model Exam">Model Exam</option>
+                    <option value="Annual Exam">Annual Exam</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Academic Year</label>
+
+                <input
+                    type="text"
+                    name="academic_year"
+                    class="form-control"
+                    placeholder="2026-2027"
+                    pattern="[0-9]{4}-[0-9]{4}"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Exam Date</label>
+
+                <input
+                    type="date"
+                    name="exam_date"
+                    class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Total Marks</label>
+
+                <input
+                    type="number"
+                    name="total_marks"
+                    class="form-control"
+                    min="1"
+                    step="0.01"
+                    placeholder="100"
+                    required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-plus-circle me-2"></i>
+                Create Exam
+            </button>
+
+        </form>
+
+    </section>
+</div>
 
             <!-- Add student -->
             <div class="col-12 col-lg-6">
@@ -610,6 +694,125 @@
 
         </div>
 
+        <!-- Exam Management -->
+<section class="student-section">
+
+    <div class="student-section-header">
+        <div>
+            <h2>
+                <i class="bi bi-journal-text me-2"></i>
+                Exam Management
+            </h2>
+
+            <div class="student-count">
+                Manage examinations and student marks.
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+
+        <% if (typeof exams !== 'undefined' && exams.length > 0) { %>
+
+            <% exams.forEach(function(exam) { %>
+
+                <div class="col-12 col-md-6 col-xl-4">
+
+                    <div class="section-card">
+
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+
+                            <span class="heading-icon">
+                                <i class="bi bi-journal-check"></i>
+                            </span>
+
+                            <% if (exam.status === 'Finalized') { %>
+                                <span class="badge bg-success">
+                                    Finalized
+                                </span>
+                            <% } else { %>
+                                <span class="badge bg-primary">
+                                    Open
+                                </span>
+                            <% } %>
+
+                        </div>
+
+                        <h5 class="fw-bold">
+                            <%= exam.exam_name %>
+                        </h5>
+
+                        <p class="text-muted mb-2">
+                            Academic Year: <%= exam.academic_year %>
+                        </p>
+
+                        <p class="text-muted mb-2">
+                            Class: <%= exam.class %>
+                        </p>
+
+                        <p class="text-muted mb-3">
+                            Total Marks: <%= exam.total_marks %>
+                        </p>
+
+                        <% if (exam.exam_date) { %>
+                            <p class="text-muted mb-3">
+                                Exam Date:
+                                <%= new Date(exam.exam_date).toLocaleDateString('en-IN') %>
+                            </p>
+                        <% } %>
+
+                        <% if (exam.status === 'Open') { %>
+
+                            <form
+                                action="/teacher/exams/<%= exam.id %>/finalize"
+                                method="POST"
+                                onsubmit="return confirm('Finalize this exam? Marks will become uneditable.');">
+
+                                <button type="submit"
+                                    class="btn btn-success w-100">
+                                    <i class="bi bi-lock-fill me-2"></i>
+                                    Finalize Exam
+                                </button>
+
+                            </form>
+
+                        <% } else { %>
+
+                            <button class="btn btn-secondary w-100" disabled>
+                                <i class="bi bi-lock-fill me-2"></i>
+                                Exam Locked
+                            </button>
+
+                        <% } %>
+
+                    </div>
+
+                </div>
+
+            <% }); %>
+
+        <% } else { %>
+
+            <div class="col-12">
+                <div class="empty-state">
+                    <i class="bi bi-journal-x"></i>
+
+                    <h4 class="fw-bold text-dark">
+                        No Exams Created
+                    </h4>
+
+                    <p class="mb-0">
+                        Create your first exam using the form above.
+                    </p>
+                </div>
+            </div>
+
+        <% } %>
+
+    </div>
+
+</section>
+
         <!-- Student list -->
         <section class="student-section">
             <div class="student-section-header">
@@ -700,8 +903,10 @@
                                     </div>
                                 </div>
 
+
+
                                 <!-- Annual marks form -->
-                                <form
+                                <!-- <form
                                     action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/marks"
                                     method="POST"
                                     class="marks-form marks-entry-form">
@@ -737,7 +942,66 @@
                                         <i class="bi bi-save me-1"></i>
                                         Save Annual Marks
                                     </button>
-                                </form>
+                                </form> -->
+
+                                <!-- Exam-wise marks entry -->
+
+<% if (typeof exams !== 'undefined' && exams.length > 0) { %>
+
+    <% exams.forEach(function(exam) { %>
+
+        <form
+            action="/teacher/exams/<%= exam.id %>/student/<%= encodeURIComponent(student.register_number) %>/marks"
+            method="POST"
+            class="marks-form">
+
+            <h5>
+                <i class="bi bi-journal-check me-1"></i>
+                <%= exam.exam_name %>
+            </h5>
+
+            <p class="small text-muted">
+                Total Marks: <%= exam.total_marks %>
+            </p>
+
+            <% if (exam.status === 'Open') { %>
+
+                <label class="form-label">
+                    Marks Obtained
+                </label>
+
+                <input
+                    type="number"
+                    name="marks_obtained"
+                    class="form-control marks-obtained"
+                    min="0"
+                    max="<%= exam.total_marks %>"
+                    step="0.01"
+                    placeholder="Enter marks"
+                    required>
+
+                <button type="submit"
+                    class="btn btn-primary btn-sm w-100">
+
+                    <i class="bi bi-save me-1"></i>
+                    Save / Update Marks
+
+                </button>
+
+            <% } else { %>
+
+                <div class="alert alert-success mb-0">
+                    <i class="bi bi-lock-fill me-1"></i>
+                    This exam is finalized.
+                </div>
+
+            <% } %>
+
+        </form>
+
+    <% }); %>
+
+<% } %>
 
                                 <!-- Edit and delete -->
                                 <div class="student-tools">
@@ -802,6 +1066,102 @@
                 </div>
 
             </div>
+
+            <!-- TEACHER EXAMS -->
+<div class="container my-4">
+
+    <h3 class="fw-bold mb-3">
+        <i class="bi bi-journal-text me-2"></i>
+        Class Exams
+    </h3>
+
+    <% if (exams && exams.length > 0) { %>
+
+        <div class="row g-3">
+
+            <% exams.forEach(exam => { %>
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card shadow-sm h-100">
+
+                        <div class="card-body">
+
+                            <h5 class="fw-bold">
+                                <%= exam.exam_name %>
+                            </h5>
+
+                            <p>
+                                <strong>Academic Year:</strong>
+                                <%= exam.academic_year %>
+                            </p>
+
+                            <p>
+                                <strong>Class:</strong>
+                                <%= exam.class %>
+                            </p>
+
+                            <p>
+                                <strong>Total Marks:</strong>
+                                <%= exam.total_marks %>
+                            </p>
+
+                            <p>
+                                <strong>Created By:</strong>
+                                <%= exam.teacher_name || exam.created_by %>
+                            </p>
+
+                            <p>
+                                <strong>Status:</strong>
+
+                                <% if (exam.status === "Open") { %>
+                                    <span class="badge bg-success">Open</span>
+                                <% } else { %>
+                                    <span class="badge bg-secondary">
+                                        Finalized
+                                    </span>
+                                <% } %>
+                                    
+                                    <% if (
+    exam.status === "Open" &&
+    exam.created_by === teacher.teacher_id
+) { %>
+
+    <form
+        action="/teacher/exams/<%= exam.id %>/delete"
+        method="POST"
+        onsubmit="return confirm('Are you sure you want to delete this exam? This action cannot be undone.');"
+    >
+        <button type="submit" class="btn btn-danger btn-sm w-100 mt-3">
+            <i class="bi bi-trash3 me-2"></i>
+            Delete Exam
+        </button>
+    </form>
+
+<% } %>
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            <% }); %>
+
+        </div>
+
+    <% } else { %>
+
+        <div class="alert alert-info">
+            No exams have been created for your class yet.
+        </div>
+
+    <% } %>
+
+</div>
+
         </section>
 
         <footer class="footer-text">

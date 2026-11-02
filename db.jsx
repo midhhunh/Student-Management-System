@@ -119,4 +119,46 @@ conn.query(`
     })
 )
 
+conn.query(`
+    CREATE TABLE if not exists exams (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    exam_name VARCHAR(100) NOT NULL,
+    academic_year VARCHAR(9) NOT NULL,
+    class VARCHAR(20) NOT NULL,
+    exam_date DATE NULL,
+    total_marks DECIMAL(8,2) NOT NULL,
+    created_by VARCHAR(100) NOT NULL,
+    created_role VARCHAR(20) NOT NULL DEFAULT 'teacher',
+    status ENUM('Open', 'Finalized') NOT NULL DEFAULT 'Open',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)`,((err)=>{
+        if(err){
+            console.log(err);
+            return;
+        }
+        console.log("Exams table created successfully");
+    }))
+
+    conn.query(`
+        CREATE TABLE if not exists exam_marks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    exam_id INT NOT NULL,
+    register_number VARCHAR(100) NOT NULL,
+    marks_obtained DECIMAL(8,2) NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    UNIQUE KEY unique_exam_student (exam_id, register_number),
+
+    FOREIGN KEY (exam_id) REFERENCES exams(id)
+        ON DELETE CASCADE
+)`,((err)=>{
+        if(err){
+            console.log(err);
+            return;
+        }
+        console.log("Exam MArks table created successfully");
+    })
+)
+
 module.exports=conn;
