@@ -291,33 +291,6 @@ router.get("/registration-status", (req, res) => {
 });
 
 
-// --------------------------------------------------
-// VIEW STUDENT DETAILS
-// --------------------------------------------------
-
-// router.get("/student/:register_number", (req, res) => {
-//     const registerNumber = clean(req.params.register_number);
-
-//     const sql = `
-//         SELECT id, name, register_number, email, mobile, class, address
-//         FROM student
-//         WHERE register_number = ?
-//     `;
-
-//     db.query(sql, [registerNumber], (err, result) => {
-//         if (err) {
-//             return databaseError(res, "Unable to fetch student.", err);
-//         }
-
-//         if (result.length === 0) {
-//             return res.status(404).send("Student not found.");
-//         }
-
-//         res.render("studentDetails.ejs", {
-//             student: result[0]
-//         });
-//     });
-// });
 
 // --------------------------------------------------
 // VIEW STUDENT DETAILS WITH ALL MARKS

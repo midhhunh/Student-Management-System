@@ -226,23 +226,33 @@ db.query(studentSql, [teacher.class], (studentErr, students) => {
 
     // Fetch exams created for this teacher's assigned class.
     const examSql = `
-        SELECT
-            e.id,
-            e.exam_name,
-            e.academic_year,
-            e.class,
-            e.exam_date,
-            e.total_marks,
-            e.created_by,
-            e.created_role,
-            e.status,
-            e.created_at,
-            t.name AS teacher_name
-        FROM exams e
-        LEFT JOIN teacher t
-            ON e.created_by = t.teacher_id
-        WHERE TRIM(e.class) = TRIM(?)
-        ORDER BY e.created_at DESC
+         SELECT
+        e.id,
+        e.exam_name,
+        e.academic_year,
+        e.class,
+        e.exam_date,
+        e.total_marks,
+        e.created_by,
+        e.created_role,
+        e.status,
+        e.created_at,
+        t.name AS teacher_name,
+
+        (
+            SELECT GROUP_CONCAT(es.register_number SEPARATOR ',')
+            FROM exam_students es
+            WHERE es.exam_id = e.id
+        ) AS eligible_register_numbers
+
+    FROM exams e
+
+    LEFT JOIN teacher t
+        ON e.created_by = t.teacher_id
+
+    WHERE TRIM(e.class) = TRIM(?)
+
+    ORDER BY e.created_at DESC
     `;
 
     db.query(examSql, [teacher.class], (examErr, exams) => {
@@ -861,69 +871,158 @@ router.post("/student/invite", (req, res) => {
 });
 
 
-router.post("/student/:register_number/change-class", (req, res) => {
+// router.post("/student/:register_number/change-class", (req, res) => {
+//     if (!req.session.teacher_id) {
+//         return res.redirect("/teacher/login");
+//     }
+
+//     const direction = req.body.direction;
+
+//     if (!["up", "down"].includes(direction)) {
+//         return res.status(400).send("Invalid class change.");
+//     }
+
+//     db.query(
+//         "SELECT class FROM teacher WHERE teacher_id = ?",
+//         [req.session.teacher_id],
+//         (err, teachers) => {
+//             if (err) return res.status(500).send("Database error.");
+
+//             if (!teachers.length || !teachers[0].class) {
+//                 return res.status(403).send("No class assigned.");
+//             }
+
+//             const assignedClass = Number(teachers[0].class);
+
+//             if (
+//                 !Number.isInteger(assignedClass) ||
+//                 assignedClass < 1 ||
+//                 assignedClass > 12
+//             ) {
+//                 return res.status(400).send("Invalid assigned class.");
+//             }
+
+//             const delta = direction === "up" ? 1 : -1;
+//             const newClass = assignedClass + delta;
+
+//             if (newClass < 1 || newClass > 12) {
+//                 return res.status(400).send(
+//                     "Class must be between 1 and 12."
+//                 );
+//             }
+
+//             db.query(
+//                 `UPDATE student
+//      SET class = ?
+//      WHERE register_number = ?
+//        AND TRIM(class) = TRIM(?)`,
+//                 [
+//                     String(newClass),
+//                     req.params.register_number,
+//                     String(assignedClass)
+//                 ],
+//                 (updateErr, result) => {
+//                     if (updateErr) {
+//                         console.error(updateErr);
+//                         return res.status(500).send("Unable to change class.");
+//                     }
+
+//                     if (!result.affectedRows) {
+//                         return res.status(404).send(
+//                             "Student not found in your assigned class."
+//                         );
+//                     }
+
+//                     return res.redirect("/teacher/index");
+//                 }
+//             );
+//         }
+//     );
+// });
+
+router.post("/student/:register_number/class-change", (req, res) => {
     if (!req.session.teacher_id) {
         return res.redirect("/teacher/login");
     }
 
-    const direction = req.body.direction;
+    const { register_number } = req.params;
+    const { direction } = req.body;
 
     if (!["up", "down"].includes(direction)) {
-        return res.status(400).send("Invalid class change.");
+        return res.status(400).send("Invalid class-change direction");
     }
 
     db.query(
         "SELECT class FROM teacher WHERE teacher_id = ?",
         [req.session.teacher_id],
-        (err, teachers) => {
-            if (err) return res.status(500).send("Database error.");
-
-            if (!teachers.length || !teachers[0].class) {
-                return res.status(403).send("No class assigned.");
+        (teacherErr, teacherResult) => {
+            if (teacherErr || teacherResult.length === 0) {
+                return res.status(500).send("Teacher not found");
             }
 
-            const assignedClass = Number(teachers[0].class);
-
-            if (
-                !Number.isInteger(assignedClass) ||
-                assignedClass < 1 ||
-                assignedClass > 12
-            ) {
-                return res.status(400).send("Invalid assigned class.");
-            }
-
-            const delta = direction === "up" ? 1 : -1;
-            const newClass = assignedClass + delta;
-
-            if (newClass < 1 || newClass > 12) {
-                return res.status(400).send(
-                    "Class must be between 1 and 12."
-                );
-            }
+            const assignedClass = Number(teacherResult[0].class);
 
             db.query(
-                `UPDATE student
-     SET class = ?
-     WHERE register_number = ?
-       AND TRIM(class) = TRIM(?)`,
-                [
-                    String(newClass),
-                    req.params.register_number,
-                    String(assignedClass)
-                ],
-                (updateErr, result) => {
-                    if (updateErr) {
-                        console.error(updateErr);
-                        return res.status(500).send("Unable to change class.");
+                "SELECT class FROM student WHERE register_number = ?",
+                [register_number],
+                (studentErr, studentResult) => {
+                    if (studentErr) {
+                        return res.status(500).send("Database error");
                     }
 
-                    if (!result.affectedRows) {
-                        return res.status(404).send(
-                            "Student not found in your assigned class."
+                    if (studentResult.length === 0) {
+                        return res.status(404).send("Student not found");
+                    }
+
+                    const currentClass = Number(studentResult[0].class);
+
+                    let newClass;
+
+                    if (direction === "up" &&
+                        currentClass === assignedClass) {
+                        newClass = assignedClass + 1;
+                    } else if (direction === "down" &&
+                               currentClass === assignedClass + 1) {
+                        newClass = assignedClass;
+                    } else {
+                        return res.status(400).send(
+                            "This student cannot be moved in that direction."
                         );
                     }
 
-                    return res.redirect("/teacher/index");
+                    if (newClass < 1 || newClass > 12) {
+                        return res.status(400).send(
+                            "Class must be between 1 and 12."
+                        );
+                    }
+
+                    db.query(
+                        `UPDATE student
+                         SET class = ?
+                         WHERE register_number = ?
+                         AND TRIM(class) = ?`,
+                        [
+                            newClass,
+                            register_number,
+                            String(currentClass)
+                        ],
+                        (updateErr, updateResult) => {
+                            if (updateErr) {
+                                console.error(updateErr);
+                                return res.status(500).send(
+                                    "Unable to update student class"
+                                );
+                            }
+
+                            if (updateResult.affectedRows === 0) {
+                                return res.status(400).send(
+                                    "Student class was not changed."
+                                );
+                            }
+
+                            res.redirect("/teacher/index");
+                        }
+                    );
                 }
             );
         }
@@ -934,79 +1033,331 @@ router.post("/student/:register_number/change-class", (req, res) => {
 // CREATE EXAM
 // =====================================
 
-router.post("/exams/create", (req, res) => {
+// router.post("/exams/create", (req, res) => {
 
-    if (!req.session.teacher_id) {
-        return res.redirect("/teacher/login");
-    }
+//     if (!req.session.teacher_id) {
+//         return res.redirect("/teacher/login");
+//     }
 
-    const examName = String(req.body.exam_name || "").trim();
-    const academicYear = String(req.body.academic_year || "").trim();
-    const examDate = req.body.exam_date || null;
-    const totalMarks = Number(req.body.total_marks);
+//     const examName = String(req.body.exam_name || "").trim();
+//     const academicYear = String(req.body.academic_year || "").trim();
+//     const examDate = req.body.exam_date || null;
+//     const totalMarks = Number(req.body.total_marks);
 
-    if (
-        !examName ||
-        !/^\d{4}-\d{4}$/.test(academicYear) ||
-        !Number.isFinite(totalMarks) ||
-        totalMarks <= 0
-    ) {
-        return res.status(400).send("Invalid exam details.");
-    }
+//     if (
+//         !examName ||
+//         !/^\d{4}-\d{4}$/.test(academicYear) ||
+//         !Number.isFinite(totalMarks) ||
+//         totalMarks <= 0
+//     ) {
+//         return res.status(400).send("Invalid exam details.");
+//     }
 
-    db.query(
-        "SELECT class FROM teacher WHERE teacher_id = ?",
-        [req.session.teacher_id],
-        (err, teachers) => {
+//     db.query(
+//         "SELECT class FROM teacher WHERE teacher_id = ?",
+//         [req.session.teacher_id],
+//         (err, teachers) => {
 
-            if (err) {
-                console.error(err);
-                return res.status(500).send("Database error.");
-            }
+//             if (err) {
+//                 console.error(err);
+//                 return res.status(500).send("Database error.");
+//             }
 
-            if (!teachers.length || !String(teachers[0].class || "").trim()) {
-                return res.status(403).send("No class assigned.");
-            }
+//             if (!teachers.length || !String(teachers[0].class || "").trim()) {
+//                 return res.status(403).send("No class assigned.");
+//             }
 
-            const assignedClass = String(teachers[0].class).trim();
+//             const assignedClass = String(teachers[0].class).trim();
 
-            const sql = `
-                INSERT INTO exams
-                (
-                    exam_name,
-                    academic_year,
-                    class,
-                    exam_date,
-                    total_marks,
-                    created_by,
-                    created_role
-                )
-                VALUES (?, ?, ?, ?, ?, ?, 'teacher')
-            `;
+//             const sql = `
+//                 INSERT INTO exams
+//                 (
+//                     exam_name,
+//                     academic_year,
+//                     class,
+//                     exam_date,
+//                     total_marks,
+//                     created_by,
+//                     created_role
+//                 )
+//                 VALUES (?, ?, ?, ?, ?, ?, 'teacher')
+//             `;
 
-            db.query(
-                sql,
-                [
-                    examName,
-                    academicYear,
-                    assignedClass,
-                    examDate,
-                    totalMarks,
-                    req.session.teacher_id
-                ],
-                (insertErr) => {
+//             db.query(
+//                 sql,
+//                 [
+//                     examName,
+//                     academicYear,
+//                     assignedClass,
+//                     examDate,
+//                     totalMarks,
+//                     req.session.teacher_id
+//                 ],
+//                 (insertErr) => {
 
-                    if (insertErr) {
-                        console.error(insertErr);
-                        return res.status(500).send("Unable to create exam.");
-                    }
+//                     if (insertErr) {
+//                         console.error(insertErr);
+//                         return res.status(500).send("Unable to create exam.");
+//                     }
 
-                    return res.redirect("/teacher/index");
-                }
-            );
+//                     return res.redirect("/teacher/index");
+//                 }
+//             );
+//         }
+//     );
+// });
+
+// router.post("/exams/create", (req, res) => {
+
+//     if (!req.session.teacher_id) {
+//         return res.redirect("/teacher/login");
+//     }
+
+//     const {
+//         exam_name,
+//         academic_year,
+//         exam_date,
+//         total_marks
+//     } = req.body;
+
+//     if (!exam_name || !academic_year || !exam_date || !total_marks) {
+//         return res.send("Please fill all exam details.");
+//     }
+
+//     if (!/^\d{4}-\d{4}$/.test(academic_year)) {
+//         return res.send("Invalid academic year.");
+//     }
+
+//     if (Number(total_marks) <= 0) {
+//         return res.send("Total marks must be greater than zero.");
+//     }
+
+//     db.query(
+//         `SELECT teacher_id, class
+//          FROM teacher
+//          WHERE teacher_id = ?`,
+//         [req.session.teacher_id],
+
+//         (teacherErr, teacherResult) => {
+
+//             if (teacherErr) {
+//                 console.error(teacherErr);
+//                 return res.send("Database error.");
+//             }
+
+//             if (teacherResult.length === 0) {
+//                 return res.send("Teacher not found.");
+//             }
+
+//             const teacher = teacherResult[0];
+
+//             if (!teacher.class) {
+//                 return res.send("Your class has not been assigned.");
+//             }
+
+//             const examSql = `
+//                 INSERT INTO exams
+//                 (
+//                     exam_name,
+//                     academic_year,
+//                     class,
+//                     exam_date,
+//                     total_marks,
+//                     created_by,
+//                     created_role
+//                 )
+//                 VALUES (?, ?, ?, ?, ?, ?, 'teacher')
+//             `;
+
+//             db.query(
+//                 examSql,
+//                 [
+//                     exam_name,
+//                     academic_year,
+//                     teacher.class,
+//                     exam_date,
+//                     total_marks,
+//                     teacher.teacher_id
+//                 ],
+
+//                 (examErr, examResult) => {
+
+//                     if (examErr) {
+//                         console.error(examErr);
+//                         return res.send("Unable to create exam.");
+//                     }
+
+//                     const examId = examResult.insertId;
+
+//                     // Assign this exam to students currently in the class.
+//                     const assignmentSql = `
+//                         INSERT IGNORE INTO exam_students
+//                         (exam_id, register_number)
+
+//                         SELECT ?, register_number
+//                         FROM student
+//                         WHERE TRIM(class) = TRIM(?)
+//                     `;
+
+//                     db.query(
+//                         assignmentSql,
+//                         [examId, teacher.class],
+
+//                         (assignmentErr) => {
+
+//                             if (assignmentErr) {
+//                                 console.error(assignmentErr);
+
+//                                 // Remove the exam if assignment failed.
+//                                 return db.query(
+//                                     "DELETE FROM exams WHERE id = ?",
+//                                     [examId],
+//                                     () => res.send(
+//                                         "Exam created, but student assignment failed."
+//                                     )
+//                                 );
+//                             }
+
+//                             res.redirect("/teacher/index");
+//                         }
+//                     );
+//                 }
+//             );
+//         }
+//     );
+// });
+
+
+router.post(
+    "/exams/:exam_id/student/:register_number/marks",
+    (req, res) => {
+
+        if (!req.session.teacher_id) {
+            return res.redirect("/teacher/login");
         }
-    );
-});
+
+        const examId = Number(req.params.exam_id);
+        const registerNumber = req.params.register_number;
+        const marks = Number(req.body.marks_obtained);
+
+        if (
+            !Number.isInteger(examId) ||
+            examId <= 0 ||
+            !Number.isFinite(marks) ||
+            marks < 0
+        ) {
+            return res.status(400).send("Invalid marks.");
+        }
+
+        // Get teacher's assigned class
+        db.query(
+            "SELECT class FROM teacher WHERE teacher_id = ?",
+            [req.session.teacher_id],
+            (err, teachers) => {
+
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send("Database error.");
+                }
+
+                if (
+                    !teachers.length ||
+                    !String(teachers[0].class || "").trim()
+                ) {
+                    return res.status(403).send("No class assigned.");
+                }
+
+                const assignedClass = String(teachers[0].class).trim();
+
+                // Check exam AND student eligibility
+                const eligibilitySql = `
+                    SELECT
+                        e.id,
+                        e.total_marks,
+                        e.status,
+                        e.class
+
+                    FROM exams e
+
+                    INNER JOIN exam_students es
+                        ON es.exam_id = e.id
+
+                    INNER JOIN student s
+                        ON s.register_number = es.register_number
+
+                    WHERE e.id = ?
+                      AND es.register_number = ?
+                      AND TRIM(e.class) = TRIM(?)
+                      AND TRIM(s.class) = TRIM(?)
+                `;
+
+                db.query(
+                    eligibilitySql,
+                    [
+                        examId,
+                        registerNumber,
+                        assignedClass,
+                        assignedClass
+                    ],
+                    (examErr, exams) => {
+
+                        if (examErr) {
+                            console.error(examErr);
+                            return res.status(500).send("Database error.");
+                        }
+
+                        if (!exams.length) {
+                            return res.status(403).send(
+                                "This student is not eligible for this exam."
+                            );
+                        }
+
+                        const exam = exams[0];
+
+                        if (exam.status !== "Open") {
+                            return res.status(403).send(
+                                "This exam has been finalized. Marks cannot be changed."
+                            );
+                        }
+
+                        if (marks > Number(exam.total_marks)) {
+                            return res.status(400).send(
+                                "Marks cannot exceed the exam total."
+                            );
+                        }
+
+                        // Save or update marks
+                        const saveSql = `
+                            INSERT INTO exam_marks
+                            (exam_id, register_number, marks_obtained)
+                            VALUES (?, ?, ?)
+
+                            ON DUPLICATE KEY UPDATE
+                                marks_obtained = VALUES(marks_obtained)
+                        `;
+
+                        db.query(
+                            saveSql,
+                            [examId, registerNumber, marks],
+                            (saveErr) => {
+
+                                if (saveErr) {
+                                    console.error(saveErr);
+                                    return res.status(500).send(
+                                        "Unable to save marks."
+                                    );
+                                }
+
+                                return res.redirect("/teacher/index");
+                            }
+                        );
+                    }
+                );
+            }
+        );
+    }
+);
+
 
 // =====================================
 // SAVE / UPDATE EXAM MARKS

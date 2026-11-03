@@ -1224,7 +1224,7 @@
 
                                     </div>
 
-                                    <% exams.forEach(function(exam) { %>
+                                    <!-- <% exams.forEach(function(exam) { %>
 
                                         <form
                                             action="/teacher/exams/<%= exam.id %>/student/<%= encodeURIComponent(student.register_number) %>/marks"
@@ -1265,7 +1265,66 @@
 
                                         </form>
 
-                                        <% }); %>
+                                        <% }); %> -->
+
+                                        <% exams.forEach(function(exam) { %>
+
+    <%
+        const eligibleStudents =
+            (exam.eligible_register_numbers || "").split(",");
+
+        if (eligibleStudents.includes(student.register_number)) {
+    %>
+
+        <form
+            action="/teacher/exams/<%= exam.id %>/student/<%= encodeURIComponent(student.register_number) %>/marks"
+            method="POST"
+            class="marks-form">
+
+            <h5>
+                <i class="bi bi-journal-text me-1"></i>
+                <%= exam.exam_name %>
+            </h5>
+
+            <p class="text-muted mb-3">
+                Academic Year: <%= exam.academic_year %>
+                <span class="mx-1">·</span>
+                Total: <%= exam.total_marks %>
+            </p>
+
+            <% if (exam.status === 'Open') { %>
+
+                <label class="form-label">Marks Obtained</label>
+
+                <input
+                    type="number"
+                    name="marks_obtained"
+                    class="form-control"
+                    min="0"
+                    max="<%= exam.total_marks %>"
+                    step="0.01"
+                    placeholder="Enter marks"
+                    required>
+
+                <button type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="bi bi-save me-1"></i>
+                    Save / Update Marks
+                </button>
+
+            <% } else { %>
+
+                <div class="alert alert-success py-2 mb-0 small">
+                    <i class="bi bi-lock-fill me-1"></i>
+                    This examination is finalized.
+                </div>
+
+            <% } %>
+
+        </form>
+
+    <% } %>
+
+<% }); %>
 
                                             <% } %>
 

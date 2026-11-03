@@ -161,4 +161,23 @@ conn.query(`
     })
 )
 
+conn.query(`
+    CREATE TABLE IF NOT EXISTS exam_students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    exam_id INT NOT NULL,
+    register_number VARCHAR(100) NOT NULL,
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE KEY unique_exam_student (exam_id, register_number),
+
+    FOREIGN KEY (exam_id) REFERENCES exams(id)
+        ON DELETE CASCADE
+)`,((err)=>{
+        if(err){
+            console.log(err);
+            return;
+        }
+        console.log("Exam MArks table created successfully");
+    }))
+
 module.exports=conn;
