@@ -7,161 +7,713 @@
 
     <title>Student Home | EduManage</title>
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
 
-    <link href="/css/studHome.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --navy: #172554;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e8edf5;
+            --background: #f4f7fc;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 5% 10%, rgba(99, 102, 241, 0.07), transparent 28%),
+                radial-gradient(circle at 95% 85%, rgba(59, 130, 246, 0.07), transparent 28%),
+                var(--background);
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .custom-navbar {
+            padding: 13px 0;
+            background: var(--navy);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.12);
+        }
+
+        .navbar-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+            color: #ffffff !important;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            font-size: 20px;
+        }
+
+        .brand-name span {
+            color: #a5b4fc;
+        }
+
+        .navbar-nav {
+            gap: 8px;
+        }
+
+        .navbar-nav .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 15px !important;
+            border-radius: 9px;
+            color: #dbeafe !important;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff !important;
+        }
+
+        .navbar-nav .nav-link i {
+            font-size: 16px;
+        }
+
+        .btn-logout {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 17px;
+            border: 1px solid rgba(248, 113, 113, 0.35);
+            border-radius: 9px;
+            background: rgba(220, 38, 38, 0.15);
+            color: #fecaca;
+            font-size: 12px;
+            font-weight: 700;
+            transition: 0.25s;
+        }
+
+        .btn-logout:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: none !important;
+        }
+
+        .navbar-toggler-icon {
+            filter: brightness(0) invert(1);
+        }
+
+        /* ================= MAIN ================= */
+
+        .home-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 55px;
+            padding-bottom: 55px;
+        }
+
+        .home-content {
+            width: 100%;
+            max-width: 980px;
+        }
+
+        .breadcrumb-text {
+            margin-bottom: 18px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .breadcrumb-text i {
+            margin-right: 6px;
+        }
+
+        /* ================= WELCOME CARD ================= */
+
+        .welcome-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e6eaf3;
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.07);
+        }
+
+        .welcome-main {
+            position: relative;
+            overflow: hidden;
+            padding: 48px 45px;
+            color: white;
+            background: linear-gradient(115deg, #1e3a8a, #4338ca, #6366f1);
+        }
+
+        .welcome-main::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            top: -190px;
+            right: -75px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 50%;
+        }
+
+        .welcome-main::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            bottom: -160px;
+            right: 160px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+            max-width: 620px;
+        }
+
+        .welcome-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 17px;
+            padding: 7px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #e0e7ff;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+        }
+
+        .welcome-label i {
+            font-size: 13px;
+        }
+
+        .welcome-card h1 {
+            margin-bottom: 15px;
+            font-size: clamp(29px, 5vw, 40px);
+            font-weight: 800;
+            letter-spacing: -1.2px;
+            line-height: 1.3;
+            overflow-wrap: anywhere;
+        }
+
+        .student-name {
+            color: #c7d2fe;
+        }
+
+        .welcome-description {
+            max-width: 560px;
+            margin-bottom: 27px;
+            color: #e0e7ff;
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        /* ================= DASHBOARD BUTTON ================= */
+
+        .dashboard-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 13px 21px;
+            border: 1px solid #ffffff;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #3730a3;
+            font-size: 13px;
+            font-weight: 750;
+            transition: 0.25s;
+        }
+
+        .dashboard-btn:hover {
+            background: #e0e7ff;
+            color: #312e81;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
+        }
+
+        .dashboard-btn i {
+            font-size: 16px;
+        }
+
+        /* ================= BOTTOM INFORMATION ================= */
+
+        .welcome-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 23px 35px;
+            background: #ffffff;
+        }
+
+        .portal-info {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .portal-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-size: 19px;
+        }
+
+        .portal-text strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .portal-text span {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        .secure-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: #15803d;
+            font-size: 11px;
+            font-weight: 650;
+            white-space: nowrap;
+        }
+
+        /* ================= QUICK ACCESS ================= */
+
+        .quick-access {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 22px;
+        }
+
+        .quick-card {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: #ffffff;
+            box-shadow: 0 5px 18px rgba(15, 23, 42, 0.025);
+            transition: 0.25s;
+        }
+
+        .quick-card:hover {
+            border-color: #c7d2fe;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.06);
+        }
+
+        .quick-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 11px;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-size: 19px;
+        }
+
+        .quick-card strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .quick-card span {
+            color: #94a3b8;
+            font-size: 10px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .home-footer {
+            padding: 20px 15px;
+            border-top: 1px solid #e8edf5;
+            background: #ffffff;
+            text-align: center;
+        }
+
+        .home-footer p {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 768px) {
+
+            .navbar-nav {
+                padding-top: 15px;
+                align-items: stretch !important;
+            }
+
+            .navbar-nav .nav-link {
+                width: 100%;
+            }
+
+            .btn-logout {
+                width: 100%;
+            }
+
+            .home-container {
+                padding-top: 32px;
+                padding-bottom: 32px;
+            }
+
+            .welcome-main {
+                padding: 35px 25px;
+            }
+
+            .welcome-bottom {
+                padding: 20px 24px;
+            }
+
+            .quick-access {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .navbar-brand {
+                font-size: 19px;
+            }
+
+            .logo-icon {
+                width: 37px;
+                height: 37px;
+                font-size: 18px;
+            }
+
+            .welcome-main {
+                padding: 30px 20px;
+            }
+
+            .welcome-card h1 {
+                font-size: 28px;
+            }
+
+            .welcome-description {
+                font-size: 12px;
+                line-height: 1.8;
+            }
+
+            .dashboard-btn {
+                width: 100%;
+            }
+
+            .welcome-bottom {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 20px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- Navigation Bar -->
+    <!-- ================= NAVIGATION BAR ================= -->
+
     <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+
         <div class="container">
 
-            <a class="navbar-brand fw-bold" href="/students/index">
-                <span class="logo-icon">🎓</span>
-                EduManage
+            <a class="navbar-brand" href="/students/index">
+
+                <span class="logo-icon">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </span>
+
+                <span class="brand-name">
+                    Edu<span>Manage</span>
+                </span>
+
             </a>
 
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#studentNavbar"
-                aria-controls="studentNavbar"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
+
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#studentNavbar"
+                    aria-controls="studentNavbar"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
 
                 <span class="navbar-toggler-icon"></span>
+
             </button>
+
 
             <div class="collapse navbar-collapse" id="studentNavbar">
 
                 <ul class="navbar-nav ms-auto align-items-lg-center">
 
-                    <!-- <li class="nav-item">
-                        <a class="nav-link active" href="/students/index">
-                            <i class="bi bi-house-door"></i> Index
-                        </a>
-                    </li> -->
-
-
                     <li class="nav-item">
-                        <a class="nav-link" href="/students/dashboard">
-                            <i class="bi bi-person-vcard"></i> My Dashboard
+
+                        <a class="nav-link active" href="/students/dashboard">
+                            <i class="bi bi-person-vcard"></i>
+                            My Dashboard
                         </a>
+
                     </li>
 
-                    
 
                     <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                        <a href="/students/logout" class="btn btn-logout">
-                            <i class="bi bi-box-arrow-right"></i> Logout
+
+                        <a href="/students/logout"
+                           class="btn btn-logout"
+                           onclick="return confirm('Are you sure you want to log out?');">
+
+                            <i class="bi bi-box-arrow-right"></i>
+                            Logout
+
                         </a>
+
                     </li>
 
                 </ul>
+
             </div>
+
         </div>
+
     </nav>
 
-    <!-- Welcome Section -->
+
+    <!-- ================= MAIN CONTENT ================= -->
+
     <main class="container home-container">
 
-        <section class="welcome-card">
+        <div class="home-content">
 
-            <div class="welcome-icon">
-                <i class="bi bi-mortarboard-fill"></i>
+
+            <!-- BREADCRUMB -->
+
+            <div class="breadcrumb-text">
+                <i class="bi bi-house-door"></i>
+                Student Portal
+                <i class="bi bi-chevron-right mx-2"></i>
+                Home
             </div>
 
-            <p class="welcome-label">STUDENT PORTAL</p>
 
-            <h1>
-                Welcome,
-                <span class="student-name"><%= student.name %></span>!
-            </h1>
+            <!-- WELCOME CARD -->
 
-            <p class="welcome-description">
-                Welcome to EduManage. Access your student profile,
-                view your academic information, and keep track of
-                your progress from your personal dashboard.
-            </p>
+            <section class="welcome-card">
 
-            <a href="/students/dashboard" class="btn dashboard-btn">
-                <i class="bi bi-person-lines-fill"></i>
-                View My Dashboard
-                <i class="bi bi-arrow-right"></i>
-            </a>
 
-            <div class="welcome-footer">
-                <i class="bi bi-shield-check"></i>
-                Your personal student portal
-            </div>
+                <div class="welcome-main">
 
-        </section>
+                    <div class="welcome-content">
 
-        <!-- Quick Access Cards
-        <section class="quick-access">
-
-            <h2>Quick Access</h2>
-            <p class="section-description">
-                Choose an option to continue.
-            </p>
-
-            <div class="row g-4">
-
-                <div class="col-md-6">
-                    <a href="/students/dashboard" class="access-card">
-                        <div class="access-icon profile-icon">
-                            <i class="bi bi-person-badge"></i>
+                        <div class="welcome-label">
+                            <i class="bi bi-stars"></i>
+                            STUDENT PORTAL
                         </div>
 
-                        <div>
-                            <h3>My Profile</h3>
-                            <p>View your personal and student details.</p>
-                        </div>
 
-                        <i class="bi bi-chevron-right access-arrow"></i>
-                    </a>
+                        <h1>
+                            Welcome,
+                            <span class="student-name">
+                                <%= student.name || 'Student' %>
+                            </span>!
+                        </h1>
+
+
+                        <p class="welcome-description">
+
+                            Welcome to EduManage, your personal student
+                            workspace. Access your profile, check your
+                            academic information, view examination marks,
+                            and monitor your learning progress in one place.
+
+                        </p>
+
+
+                        <a href="/students/dashboard" class="btn dashboard-btn">
+
+                            <i class="bi bi-person-lines-fill"></i>
+
+                            View My Dashboard
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
                 </div>
 
-                <div class="col-md-6">
-                    <a href="/students/dashboard" class="access-card">
-                        <div class="access-icon academic-icon">
-                            <i class="bi bi-journal-bookmark"></i>
+
+                <!-- BOTTOM INFORMATION -->
+
+                <div class="welcome-bottom">
+
+                    <div class="portal-info">
+
+                        <div class="portal-icon">
+                            <i class="bi bi-mortarboard-fill"></i>
                         </div>
 
-                        <div>
-                            <h3>Academic Details</h3>
-                            <p>Check the academic information available to you.</p>
+                        <div class="portal-text">
+
+                            <strong>My Student Workspace</strong>
+
+                            <span>Your academic information in one place</span>
+
                         </div>
 
-                        <i class="bi bi-chevron-right access-arrow"></i>
-                    </a>
+                    </div>
+
+
+                    <div class="secure-label">
+
+                        <i class="bi bi-shield-check"></i>
+
+                        Secure Student Portal
+
+                    </div>
+
                 </div>
 
-            </div>
-        </section> -->
+            </section>
+
+
+            <!-- QUICK ACCESS -->
+
+            <section class="quick-access">
+
+
+                <div class="quick-card">
+
+                    <div class="quick-icon">
+                        <i class="bi bi-person-vcard"></i>
+                    </div>
+
+                    <div>
+                        <strong>My Profile</strong>
+                        <span>View your personal details</span>
+                    </div>
+
+                </div>
+
+
+                <div class="quick-card">
+
+                    <div class="quick-icon">
+                        <i class="bi bi-journal-check"></i>
+                    </div>
+
+                    <div>
+                        <strong>Academic Records</strong>
+                        <span>Access your academic information</span>
+                    </div>
+
+                </div>
+
+
+                <div class="quick-card">
+
+                    <div class="quick-icon">
+                        <i class="bi bi-bar-chart-line"></i>
+                    </div>
+
+                    <div>
+                        <strong>Exam Performance</strong>
+                        <span>Track your examination results</span>
+                    </div>
+
+                </div>
+
+
+            </section>
+
+        </div>
 
     </main>
 
-    <!-- Footer -->
+
+    <!-- ================= FOOTER ================= -->
+
     <footer class="home-footer">
+
         <p>
-            &copy; <%= new Date().getFullYear() %> EduManage.
-            Student Management System.
+            &copy; <%= new Date().getFullYear() %>
+            EduManage Student Management System.
+            All rights reserved.
         </p>
+
     </footer>
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

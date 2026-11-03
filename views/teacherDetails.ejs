@@ -5,13 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Teacher Details | EduManage</title>
+    <title>Teacher Profile | EduManage</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
 
     <style>
         * {
@@ -21,29 +24,26 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            background:
-                radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.15), transparent 30%),
-                radial-gradient(circle at 90% 90%, rgba(139, 92, 246, 0.15), transparent 30%),
-                #f1f5f9;
+            background: #f4f7fc;
             color: #1e293b;
         }
 
         /* Navbar */
 
         .navbar {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(15px);
-            padding: 16px 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            height: 76px;
+            background: #ffffff;
+            border-bottom: 1px solid #e9edf5;
+            box-shadow: 0 3px 15px rgba(15, 23, 42, 0.035);
         }
 
         .navbar-brand {
             font-size: 23px;
             font-weight: 800;
-            color: #2563eb;
             letter-spacing: -1px;
+            color: #2563eb;
             text-decoration: none;
         }
 
@@ -52,28 +52,47 @@
         }
 
         .back-btn {
-            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 17px;
+            border: 1px solid #e2e8f0;
+            border-radius: 9px;
             color: #475569;
+            background: #ffffff;
+            text-decoration: none;
             font-size: 13px;
             font-weight: 600;
-            padding: 10px 18px;
-            border-radius: 10px;
-            background: #f1f5f9;
-            transition: 0.3s;
+            transition: 0.25s;
         }
 
         .back-btn:hover {
-            background: #2563eb;
-            color: white;
-            transform: translateY(-2px);
+            color: #2563eb;
+            background: #eff6ff;
+            border-color: #bfdbfe;
         }
 
         /* Main container */
 
         .main-container {
-            max-width: 950px;
-            margin: 55px auto;
-            padding: 0 20px;
+            max-width: 1050px;
+            margin: 42px auto;
+            padding: 0 22px;
+        }
+
+        .breadcrumb-text {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb-text a {
+            color: #64748b;
+            text-decoration: none;
+        }
+
+        .breadcrumb-text a:hover {
+            color: #2563eb;
         }
 
         .page-heading {
@@ -81,13 +100,14 @@
         }
 
         .page-heading h2 {
-            font-size: 27px;
-            font-weight: 700;
+            font-size: 25px;
+            font-weight: 800;
             color: #172554;
+            letter-spacing: -0.7px;
         }
 
         .page-heading p {
-            color: #64748b;
+            color: #94a3b8;
             font-size: 13px;
             margin-top: 7px;
         }
@@ -95,95 +115,171 @@
         /* Profile card */
 
         .profile-card {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 22px;
+            background: #ffffff;
+            border: 1px solid #e8edf5;
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 15px 45px rgba(15, 23, 42, 0.07);
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.055);
         }
+
+        /* Profile header */
 
         .profile-header {
-            background: linear-gradient(120deg, #2563eb, #6366f1, #7c3aed);
-            padding: 35px;
-            color: white;
+            position: relative;
+            padding: 38px 40px;
+            background: linear-gradient(115deg, #1e40af, #4f46e5, #7c3aed);
             display: flex;
             align-items: center;
-            gap: 22px;
+            gap: 24px;
+            color: white;
+            overflow: hidden;
         }
 
-        .profile-icon {
-            width: 85px;
-            height: 85px;
-            border-radius: 22px;
-            background: rgba(255, 255, 255, 0.18);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        .profile-header::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+            right: -65px;
+            top: -140px;
+        }
+
+        .profile-header::after {
+            content: "";
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            right: 100px;
+            bottom: -140px;
+        }
+
+        .profile-avatar {
+            width: 88px;
+            height: 88px;
+            min-width: 88px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 42px;
+            background: rgba(255, 255, 255, 0.17);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: 34px;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
         }
 
-        .profile-header h3 {
-            font-size: 23px;
-            font-weight: 700;
-            margin-bottom: 7px;
+        .profile-info {
+            position: relative;
+            z-index: 1;
         }
 
-        .profile-header p {
+        .profile-info h3 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 9px;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-info p {
+            margin: 0;
             font-size: 13px;
-            opacity: 0.85;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .teacher-id-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 13px;
+            padding: 7px 12px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.15);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Content */
+
+        .details-section {
+            padding: 35px 40px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 23px;
+        }
+
+        .section-heading-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 17px;
+        }
+
+        .section-heading h5 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e293b;
             margin: 0;
         }
 
-        .details-section {
-            padding: 35px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #334155;
-            margin-bottom: 23px;
+        .section-heading small {
+            display: block;
+            color: #94a3b8;
+            font-size: 11px;
+            margin-top: 4px;
         }
 
         /* Details grid */
 
         .details-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
         }
 
         .detail-box {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 19px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 14px;
-            transition: 0.3s ease;
+            gap: 14px;
             min-width: 0;
+            padding: 17px;
+            border: 1px solid #edf0f5;
+            border-radius: 12px;
+            background: #fbfcfe;
+            transition: 0.25s ease;
         }
 
         .detail-box:hover {
-            background: #eff6ff;
-            border-color: #bfdbfe;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.07);
+            background: #f5f8ff;
+            border-color: #cbdafe;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.06);
         }
 
         .detail-icon {
             width: 43px;
             height: 43px;
             min-width: 43px;
-            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #dbeafe;
-            color: #2563eb;
-            font-size: 19px;
+            border-radius: 11px;
+            background: #eaf1ff;
+            color: #3867d6;
+            font-size: 18px;
         }
 
         .detail-content {
@@ -192,85 +288,137 @@
 
         .detail-content label {
             display: block;
-            font-size: 11px;
-            font-weight: 600;
+            margin-bottom: 6px;
             color: #94a3b8;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
             text-transform: uppercase;
-            letter-spacing: 0.7px;
-            margin-bottom: 5px;
         }
 
         .detail-content p {
+            margin: 0;
+            color: #334155;
             font-size: 13px;
             font-weight: 600;
-            color: #334155;
-            margin: 0;
             overflow-wrap: anywhere;
+            line-height: 1.5;
         }
 
         .address-box {
             grid-column: span 2;
         }
 
+        /* Assigned class */
+
+        .class-value {
+            display: inline-block;
+            padding: 5px 11px;
+            border-radius: 6px;
+            background: #eaf1ff;
+            color: #2563eb !important;
+            font-size: 12px !important;
+        }
+
+        .not-assigned {
+            background: #fff7ed;
+            color: #c2410c !important;
+        }
+
         /* Footer */
 
         .card-footer-custom {
-            padding: 22px 35px;
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
+            padding: 22px 40px;
+            background: #fbfcfe;
+            border-top: 1px solid #edf0f5;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
         }
 
-        .status-text {
-            color: #64748b;
-            font-size: 12px;
+        .footer-note {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        .footer-note i {
+            color: #16a34a;
+            margin-right: 5px;
         }
 
         .footer-btn {
-            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 19px;
+            border-radius: 9px;
+            background: #2563eb;
+            color: #ffffff;
             text-decoration: none;
-            background: linear-gradient(120deg, #2563eb, #6366f1);
-            color: white;
-            padding: 11px 23px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            transition: 0.3s;
+            font-size: 12px;
+            font-weight: 700;
+            transition: 0.25s;
         }
 
         .footer-btn:hover {
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+            color: #ffffff;
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 15px rgba(37, 99, 235, 0.2);
         }
 
         /* Responsive */
 
-        @media(max-width: 600px) {
+        @media(max-width: 650px) {
+
+            .navbar {
+                height: 68px;
+            }
+
+            .navbar-brand {
+                font-size: 20px;
+            }
+
+            .back-btn {
+                padding: 9px 11px;
+                font-size: 11px;
+            }
 
             .main-container {
-                margin: 30px auto;
+                margin: 28px auto;
+                padding: 0 14px;
+            }
+
+            .page-heading h2 {
+                font-size: 21px;
             }
 
             .profile-header {
-                padding: 25px 20px;
+                padding: 28px 20px;
                 flex-direction: column;
                 text-align: center;
             }
 
-            .profile-header h3 {
-                font-size: 19px;
+            .profile-avatar {
+                width: 75px;
+                height: 75px;
+                min-width: 75px;
+                font-size: 28px;
+            }
+
+            .profile-info h3 {
+                font-size: 20px;
             }
 
             .details-section {
-                padding: 22px 18px;
+                padding: 25px 18px;
             }
 
             .details-grid {
                 grid-template-columns: 1fr;
-                gap: 13px;
+                gap: 12px;
             }
 
             .address-box {
@@ -280,11 +428,11 @@
             .card-footer-custom {
                 padding: 20px;
                 flex-direction: column;
-                gap: 17px;
+                text-align: center;
             }
 
-            .page-heading h2 {
-                font-size: 22px;
+            .footer-btn {
+                width: 100%;
             }
         }
     </style>
@@ -302,7 +450,7 @@
             </a>
 
             <a href="/admin/index" class="back-btn">
-                <i class="bi bi-arrow-left me-1"></i>
+                <i class="bi bi-arrow-left"></i>
                 Back to Admin
             </a>
 
@@ -312,19 +460,23 @@
 
     <!-- Main content -->
 
-    <div class="main-container">
+    <main class="main-container">
 
-        <div class="page-heading">
-
-            <h2>Teacher Profile</h2>
-
-            <p>
-                <i class="bi bi-house-door me-1"></i>
-                Admin / Teachers / Teacher Details
-            </p>
-
+        <div class="breadcrumb-text">
+            <a href="/admin/index">Admin</a>
+            <i class="bi bi-chevron-right mx-1"></i>
+            <span>Teachers</span>
+            <i class="bi bi-chevron-right mx-1"></i>
+            <span>Teacher Profile</span>
         </div>
 
+        <div class="page-heading">
+            <h2>Teacher Profile</h2>
+            <p>View and manage the teacher's professional information.</p>
+        </div>
+
+
+        <!-- Profile card -->
 
         <div class="profile-card">
 
@@ -332,33 +484,50 @@
 
             <div class="profile-header">
 
-                <div class="profile-icon">
-                    <i class="bi bi-person-workspace"></i>
+                <div class="profile-avatar">
+                    <%= teacher.name ? teacher.name.trim().charAt(0).toUpperCase() : 'T' %>
                 </div>
 
-                <div>
-                    <h3><%= teacher.name %></h3>
+                <div class="profile-info">
+
+                    <h3><%= teacher.name || 'Teacher Name' %></h3>
 
                     <p>
-                        <i class="bi bi-person-badge me-1"></i>
-                        Teacher ID: <%= teacher.teacher_id %>
+                        <i class="bi bi-person-workspace me-1"></i>
+                        Teacher Profile
                     </p>
+
+                    <div class="teacher-id-badge">
+                        <i class="bi bi-person-badge"></i>
+                        Teacher ID: <%= teacher.teacher_id || 'N/A' %>
+                    </div>
 
                 </div>
 
             </div>
 
 
-            <!-- Teacher information -->
+            <!-- Details section -->
 
             <div class="details-section">
 
-                <h5 class="section-title">
-                    <i class="bi bi-person-lines-fill text-primary me-2"></i>
-                    Professional Information
-                </h5>
+                <div class="section-heading">
+
+                    <div class="section-heading-icon">
+                        <i class="bi bi-person-vcard"></i>
+                    </div>
+
+                    <div>
+                        <h5>Teacher Information</h5>
+                        <small>Personal and professional details</small>
+                    </div>
+
+                </div>
+
 
                 <div class="details-grid">
+
+                    <!-- Full name -->
 
                     <div class="detail-box">
 
@@ -368,11 +537,13 @@
 
                         <div class="detail-content">
                             <label>Full Name</label>
-                            <p><%= teacher.name %></p>
+                            <p><%= teacher.name || 'Not Available' %></p>
                         </div>
 
                     </div>
 
+
+                    <!-- Teacher ID -->
 
                     <div class="detail-box">
 
@@ -382,11 +553,13 @@
 
                         <div class="detail-content">
                             <label>Teacher ID</label>
-                            <p><%= teacher.teacher_id %></p>
+                            <p><%= teacher.teacher_id || 'Not Available' %></p>
                         </div>
 
                     </div>
 
+
+                    <!-- Email -->
 
                     <div class="detail-box">
 
@@ -396,11 +569,13 @@
 
                         <div class="detail-content">
                             <label>Email Address</label>
-                            <p><%= teacher.email %></p>
+                            <p><%= teacher.email || 'Not Available' %></p>
                         </div>
 
                     </div>
 
+
+                    <!-- Mobile -->
 
                     <div class="detail-box">
 
@@ -410,11 +585,13 @@
 
                         <div class="detail-content">
                             <label>Mobile Number</label>
-                            <p><%= teacher.mobile %></p>
+                            <p><%= teacher.mobile || 'Not Available' %></p>
                         </div>
 
                     </div>
 
+
+                    <!-- Assigned class -->
 
                     <div class="detail-box">
 
@@ -424,13 +601,27 @@
 
                         <div class="detail-content">
                             <label>Assigned Class</label>
-                            <p>
-                                <%= teacher.class ? teacher.class : "Not Assigned" %>
-                            </p>
+
+                            <% if (teacher.class && teacher.class.trim()) { %>
+
+                                <p class="class-value">
+                                    Class <%= teacher.class %>
+                                </p>
+
+                            <% } else { %>
+
+                                <p class="class-value not-assigned">
+                                    Not Assigned
+                                </p>
+
+                            <% } %>
+
                         </div>
 
                     </div>
 
+
+                    <!-- Residential address -->
 
                     <div class="detail-box address-box">
 
@@ -440,7 +631,7 @@
 
                         <div class="detail-content">
                             <label>Residential Address</label>
-                            <p><%= teacher.address %></p>
+                            <p><%= teacher.address || 'Address not provided' %></p>
                         </div>
 
                     </div>
@@ -454,13 +645,13 @@
 
             <div class="card-footer-custom">
 
-                <span class="status-text">
-                    <i class="bi bi-shield-check text-success me-1"></i>
-                    Teacher information retrieved from database
+                <span class="footer-note">
+                    <i class="bi bi-shield-check"></i>
+                    Teacher information retrieved from EduManage database
                 </span>
 
                 <a href="/admin/index" class="footer-btn">
-                    <i class="bi bi-arrow-left me-2"></i>
+                    <i class="bi bi-arrow-left"></i>
                     Back to Teachers
                 </a>
 
@@ -468,7 +659,7 @@
 
         </div>
 
-    </div>
+    </main>
 
 </body>
 </html>

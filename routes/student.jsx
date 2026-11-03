@@ -350,7 +350,69 @@ router.get("/index", requireStudent, (req, res) => {
 // ------------------------------------
 // STUDENT DASHBOARD
 // ------------------------------------
+// router.get("/dashboard", requireStudent, (req, res) => {
+//     const studentSql = `
+//         SELECT *
+//         FROM student
+//         WHERE register_number = ?
+//         LIMIT 1
+//     `;
+
+//     db.query(studentSql, [req.session.studid], (err, studentRows) => {
+//         if (err) {
+//             console.error("Student dashboard error:", err);
+//             return res.status(500).send("Unable to load student dashboard.");
+//         }
+
+//         if (!studentRows || studentRows.length === 0) {
+//             return req.session.destroy(() => {
+//                 res.redirect("/students/login");
+//             });
+//         }
+
+//         const student = studentRows[0];
+
+//         const resultsSql = `
+//             SELECT
+//                 academic_year,
+//                 class_at_exam,
+//                 marks,
+//                 total_marks,
+//                 status,
+//                 finalized
+//             FROM annual_results
+//             WHERE register_number = ?
+//               AND finalized = 1
+//             ORDER BY academic_year DESC
+//         `;
+
+//         db.query(
+//             resultsSql,
+//             [student.register_number],
+//             (resultsErr, results) => {
+//                 if (resultsErr) {
+//                     console.error("Annual results error:", resultsErr);
+//                     return res.status(500).send(
+//                         "Unable to load annual examination results."
+//                     );
+//                 }
+
+//                 return res.render("studDashboard.ejs", {
+//                     student: student,
+//                     results: results || []
+//                 });
+//             }
+//         );
+//     });
+// });
+
+// ------------------------------------
+// STUDENT DASHBOARD WITH ALL MARKS
+// ------------------------------------
+
 router.get("/dashboard", requireStudent, (req, res) => {
+
+    // 1. Fetch student details
     const studentSql = `
         SELECT *
         FROM student
@@ -359,9 +421,12 @@ router.get("/dashboard", requireStudent, (req, res) => {
     `;
 
     db.query(studentSql, [req.session.studid], (err, studentRows) => {
+
         if (err) {
             console.error("Student dashboard error:", err);
-            return res.status(500).send("Unable to load student dashboard.");
+            return res.status(500).send(
+                "Unable to load student dashboard."
+            );
         }
 
         if (!studentRows || studentRows.length === 0) {
@@ -372,35 +437,79 @@ router.get("/dashboard", requireStudent, (req, res) => {
 
         const student = studentRows[0];
 
-        const resultsSql = `
+        // 2. Fetch individual exam marks
+        const examMarksSql = `
             SELECT
-                academic_year,
-                class_at_exam,
-                marks,
-                total_marks,
-                status,
-                finalized
-            FROM annual_results
-            WHERE register_number = ?
-              AND finalized = 1
-            ORDER BY academic_year DESC
+                e.exam_name,
+                e.academic_year,
+                e.exam_date,
+                e.total_marks,
+                em.marks_obtained,
+                ROUND(
+                    (em.marks_obtained / e.total_marks) * 100,
+                    2
+                ) AS percentage,
+                CASE
+                    WHEN (em.marks_obtained / e.total_marks) * 100 >= 35
+                    THEN 'Pass'
+                    ELSE 'Fail'
+                END AS status
+            FROM exam_marks em
+            INNER JOIN exams e
+                ON em.exam_id = e.id
+            WHERE em.register_number = ?
+              AND e.total_marks > 0
+            ORDER BY e.academic_year DESC, e.exam_date DESC
         `;
 
         db.query(
-            resultsSql,
+            examMarksSql,
             [student.register_number],
-            (resultsErr, results) => {
-                if (resultsErr) {
-                    console.error("Annual results error:", resultsErr);
+            (examErr, examMarks) => {
+
+                if (examErr) {
+                    console.error("Exam marks error:", examErr);
                     return res.status(500).send(
-                        "Unable to load annual examination results."
+                        "Unable to load examination marks."
                     );
                 }
 
-                return res.render("studDashboard.ejs", {
-                    student: student,
-                    results: results || []
-                });
+                // 3. Fetch finalized annual results
+                const annualSql = `
+                    SELECT
+                        academic_year,
+                        class_at_exam,
+                        marks,
+                        total_marks,
+                        pass_percentage,
+                        status,
+                        finalized
+                    FROM annual_results
+                    WHERE register_number = ?
+                      AND finalized = 1
+                    ORDER BY academic_year DESC
+                `;
+
+                db.query(
+                    annualSql,
+                    [student.register_number],
+                    (annualErr, results) => {
+
+                        if (annualErr) {
+                            console.error("Annual results error:", annualErr);
+                            return res.status(500).send(
+                                "Unable to load annual results."
+                            );
+                        }
+
+                        return res.render("studDashboard.ejs", {
+                            student,
+                            examMarks: examMarks || [],
+                            results: results || []
+                        });
+
+                    }
+                );
             }
         );
     });

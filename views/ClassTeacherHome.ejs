@@ -1,45 +1,53 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class Teacher Home | EduManage</title>
+    <title>Class Teacher Dashboard | EduManage</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <link href="/css/classteacherhome.css" rel="stylesheet">
-    <link href="/css/studhome.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --primary: #4f46e5;
             --primary-dark: #3730a3;
-            --background: #f4f7ff;
+            --navy: #172554;
+            --background: #f4f6fb;
+            --surface: #ffffff;
             --text: #1e293b;
             --muted: #64748b;
-            --border: #e2e8f0;
+            --border: #e5eaf2;
+            --success: #059669;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
+            margin: 0;
             min-height: 100vh;
             background: var(--background);
             color: var(--text);
-            font-family: "Segoe UI", Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
+        /* Navbar */
+
         .custom-navbar {
-            background: linear-gradient(120deg, #172554, #4338ca, #6366f1);
-            box-shadow: 0 5px 22px rgba(30, 41, 59, .16);
+            background: linear-gradient(110deg, #172554, #312e81, #4f46e5);
+            padding: 14px 0;
+            box-shadow: 0 5px 22px rgba(15, 23, 42, .13);
         }
 
         .navbar-brand {
-            letter-spacing: .4px;
+            color: #fff !important;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -.5px;
         }
 
         .logo-icon {
@@ -47,33 +55,55 @@
         }
 
         .navbar .nav-link {
-            color: rgba(255, 255, 255, .85);
-            margin: 0 5px;
+            color: rgba(255,255,255,.83);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 13px !important;
             transition: .2s;
         }
 
-        .navbar .nav-link:hover,
-        .navbar .nav-link.active {
+        .navbar .nav-link:hover {
             color: #fff;
+        }
+
+        .registration-btn {
+            background: #fbbf24;
+            color: #422006;
+            border: none;
+            border-radius: 9px;
+            padding: 9px 15px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .registration-btn:hover {
+            background: #f59e0b;
+            color: #422006;
         }
 
         .btn-logout {
+            border: 1px solid rgba(255,255,255,.55);
             color: #fff;
-            border: 1px solid rgba(255, 255, 255, .65);
-            border-radius: 10px;
-            padding: 8px 18px;
+            border-radius: 9px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .btn-logout:hover {
-            color: #312e81;
+            color: var(--navy);
             background: #fff;
         }
 
+        /* Main layout */
+
         .page-container {
-            max-width: 1250px;
+            max-width: 1350px;
             padding-top: 32px;
-            padding-bottom: 50px;
+            padding-bottom: 45px;
         }
+
+        /* Welcome banner */
 
         .welcome-card {
             position: relative;
@@ -81,111 +111,159 @@
             display: flex;
             align-items: center;
             gap: 22px;
-            padding: 30px;
-            margin-bottom: 28px;
+            padding: 34px;
+            margin-bottom: 30px;
             border-radius: 22px;
             color: #fff;
-            background: linear-gradient(125deg, #312e81, #4f46e5, #818cf8);
-            box-shadow: 0 14px 35px rgba(79, 70, 229, .2);
+            background: linear-gradient(115deg, #1e1b4b, #4338ca, #6366f1);
+            box-shadow: 0 14px 32px rgba(79,70,229,.18);
         }
 
+        .welcome-card::before,
         .welcome-card::after {
             content: "";
             position: absolute;
-            width: 220px;
-            height: 220px;
-            right: -65px;
-            top: -100px;
-            border: 35px solid rgba(255, 255, 255, .08);
+            border: 35px solid rgba(255,255,255,.06);
             border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .welcome-card::before {
+            width: 250px;
+            height: 250px;
+            right: -70px;
+            top: -130px;
+        }
+
+        .welcome-card::after {
+            width: 150px;
+            height: 150px;
+            right: 170px;
+            bottom: -115px;
         }
 
         .teacher-avatar {
-            width: 76px;
-            height: 76px;
+            width: 78px;
+            height: 78px;
             flex-shrink: 0;
             display: grid;
             place-items: center;
             border-radius: 22px;
-            color: #fff;
-            font-size: 36px;
-            background: rgba(255, 255, 255, .17);
-            border: 1px solid rgba(255, 255, 255, .24);
+            background: rgba(255,255,255,.16);
+            border: 1px solid rgba(255,255,255,.24);
+            font-size: 37px;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-label {
+            display: inline-block;
+            margin-bottom: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #c7d2fe;
         }
 
         .welcome-card h1 {
             font-size: clamp(1.5rem, 4vw, 2.2rem);
-            font-weight: 750;
+            font-weight: 800;
             margin-bottom: 8px;
             overflow-wrap: anywhere;
         }
 
         .welcome-card p {
-            color: rgba(255, 255, 255, .85);
-            margin-bottom: 14px;
+            color: rgba(255,255,255,.83);
+            font-size: 14px;
+            margin-bottom: 15px;
         }
 
         .class-badge {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-            padding: 8px 13px;
+            gap: 8px;
+            padding: 9px 15px;
             border-radius: 30px;
-            background: rgba(255, 255, 255, .17);
-            font-weight: 600;
+            background: rgba(255,255,255,.15);
+            border: 1px solid rgba(255,255,255,.17);
+            font-size: 13px;
+            font-weight: 700;
         }
+
+        /* Section cards */
 
         .section-card {
             height: 100%;
-            background: #fff;
+            padding: 25px;
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 24px;
-            box-shadow: 0 5px 20px rgba(15, 23, 42, .04);
+            border-radius: 17px;
+            box-shadow: 0 5px 20px rgba(15,23,42,.035);
+            transition: .25s ease;
+        }
+
+        .section-card:hover {
+            box-shadow: 0 12px 28px rgba(15,23,42,.065);
         }
 
         .section-heading {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 1.15rem;
-            font-weight: 750;
+            gap: 12px;
+            font-size: 17px;
+            font-weight: 800;
             margin-bottom: 8px;
         }
 
         .heading-icon {
-            width: 40px;
-            height: 40px;
+            width: 43px;
+            height: 43px;
+            flex-shrink: 0;
             display: grid;
             place-items: center;
-            border-radius: 12px;
-            color: var(--primary);
+            border-radius: 13px;
             background: #eef2ff;
-            font-size: 19px;
+            color: var(--primary);
+            font-size: 20px;
         }
 
         .section-description {
             color: var(--muted);
-            font-size: .92rem;
-            margin-bottom: 20px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .form-label {
+            color: #334155;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 7px;
         }
 
         .form-control,
         .form-select {
-            min-height: 44px;
+            min-height: 45px;
+            border: 1px solid #dce3ed;
             border-radius: 10px;
-            border-color: #dbe2ee;
+            font-size: 13px;
+            box-shadow: none;
         }
 
         .form-control:focus,
         .form-select:focus {
             border-color: #818cf8;
-            box-shadow: 0 0 0 .2rem rgba(99, 102, 241, .13);
+            box-shadow: 0 0 0 3px rgba(99,102,241,.12);
         }
 
         .btn {
-            border-radius: 10px;
-            font-weight: 600;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .2s;
         }
 
         .btn-primary {
@@ -196,35 +274,162 @@
         .btn-primary:hover {
             background: var(--primary-dark);
             border-color: var(--primary-dark);
+            transform: translateY(-1px);
         }
 
-        .student-section {
-            margin-top: 35px;
+        .btn-success {
+            background: #059669;
+            border-color: #059669;
         }
 
-        .student-section-header {
+        .btn-success:hover {
+            background: #047857;
+            border-color: #047857;
+        }
+
+        /* Invitation success */
+
+        .invitation-box {
+            margin-top: 20px;
+            padding: 17px;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-radius: 12px;
+        }
+
+        .invitation-box h5 {
+            color: #047857;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .invitation-box p {
+            font-size: 13px;
+            color: #334155;
+            margin-bottom: 9px;
+            overflow-wrap: anywhere;
+        }
+
+        /* General section headings */
+
+        .content-section {
+            margin-top: 38px;
+        }
+
+        .section-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
-        .student-section-header h2 {
-            font-size: 1.55rem;
+        .section-top h2 {
+            font-size: 21px;
             font-weight: 800;
             margin-bottom: 5px;
         }
 
-        .student-count {
+        .section-top p {
             color: var(--muted);
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .section-title-icon {
+            color: var(--primary);
+            margin-right: 7px;
+        }
+
+        /* Exam cards */
+
+        .exam-card {
+            height: 100%;
+            padding: 21px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(15,23,42,.035);
+            transition: .22s;
+        }
+
+        .exam-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(15,23,42,.075);
+        }
+
+        .exam-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 17px;
+        }
+
+        .exam-icon {
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: #eef2ff;
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .exam-card h3 {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .exam-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .exam-detail i {
+            color: #818cf8;
+            font-size: 15px;
+        }
+
+        .exam-actions {
+            display: grid;
+            gap: 9px;
+            margin-top: 17px;
+        }
+
+        .badge {
+            padding: 7px 11px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Student section */
+
+        .student-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 8px;
+            padding: 6px 11px;
+            color: #4338ca;
+            background: #eef2ff;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
         }
 
         .search-box {
-            max-width: 340px;
-            width: 100%;
             position: relative;
+            width: 100%;
+            max-width: 340px;
         }
 
         .search-box i {
@@ -237,68 +442,58 @@
 
         .search-box input {
             padding-left: 40px;
+            background: #fff;
         }
+
+        /* Student cards */
 
         .student-card {
             height: 100%;
+            overflow: hidden;
             background: #fff;
             border: 1px solid var(--border);
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 6px 20px rgba(15, 23, 42, .045);
-            transition: transform .22s ease, box-shadow .22s ease;
+            border-radius: 17px;
+            box-shadow: 0 5px 18px rgba(15,23,42,.04);
+            transition: .23s ease;
         }
 
         .student-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 14px 28px rgba(15, 23, 42, .09);
+            box-shadow: 0 14px 28px rgba(15,23,42,.08);
         }
 
         .student-card-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            padding: 20px 20px 0;
+            align-items: center;
+            padding: 19px 20px 0;
         }
 
         .student-avatar {
-            width: 53px;
-            height: 53px;
+            width: 52px;
+            height: 52px;
             display: grid;
             place-items: center;
-            border-radius: 16px;
-            background: #eef2ff;
+            border-radius: 15px;
             color: var(--primary);
-            font-size: 27px;
-        }
-
-        .profile-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 6px 10px;
-            border-radius: 20px;
-            background: #ecfdf5;
-            color: #047857;
-            font-size: .78rem;
-            font-weight: 700;
+            background: #eef2ff;
+            font-size: 26px;
         }
 
         .student-info {
-            padding: 18px 20px;
+            padding: 17px 20px 15px;
         }
 
         .student-info h3 {
-            font-size: 1.12rem;
-            font-weight: 750;
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 9px;
             overflow-wrap: anywhere;
-            margin-bottom: 10px;
         }
 
         .register-number {
             color: var(--muted);
-            font-size: .87rem;
+            font-size: 12px;
             overflow-wrap: anywhere;
             margin-bottom: 12px;
         }
@@ -308,21 +503,31 @@
             align-items: center;
             gap: 7px;
             padding: 7px 11px;
-            border-radius: 9px;
-            background: #f1f5f9;
             color: #334155;
-            font-size: .87rem;
-            font-weight: 650;
+            background: #f1f5f9;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .student-divider {
+            height: 1px;
+            margin: 0 20px;
+            background: var(--border);
         }
 
         .student-tools {
-            padding: 0 20px 18px;
+            padding: 16px 20px;
         }
 
         .student-tools-title {
-            font-size: .92rem;
-            font-weight: 750;
-            margin: 0 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #475569;
+            margin-bottom: 11px;
         }
 
         .student-actions {
@@ -335,29 +540,34 @@
             margin: 0;
         }
 
+        /* Marks form */
+
         .marks-form {
-            margin: 0 20px 18px;
-            padding: 16px;
-            border: 1px solid var(--border);
-            border-radius: 13px;
+            margin: 0 18px 14px;
+            padding: 15px;
             background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
         }
 
         .marks-form h5 {
-            font-size: .97rem;
-            font-weight: 750;
-            margin-bottom: 14px;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 7px;
+        }
+
+        .marks-form p {
+            font-size: 11px;
         }
 
         .marks-form .form-label {
-            font-size: .83rem;
-            font-weight: 650;
+            font-size: 11px;
             margin-bottom: 5px;
         }
 
         .marks-form .form-control {
-            min-height: 40px;
-            margin-bottom: 12px;
+            min-height: 39px;
+            margin-bottom: 11px;
         }
 
         .view-profile {
@@ -365,14 +575,14 @@
             justify-content: center;
             align-items: center;
             gap: 8px;
-            width: calc(100% - 40px);
-            margin: 0 20px 20px;
+            margin: 0 18px 18px;
             padding: 11px;
-            border-radius: 10px;
+            color: #4338ca;
             background: #eef2ff;
-            color: var(--primary-dark);
+            border-radius: 10px;
             text-decoration: none;
-            font-weight: 700;
+            font-size: 12px;
+            font-weight: 800;
             transition: .2s;
         }
 
@@ -381,78 +591,87 @@
             background: var(--primary);
         }
 
+        /* Empty states */
+
         .empty-state {
             padding: 42px 20px;
-            border: 1px dashed #cbd5e1;
-            border-radius: 18px;
-            background: #fff;
             text-align: center;
+            background: #fff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 17px;
             color: var(--muted);
         }
 
         .empty-state i {
             display: block;
-            margin-bottom: 12px;
+            margin-bottom: 13px;
             color: #818cf8;
-            font-size: 42px;
+            font-size: 40px;
+        }
+
+        .empty-state h4 {
+            color: var(--text);
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .empty-state p {
+            font-size: 13px;
         }
 
         .footer-text {
-            margin-top: 35px;
+            margin-top: 42px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
             text-align: center;
             color: #94a3b8;
-            font-size: .85rem;
+            font-size: 12px;
         }
 
-        @media (max-width: 575.98px) {
+        @media (max-width: 575px) {
             .page-container {
                 padding-top: 20px;
             }
 
             .welcome-card {
                 align-items: flex-start;
-                padding: 22px 18px;
+                padding: 23px 18px;
                 gap: 14px;
             }
 
             .teacher-avatar {
-                width: 54px;
-                height: 54px;
+                width: 55px;
+                height: 55px;
                 border-radius: 15px;
                 font-size: 27px;
             }
 
             .section-card {
-                padding: 19px;
+                padding: 20px;
             }
 
-            .student-section-header {
+            .section-top {
                 align-items: stretch;
             }
 
             .search-box {
                 max-width: none;
             }
-            .btn-danger {
-    border-radius: 8px;
-    font-weight: 600;
-    transition: 0.3s ease;
-}
 
-.btn-danger:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
-}
+            .section-top h2 {
+                font-size: 19px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Navigation -->
+    <!-- NAVIGATION -->
     <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="/teacher/home">
+
+            <a class="navbar-brand" href="/teacher/home">
                 <span class="logo-icon">🎓</span> EduManage
             </a>
 
@@ -465,133 +684,147 @@
 
             <div class="collapse navbar-collapse" id="teacherNavbar">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="/teacher/dashboard">My Profile</a>
-                    </li>
 
-                    <a href="/teacher/registration-status" class="btn btn-warning">
-                        <i class="bi bi-person-exclamation me-2"></i>
-                        Registration Status
-                    </a>
-                    
-                    <li class="nav-item ms-lg-3 my-2 my-lg-0">
-                        <a href="/teacher/logout" class="btn btn-logout">
-                            <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    <li class="nav-item">
+                        <a class="nav-link" href="/teacher/dashboard">
+                            <i class="bi bi-person-circle me-1"></i>
+                            My Profile
                         </a>
                     </li>
+
+                    <li class="nav-item ms-lg-2 my-2 my-lg-0">
+                        <a href="/teacher/registration-status" class="btn registration-btn">
+                            <i class="bi bi-person-exclamation me-1"></i>
+                            Registration Status
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-lg-3 my-2 my-lg-0">
+                        <a href="/teacher/logout" class="btn btn-logout">
+                            <i class="bi bi-box-arrow-right me-1"></i>
+                            Logout
+                        </a>
+                    </li>
+
                 </ul>
             </div>
         </div>
     </nav>
 
+
     <main class="container page-container">
 
-        <!-- Welcome card -->
+        <!-- WELCOME BANNER -->
         <section class="welcome-card">
+
             <div class="teacher-avatar">
                 <i class="bi bi-person-workspace"></i>
             </div>
 
-            <div>
+            <div class="welcome-content">
+
+                <span class="welcome-label">TEACHER PORTAL</span>
+
                 <h1>
-                    Welcome, <%= typeof teacher !== 'undefined' && teacher.name
+                    Welcome,
+                    <%= typeof teacher !== 'undefined' && teacher.name
                         ? teacher.name : 'Teacher' %>!
                 </h1>
 
-                <p class="mb-3">
-                    Manage your class, record annual marks, and view student profiles.
+                <p>
+                    Manage your classroom, examinations, student records and academic performance.
                 </p>
 
                 <span class="class-badge">
-                    <i class="bi bi-book-fill"></i>
-                    Class:
+                    <i class="bi bi-mortarboard-fill"></i>
+                    Assigned Class:
                     <%= typeof teacher !== 'undefined' && teacher.class
                         ? teacher.class : 'Not assigned' %>
                 </span>
+
             </div>
         </section>
 
-        <!-- Teacher actions -->
+
+        <!-- QUICK ACTIONS -->
         <div class="row g-4">
 
-            <!-- Create Exam -->
-<div class="col-12 col-lg-6">
-    <section class="section-card">
-
-        <h2 class="section-heading">
-            <span class="heading-icon">
-                <i class="bi bi-journal-plus"></i>
-            </span>
-            Create New Exam
-        </h2>
-
-        <p class="section-description">
-            Create examinations for your assigned class.
-        </p>
-
-        <form action="/teacher/exams/create" method="POST">
-
-            <div class="mb-3">
-                <label class="form-label">Exam Name</label>
-
-                <select name="exam_name" class="form-select" required>
-                    <option value="">Select Exam</option>
-                    <option value="First Term Exam">First Term Exam</option>
-                    <option value="Midterm Exam">Midterm Exam</option>
-                    <option value="Second Term Exam">Second Term Exam</option>
-                    <option value="Model Exam">Model Exam</option>
-                    <option value="Annual Exam">Annual Exam</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Academic Year</label>
-
-                <input
-                    type="text"
-                    name="academic_year"
-                    class="form-control"
-                    placeholder="2026-2027"
-                    pattern="[0-9]{4}-[0-9]{4}"
-                    required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Exam Date</label>
-
-                <input
-                    type="date"
-                    name="exam_date"
-                    class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Total Marks</label>
-
-                <input
-                    type="number"
-                    name="total_marks"
-                    class="form-control"
-                    min="1"
-                    step="0.01"
-                    placeholder="100"
-                    required>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">
-                <i class="bi bi-plus-circle me-2"></i>
-                Create Exam
-            </button>
-
-        </form>
-
-    </section>
-</div>
-
-            <!-- Add student -->
+            <!-- CREATE EXAM -->
             <div class="col-12 col-lg-6">
                 <section class="section-card">
+
+                    <h2 class="section-heading">
+                        <span class="heading-icon">
+                            <i class="bi bi-journal-plus"></i>
+                        </span>
+                        Create New Exam
+                    </h2>
+
+                    <p class="section-description">
+                        Schedule a new examination for your assigned class.
+                    </p>
+
+                    <form action="/teacher/exams/create" method="POST">
+
+                        <div class="mb-3">
+                            <label class="form-label">Exam Name</label>
+
+                            <select name="exam_name" class="form-select" required>
+                                <option value="">Select Exam</option>
+                                <option value="First Term Exam">First Term Exam</option>
+                                <option value="Midterm Exam">Midterm Exam</option>
+                                <option value="Second Term Exam">Second Term Exam</option>
+                                <option value="Model Exam">Model Exam</option>
+                                <option value="Annual Exam">Annual Exam</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Academic Year</label>
+
+                            <input type="text"
+                                name="academic_year"
+                                class="form-control"
+                                placeholder="2026-2027"
+                                pattern="[0-9]{4}-[0-9]{4}"
+                                title="Enter the academic year in YYYY-YYYY format."
+                                required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Exam Date</label>
+
+                            <input type="date"
+                                name="exam_date"
+                                class="form-control">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Total Marks</label>
+
+                            <input type="number"
+                                name="total_marks"
+                                class="form-control"
+                                min="1"
+                                step="0.01"
+                                placeholder="100"
+                                required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="bi bi-plus-circle me-2"></i>
+                            Create Examination
+                        </button>
+
+                    </form>
+                </section>
+            </div>
+
+
+            <!-- ADD STUDENT -->
+            <div class="col-12 col-lg-6">
+                <section class="section-card">
+
                     <h2 class="section-heading">
                         <span class="heading-icon">
                             <i class="bi bi-person-plus-fill"></i>
@@ -600,283 +833,374 @@
                     </h2>
 
                     <p class="section-description">
-                        Enter a student's email to generate a registration number.
+                        Generate a registration number by entering the student's email address.
                     </p>
 
                     <form action="/teacher/student/invite" method="POST">
-                        <div class="mb-3">
+
+                        <div class="mb-4">
                             <label for="studentEmail" class="form-label">
-                                Student Email
+                                Student Email Address
                             </label>
 
-                            <input type="email" id="studentEmail" name="email"
+                            <input type="email"
+                                id="studentEmail"
+                                name="email"
                                 class="form-control"
-                                placeholder="student@example.com" required>
+                                placeholder="student@example.com"
+                                required>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="submit" class="btn btn-primary w-100 py-2">
                             <i class="bi bi-key-fill me-2"></i>
                             Generate Registration Number
                         </button>
+
                     </form>
 
                     <% if (typeof generatedRegisterNumber !== 'undefined' && generatedRegisterNumber) { %>
-                        <div class="alert alert-success mt-4 mb-0">
-                            <h5 class="alert-heading">
-                                <i class="bi bi-check-circle-fill me-1"></i>
-                                Invitation Created!
+
+                        <div class="invitation-box">
+
+                            <h5>
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                Invitation Created Successfully
                             </h5>
 
-                            <p class="mb-2">
+                            <p>
                                 Email:
-                                <strong><%= typeof invitedEmail !== 'undefined' ? invitedEmail : '' %></strong>
+                                <strong>
+                                    <%= typeof invitedEmail !== 'undefined' ? invitedEmail : '' %>
+                                </strong>
                             </p>
 
-                            <p class="mb-3">
+                            <p>
                                 Registration Number:
-                                <strong id="generatedRegisterNumber"><%= generatedRegisterNumber %></strong>
+                                <strong id="generatedRegisterNumber">
+                                    <%= generatedRegisterNumber %>
+                                </strong>
                             </p>
 
-                            <button type="button" id="copyRegisterNumber"
+                            <button type="button"
+                                id="copyRegisterNumber"
                                 class="btn btn-outline-success btn-sm"
                                 data-register-number="<%= generatedRegisterNumber %>">
+
                                 <i class="bi bi-clipboard me-1"></i>
                                 Copy Registration Number
                             </button>
 
                             <div id="copyMessage" class="small mt-2" aria-live="polite"></div>
+
                         </div>
+
                     <% } %>
+
                 </section>
             </div>
 
-            <!-- Finalize annual results -->
-            <div class="col-12 col-lg-6">
+
+            <!-- FINALIZE ANNUAL RESULTS -->
+            <div class="col-12">
                 <section class="section-card">
+
                     <h2 class="section-heading">
                         <span class="heading-icon">
-                            <i class="bi bi-mortarboard-fill"></i>
+                            <i class="bi bi-award-fill"></i>
                         </span>
                         Finalize Annual Results
                     </h2>
 
                     <p class="section-description">
-                        Confirm all marks are entered before finalizing results.
-                        Students who pass may be promoted according to your server-side rules.
+                        Verify the annual marks before finalizing results.
+                        This action may also promote students according to your server-side rules.
                     </p>
 
-                    <form action="/teacher/annual-results/finalize" method="POST"
+                    <form action="/teacher/annual-results/finalize"
+                        method="POST"
                         onsubmit="return confirm('Are you sure you want to finalize these annual results? Please verify all marks before continuing.');">
 
-                        <label for="finalAcademicYear" class="form-label">
-                            Academic Year
-                        </label>
+                        <div class="row align-items-end g-3">
 
-                        <input type="text" id="finalAcademicYear"
-                            name="academic_year" class="form-control mb-3"
-                            placeholder="2026-2027"
-                            pattern="[0-9]{4}-[0-9]{4}"
-                            title="Enter the academic year in YYYY-YYYY format."
-                            required>
+                            <div class="col-12 col-md-6">
+                                <label for="finalAcademicYear" class="form-label">
+                                    Academic Year
+                                </label>
 
-                        <button type="submit" class="btn btn-success w-100">
-                            <i class="bi bi-check2-circle me-2"></i>
-                            Finalize Results &amp; Promote Students
-                        </button>
+                                <input type="text"
+                                    id="finalAcademicYear"
+                                    name="academic_year"
+                                    class="form-control"
+                                    placeholder="2026-2027"
+                                    pattern="[0-9]{4}-[0-9]{4}"
+                                    title="Enter the academic year in YYYY-YYYY format."
+                                    required>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <button type="submit" class="btn btn-success w-100 py-2">
+                                    <i class="bi bi-check2-circle me-2"></i>
+                                    Finalize Results &amp; Promote Students
+                                </button>
+                            </div>
+
+                        </div>
+
                     </form>
 
                     <div class="small text-muted mt-3">
                         <i class="bi bi-info-circle me-1"></i>
-                        This action depends on the annual-results route being implemented.
+                        Make sure all annual marks are correct before completing this action.
                     </div>
+
                 </section>
             </div>
 
         </div>
 
-        <!-- Exam Management -->
-<section class="student-section">
 
-    <div class="student-section-header">
-        <div>
-            <h2>
-                <i class="bi bi-journal-text me-2"></i>
-                Exam Management
-            </h2>
+        <!-- EXAM MANAGEMENT -->
+        <section class="content-section">
 
-            <div class="student-count">
-                Manage examinations and student marks.
+            <div class="section-top">
+                <div>
+                    <h2>
+                        <i class="bi bi-journal-text section-title-icon"></i>
+                        Exam Management
+                    </h2>
+
+                    <p>View, finalize and manage examinations created for your class.</p>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row g-3">
+            <div class="row g-3">
 
-        <% if (typeof exams !== 'undefined' && exams.length > 0) { %>
+                <% if (typeof exams !== 'undefined' && exams.length > 0) { %>
 
-            <% exams.forEach(function(exam) { %>
+                    <% exams.forEach(function(exam) { %>
 
-                <div class="col-12 col-md-6 col-xl-4">
+                        <div class="col-12 col-md-6 col-xl-4">
 
-                    <div class="section-card">
+                            <article class="exam-card">
 
-                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="exam-card-top">
 
-                            <span class="heading-icon">
-                                <i class="bi bi-journal-check"></i>
-                            </span>
+                                    <div class="exam-icon">
+                                        <i class="bi bi-journal-check"></i>
+                                    </div>
 
-                            <% if (exam.status === 'Finalized') { %>
-                                <span class="badge bg-success">
-                                    Finalized
-                                </span>
-                            <% } else { %>
-                                <span class="badge bg-primary">
-                                    Open
-                                </span>
-                            <% } %>
+                                    <% if (exam.status === 'Finalized') { %>
+                                        <span class="badge bg-success">Finalized</span>
+                                    <% } else { %>
+                                        <span class="badge bg-primary">Open</span>
+                                    <% } %>
+
+                                </div>
+
+                                <h3><%= exam.exam_name %></h3>
+
+                                <div class="exam-detail">
+                                    <i class="bi bi-calendar3"></i>
+                                    <span>
+                                        Academic Year: <strong><%= exam.academic_year %></strong>
+                                    </span>
+                                </div>
+
+                                <div class="exam-detail">
+                                    <i class="bi bi-mortarboard"></i>
+                                    <span>
+                                        Class: <strong><%= exam.class %></strong>
+                                    </span>
+                                </div>
+
+                                <div class="exam-detail">
+                                    <i class="bi bi-award"></i>
+                                    <span>
+                                        Total Marks: <strong><%= exam.total_marks %></strong>
+                                    </span>
+                                </div>
+
+                                <% if (exam.exam_date) { %>
+                                    <div class="exam-detail">
+                                        <i class="bi bi-calendar-event"></i>
+                                        <span>
+                                            Exam Date:
+                                            <strong>
+                                                <%= new Date(exam.exam_date).toLocaleDateString('en-IN') %>
+                                            </strong>
+                                        </span>
+                                    </div>
+                                <% } %>
+
+                                <div class="exam-detail">
+                                    <i class="bi bi-person"></i>
+                                    <span>
+                                        Created By:
+                                        <strong><%= exam.teacher_name || exam.created_by %></strong>
+                                    </span>
+                                </div>
+
+                                <div class="exam-actions">
+
+                                    <% if (exam.status === 'Open') { %>
+
+                                        <form action="/teacher/exams/<%= exam.id %>/finalize"
+                                            method="POST"
+                                            onsubmit="return confirm('Finalize this exam? Marks will become uneditable.');">
+
+                                            <button type="submit" class="btn btn-success w-100">
+                                                <i class="bi bi-lock-fill me-2"></i>
+                                                Finalize Exam
+                                            </button>
+
+                                        </form>
+
+                                    <% } else { %>
+
+                                        <button class="btn btn-secondary w-100" disabled>
+                                            <i class="bi bi-lock-fill me-2"></i>
+                                            Exam Locked
+                                        </button>
+
+                                    <% } %>
+
+
+                                    <% if (
+                                        exam.status === 'Open' &&
+                                        typeof teacher !== 'undefined' &&
+                                        String(exam.created_by) === String(teacher.teacher_id)
+                                    ) { %>
+
+                                        <form action="/teacher/exams/<%= exam.id %>/delete"
+                                            method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this exam? This action cannot be undone.');">
+
+                                            <button type="submit" class="btn btn-outline-danger w-100">
+                                                <i class="bi bi-trash3 me-2"></i>
+                                                Delete Exam
+                                            </button>
+
+                                        </form>
+
+                                    <% } %>
+
+                                </div>
+
+                            </article>
 
                         </div>
 
-                        <h5 class="fw-bold">
-                            <%= exam.exam_name %>
-                        </h5>
+                    <% }); %>
 
-                        <p class="text-muted mb-2">
-                            Academic Year: <%= exam.academic_year %>
-                        </p>
+                <% } else { %>
 
-                        <p class="text-muted mb-2">
-                            Class: <%= exam.class %>
-                        </p>
-
-                        <p class="text-muted mb-3">
-                            Total Marks: <%= exam.total_marks %>
-                        </p>
-
-                        <% if (exam.exam_date) { %>
-                            <p class="text-muted mb-3">
-                                Exam Date:
-                                <%= new Date(exam.exam_date).toLocaleDateString('en-IN') %>
+                    <div class="col-12">
+                        <div class="empty-state">
+                            <i class="bi bi-journal-x"></i>
+                            <h4>No Examinations Created</h4>
+                            <p class="mb-0">
+                                Create your first examination using the form above.
                             </p>
-                        <% } %>
-
-                        <% if (exam.status === 'Open') { %>
-
-                            <form
-                                action="/teacher/exams/<%= exam.id %>/finalize"
-                                method="POST"
-                                onsubmit="return confirm('Finalize this exam? Marks will become uneditable.');">
-
-                                <button type="submit"
-                                    class="btn btn-success w-100">
-                                    <i class="bi bi-lock-fill me-2"></i>
-                                    Finalize Exam
-                                </button>
-
-                            </form>
-
-                        <% } else { %>
-
-                            <button class="btn btn-secondary w-100" disabled>
-                                <i class="bi bi-lock-fill me-2"></i>
-                                Exam Locked
-                            </button>
-
-                        <% } %>
-
+                        </div>
                     </div>
 
-                </div>
+                <% } %>
 
-            <% }); %>
-
-        <% } else { %>
-
-            <div class="col-12">
-                <div class="empty-state">
-                    <i class="bi bi-journal-x"></i>
-
-                    <h4 class="fw-bold text-dark">
-                        No Exams Created
-                    </h4>
-
-                    <p class="mb-0">
-                        Create your first exam using the form above.
-                    </p>
-                </div>
             </div>
 
-        <% } %>
+        </section>
 
-    </div>
 
-</section>
+        <!-- STUDENT MANAGEMENT -->
+        <section class="content-section">
 
-        <!-- Student list -->
-        <section class="student-section">
-            <div class="student-section-header">
+            <div class="section-top">
+
                 <div>
-                    <h2><i class="bi bi-people-fill me-2"></i>My Students</h2>
-                    <div class="student-count">
-                        Students assigned to your class
-                    </div>
+                    <h2>
+                        <i class="bi bi-people-fill section-title-icon"></i>
+                        My Students
+                    </h2>
+
+                    <p>Manage student profiles, class assignments and examination marks.</p>
+
+                    <span class="student-count">
+                        <i class="bi bi-people"></i>
+                        <%= typeof students !== 'undefined' ? students.length : 0 %>
+                        Students
+                    </span>
                 </div>
 
                 <div class="search-box">
                     <i class="bi bi-search"></i>
-                    <input type="search" id="studentSearch"
+
+                    <input type="search"
+                        id="studentSearch"
                         class="form-control"
                         placeholder="Search name or register number..."
                         aria-label="Search students">
                 </div>
+
             </div>
+
 
             <div class="row g-4" id="studentList">
 
                 <% if (typeof students !== 'undefined' && students.length > 0) { %>
 
                     <% students.forEach(function(student) { %>
+
                         <div class="col-12 col-sm-6 col-xl-4 student-item"
                             data-search="<%= ((student.name || '') + ' ' + (student.register_number || '')).toLowerCase() %>">
 
                             <article class="student-card">
 
+                                <!-- STUDENT PROFILE -->
                                 <div class="student-card-header">
+
                                     <div class="student-avatar">
                                         <i class="bi bi-person-fill"></i>
                                     </div>
 
-                                    <span class="profile-status">
-                                        <i class="bi bi-check-circle-fill"></i>
-                                        Student
+                                    <span class="badge bg-success-subtle text-success">
+                                        <i class="bi bi-check-circle-fill me-1"></i>
+                                        Active Student
                                     </span>
+
                                 </div>
 
                                 <div class="student-info">
-                                    <h3><%= student.name || 'Unnamed Student' %></h3>
+
+                                    <h3>
+                                        <%= student.name || 'Unnamed Student' %>
+                                    </h3>
 
                                     <p class="register-number">
                                         <i class="bi bi-person-vcard me-1"></i>
                                         <%= student.register_number || 'No registration number' %>
                                     </p>
 
-                                    <div class="student-class">
-                                        <i class="bi bi-book-half"></i>
+                                    <span class="student-class">
+                                        <i class="bi bi-mortarboard-fill"></i>
                                         Class <%= student.class || 'Not assigned' %>
-                                    </div>
+                                    </span>
+
                                 </div>
 
-                                <!-- Change class -->
+                                <div class="student-divider"></div>
+
+
+                                <!-- CLASS MANAGEMENT -->
                                 <div class="student-tools">
+
                                     <p class="student-tools-title">
-                                        <i class="bi bi-arrow-up-down me-1"></i>
+                                        <i class="bi bi-arrow-up-down"></i>
                                         Class Management
                                     </p>
 
                                     <div class="student-actions">
-                                        <form
-                                            action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/class-change"
+
+                                        <form action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/class-change"
                                             method="POST"
                                             onsubmit="return confirm('Promote this student to the next class?');">
 
@@ -884,141 +1208,115 @@
 
                                             <button type="submit" class="btn btn-success btn-sm">
                                                 <i class="bi bi-arrow-up-circle me-1"></i>
-                                                +1 Class
+                                                Promote
                                             </button>
+
                                         </form>
 
-                                        <form
-                                            action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/class-change"
+                                        <form action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/class-change"
                                             method="POST"
                                             onsubmit="return confirm('Move this student to the previous class?');">
 
                                             <input type="hidden" name="direction" value="down">
 
-                                            <button type="submit" class="btn btn-warning btn-sm">
+                                            <button type="submit" class="btn btn-outline-warning btn-sm">
                                                 <i class="bi bi-arrow-down-circle me-1"></i>
-                                                -1 Class
+                                                Move Back
                                             </button>
+
                                         </form>
+
                                     </div>
+
                                 </div>
 
 
+                                <!-- EXAM MARKS ENTRY -->
+                                <% if (typeof exams !== 'undefined' && exams.length > 0) { %>
 
-                                <!-- Annual marks form -->
-                                <!-- <form
-                                    action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/marks"
-                                    method="POST"
-                                    class="marks-form marks-entry-form">
+                                    <div class="student-divider mb-3"></div>
 
-                                    <h5>
-                                        <i class="bi bi-journal-check me-1"></i>
-                                        Annual Examination
-                                    </h5>
+                                    <div class="px-3">
 
-                                    <label class="form-label">Academic Year</label>
-                                    <input type="text" name="academic_year"
-                                        class="form-control"
-                                        placeholder="2026-2027"
-                                        pattern="[0-9]{4}-[0-9]{4}"
-                                        title="Enter the academic year in YYYY-YYYY format."
-                                        required>
+                                        <p class="student-tools-title">
+                                            <i class="bi bi-journal-check"></i>
+                                            Examination Marks
+                                        </p>
 
-                                    <label class="form-label">Marks Obtained</label>
-                                    <input type="number" name="marks"
-                                        class="form-control marks-obtained"
-                                        min="0" step="0.01"
-                                        placeholder="e.g. 425"
-                                        required>
+                                    </div>
 
-                                    <label class="form-label">Total Marks</label>
-                                    <input type="number" name="total_marks"
-                                        class="form-control total-marks"
-                                        min="0.01" step="0.01"
-                                        placeholder="e.g. 500"
-                                        required>
+                                    <% exams.forEach(function(exam) { %>
 
-                                    <button type="submit" class="btn btn-primary btn-sm w-100">
-                                        <i class="bi bi-save me-1"></i>
-                                        Save Annual Marks
-                                    </button>
-                                </form> -->
+                                        <form action="/teacher/exams/<%= exam.id %>/student/<%= encodeURIComponent(student.register_number) %>/marks"
+                                            method="POST"
+                                            class="marks-form">
 
-                                <!-- Exam-wise marks entry -->
+                                            <h5>
+                                                <i class="bi bi-journal-text me-1"></i>
+                                                <%= exam.exam_name %>
+                                            </h5>
 
-<% if (typeof exams !== 'undefined' && exams.length > 0) { %>
+                                            <p class="text-muted mb-3">
+                                                Academic Year: <%= exam.academic_year %>
+                                                <span class="mx-1">·</span>
+                                                Total: <%= exam.total_marks %>
+                                            </p>
 
-    <% exams.forEach(function(exam) { %>
+                                            <% if (exam.status === 'Open') { %>
 
-        <form
-            action="/teacher/exams/<%= exam.id %>/student/<%= encodeURIComponent(student.register_number) %>/marks"
-            method="POST"
-            class="marks-form">
+                                                <label class="form-label">Marks Obtained</label>
 
-            <h5>
-                <i class="bi bi-journal-check me-1"></i>
-                <%= exam.exam_name %>
-            </h5>
+                                                <input type="number"
+                                                    name="marks_obtained"
+                                                    class="form-control"
+                                                    min="0"
+                                                    max="<%= exam.total_marks %>"
+                                                    step="0.01"
+                                                    placeholder="Enter marks"
+                                                    required>
 
-            <p class="small text-muted">
-                Total Marks: <%= exam.total_marks %>
-            </p>
+                                                <button type="submit" class="btn btn-primary btn-sm w-100">
+                                                    <i class="bi bi-save me-1"></i>
+                                                    Save / Update Marks
+                                                </button>
 
-            <% if (exam.status === 'Open') { %>
+                                            <% } else { %>
 
-                <label class="form-label">
-                    Marks Obtained
-                </label>
+                                                <div class="alert alert-success py-2 mb-0 small">
+                                                    <i class="bi bi-lock-fill me-1"></i>
+                                                    This examination is finalized.
+                                                </div>
 
-                <input
-                    type="number"
-                    name="marks_obtained"
-                    class="form-control marks-obtained"
-                    min="0"
-                    max="<%= exam.total_marks %>"
-                    step="0.01"
-                    placeholder="Enter marks"
-                    required>
+                                            <% } %>
 
-                <button type="submit"
-                    class="btn btn-primary btn-sm w-100">
+                                        </form>
 
-                    <i class="bi bi-save me-1"></i>
-                    Save / Update Marks
+                                    <% }); %>
 
-                </button>
+                                <% } %>
 
-            <% } else { %>
 
-                <div class="alert alert-success mb-0">
-                    <i class="bi bi-lock-fill me-1"></i>
-                    This exam is finalized.
-                </div>
+                                <!-- STUDENT ACTIONS -->
+                                <div class="student-divider"></div>
 
-            <% } %>
-
-        </form>
-
-    <% }); %>
-
-<% } %>
-
-                                <!-- Edit and delete -->
                                 <div class="student-tools">
+
                                     <p class="student-tools-title">
-                                        <i class="bi bi-gear-fill me-1"></i>
+                                        <i class="bi bi-gear-fill"></i>
                                         Student Actions
                                     </p>
 
                                     <div class="student-actions">
+
                                         <a class="btn btn-outline-primary btn-sm"
                                             href="/teacher/student/<%= encodeURIComponent(student.register_number) %>/edit">
+
                                             <i class="bi bi-pencil-square me-1"></i>
-                                            Edit
+                                            Edit Profile
+
                                         </a>
 
-                                        <form
-                                            action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/delete"
+                                        <form action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/delete"
                                             method="POST"
                                             onsubmit="return confirm('Are you sure you want to delete this student? This action cannot be undone.');">
 
@@ -1026,19 +1324,26 @@
                                                 <i class="bi bi-trash me-1"></i>
                                                 Delete
                                             </button>
+
                                         </form>
+
                                     </div>
+
                                 </div>
 
-                                <!-- A real link to the student dashboard -->
                                 <a class="view-profile"
                                     href="/teacher/student/<%= encodeURIComponent(student.register_number) %>">
+
+                                    <i class="bi bi-person-vcard"></i>
                                     View Student Dashboard
-                                    <i class="bi bi-arrow-right-circle-fill"></i>
+                                    <i class="bi bi-arrow-right ms-1"></i>
+
                                 </a>
 
                             </article>
+
                         </div>
+
                     <% }); %>
 
                 <% } else { %>
@@ -1046,7 +1351,7 @@
                     <div class="col-12">
                         <div class="empty-state">
                             <i class="bi bi-people"></i>
-                            <h4 class="fw-bold text-dark">No Students Found</h4>
+                            <h4>No Students Found</h4>
                             <p class="mb-0">
                                 There are currently no students in your assigned class.
                             </p>
@@ -1055,10 +1360,12 @@
 
                 <% } %>
 
+
+                <!-- SEARCH EMPTY STATE -->
                 <div class="col-12 d-none" id="noSearchResults">
                     <div class="empty-state">
                         <i class="bi bi-search"></i>
-                        <h4 class="fw-bold text-dark">No Matching Students</h4>
+                        <h4>No Matching Students</h4>
                         <p class="mb-0">
                             Try searching with a different name or registration number.
                         </p>
@@ -1067,108 +1374,16 @@
 
             </div>
 
-            <!-- TEACHER EXAMS -->
-<div class="container my-4">
-
-    <h3 class="fw-bold mb-3">
-        <i class="bi bi-journal-text me-2"></i>
-        Class Exams
-    </h3>
-
-    <% if (exams && exams.length > 0) { %>
-
-        <div class="row g-3">
-
-            <% exams.forEach(exam => { %>
-
-                <div class="col-md-6 col-lg-4">
-
-                    <div class="card shadow-sm h-100">
-
-                        <div class="card-body">
-
-                            <h5 class="fw-bold">
-                                <%= exam.exam_name %>
-                            </h5>
-
-                            <p>
-                                <strong>Academic Year:</strong>
-                                <%= exam.academic_year %>
-                            </p>
-
-                            <p>
-                                <strong>Class:</strong>
-                                <%= exam.class %>
-                            </p>
-
-                            <p>
-                                <strong>Total Marks:</strong>
-                                <%= exam.total_marks %>
-                            </p>
-
-                            <p>
-                                <strong>Created By:</strong>
-                                <%= exam.teacher_name || exam.created_by %>
-                            </p>
-
-                            <p>
-                                <strong>Status:</strong>
-
-                                <% if (exam.status === "Open") { %>
-                                    <span class="badge bg-success">Open</span>
-                                <% } else { %>
-                                    <span class="badge bg-secondary">
-                                        Finalized
-                                    </span>
-                                <% } %>
-                                    
-                                    <% if (
-    exam.status === "Open" &&
-    exam.created_by === teacher.teacher_id
-) { %>
-
-    <form
-        action="/teacher/exams/<%= exam.id %>/delete"
-        method="POST"
-        onsubmit="return confirm('Are you sure you want to delete this exam? This action cannot be undone.');"
-    >
-        <button type="submit" class="btn btn-danger btn-sm w-100 mt-3">
-            <i class="bi bi-trash3 me-2"></i>
-            Delete Exam
-        </button>
-    </form>
-
-<% } %>
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            <% }); %>
-
-        </div>
-
-    <% } else { %>
-
-        <div class="alert alert-info">
-            No exams have been created for your class yet.
-        </div>
-
-    <% } %>
-
-</div>
-
         </section>
 
+
         <footer class="footer-text">
-            © <%= new Date().getFullYear() %> EduManage · Student Management System
+            © <%= new Date().getFullYear() %> EduManage.
+            Student Management System.
         </footer>
 
     </main>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -1180,16 +1395,20 @@
 
         if (studentSearch) {
             studentSearch.addEventListener("input", function () {
+
                 const query = this.value.trim().toLowerCase();
                 let visibleCount = 0;
 
                 studentItems.forEach(function (item) {
+
                     const searchableText = item.dataset.search || "";
                     const matches = searchableText.includes(query);
 
                     item.classList.toggle("d-none", !matches);
 
-                    if (matches) visibleCount++;
+                    if (matches) {
+                        visibleCount++;
+                    }
                 });
 
                 if (noSearchResults) {
@@ -1201,37 +1420,56 @@
             });
         }
 
-        // Copy a generated registration number.
+
+        // Copy generated registration number.
         const copyButton = document.getElementById("copyRegisterNumber");
         const copyMessage = document.getElementById("copyMessage");
 
         if (copyButton) {
+
             copyButton.addEventListener("click", async function () {
+
                 const registerNumber = this.dataset.registerNumber;
 
                 try {
+
                     await navigator.clipboard.writeText(registerNumber);
-                    copyMessage.textContent = "Registration number copied!";
+
+                    copyMessage.textContent = "Registration number copied successfully!";
+
                 } catch (error) {
+
                     copyMessage.textContent =
-                        "Copy unavailable. Please select and copy the registration number manually.";
+                        "Copy unavailable. Please copy the registration number manually.";
+
                 }
             });
         }
 
-        // Prevent entering marks greater than the total marks.
-        document.querySelectorAll(".marks-entry-form").forEach(function (form) {
+
+        // Validate marks before submitting.
+        document.querySelectorAll(".marks-form").forEach(function (form) {
+
             form.addEventListener("submit", function (event) {
-                const obtained = Number(
-                    form.querySelector(".marks-obtained").value
-                );
 
-                const total = Number(
-                    form.querySelector(".total-marks").value
-                );
+                const marksInput = form.querySelector('input[name="marks_obtained"]');
 
-                if (total <= 0 || obtained < 0 || obtained > total) {
+                // Finalized exam forms do not have a marks input.
+                if (!marksInput) {
+                    return;
+                }
+
+                const obtained = Number(marksInput.value);
+                const total = Number(marksInput.max);
+
+                if (
+                    !Number.isFinite(obtained) ||
+                    obtained < 0 ||
+                    obtained > total
+                ) {
+
                     event.preventDefault();
+
                     alert("Marks obtained must be between 0 and the total marks.");
                 }
             });

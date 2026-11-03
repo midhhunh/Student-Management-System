@@ -295,27 +295,145 @@ router.get("/registration-status", (req, res) => {
 // VIEW STUDENT DETAILS
 // --------------------------------------------------
 
+// router.get("/student/:register_number", (req, res) => {
+//     const registerNumber = clean(req.params.register_number);
+
+//     const sql = `
+//         SELECT id, name, register_number, email, mobile, class, address
+//         FROM student
+//         WHERE register_number = ?
+//     `;
+
+//     db.query(sql, [registerNumber], (err, result) => {
+//         if (err) {
+//             return databaseError(res, "Unable to fetch student.", err);
+//         }
+
+//         if (result.length === 0) {
+//             return res.status(404).send("Student not found.");
+//         }
+
+//         res.render("studentDetails.ejs", {
+//             student: result[0]
+//         });
+//     });
+// });
+
+// --------------------------------------------------
+// VIEW STUDENT DETAILS WITH ALL MARKS
+// --------------------------------------------------
+
 router.get("/student/:register_number", (req, res) => {
+
     const registerNumber = clean(req.params.register_number);
 
-    const sql = `
-        SELECT id, name, register_number, email, mobile, class, address
+    // 1. Fetch student details
+    const studentSql = `
+        SELECT
+            id,
+            name,
+            register_number,
+            email,
+            mobile,
+            class,
+            address
         FROM student
         WHERE register_number = ?
     `;
 
-    db.query(sql, [registerNumber], (err, result) => {
-        if (err) {
-            return databaseError(res, "Unable to fetch student.", err);
+    db.query(studentSql, [registerNumber], (studentErr, students) => {
+
+        if (studentErr) {
+            return databaseError(
+                res,
+                "Unable to fetch student details.",
+                studentErr
+            );
         }
 
-        if (result.length === 0) {
+        if (students.length === 0) {
             return res.status(404).send("Student not found.");
         }
 
-        res.render("studentDetails.ejs", {
-            student: result[0]
-        });
+        const student = students[0];
+
+        // 2. Fetch exam-wise marks
+        const examMarksSql = `
+            SELECT
+                e.exam_name,
+                e.academic_year,
+                e.exam_date,
+                e.total_marks,
+                em.marks_obtained,
+                ROUND(
+                    (em.marks_obtained / e.total_marks) * 100,
+                    2
+                ) AS percentage,
+                CASE
+                    WHEN (em.marks_obtained / e.total_marks) * 100 >= 35
+                    THEN 'Pass'
+                    ELSE 'Fail'
+                END AS status
+            FROM exam_marks em
+            INNER JOIN exams e
+                ON em.exam_id = e.id
+            WHERE em.register_number = ?
+              AND e.total_marks > 0
+            ORDER BY e.academic_year DESC, e.exam_date DESC
+        `;
+
+        db.query(
+            examMarksSql,
+            [registerNumber],
+            (examErr, examMarks) => {
+
+                if (examErr) {
+                    return databaseError(
+                        res,
+                        "Unable to fetch exam marks.",
+                        examErr
+                    );
+                }
+
+                // 3. Fetch annual results
+                const annualSql = `
+                    SELECT
+                        academic_year,
+                        class_at_exam,
+                        marks,
+                        total_marks,
+                        pass_percentage,
+                        status,
+                        finalized
+                    FROM annual_results
+                    WHERE register_number = ?
+                    ORDER BY academic_year DESC
+                `;
+
+                db.query(
+                    annualSql,
+                    [registerNumber],
+                    (annualErr, annualResults) => {
+
+                        if (annualErr) {
+                            return databaseError(
+                                res,
+                                "Unable to fetch annual results.",
+                                annualErr
+                            );
+                        }
+
+                        // 4. Display everything in Admin
+                        return res.render("studentDetails.ejs", {
+                            student,
+                            examMarks,
+                            annualResults
+                        });
+
+                    }
+                );
+            }
+        );
     });
 });
 

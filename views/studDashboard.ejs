@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,109 +9,766 @@
     <title>My Dashboard | EduManage</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link href="/css/studDashboard.css" rel="stylesheet">
     <style>
-        .change-password-link {
-            display: inline-flex;
-            align-items: center;
-            padding: 10px 18px !important;
-            color: #e0e7ff !important;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --navy: #172554;
+            --text: #334155;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --background: #f4f6fb;
         }
 
-        .change-password-link i {
-            font-size: 17px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* NAVIGATION */
+
+        .custom-navbar {
+            background: #172554;
+            padding: 15px 0;
+            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.12);
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+        }
+
+        .navbar-brand span {
             color: #a5b4fc;
         }
 
-        .change-password-link:hover {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: #ffffff !important;
-            border-color: transparent;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        .navbar-nav {
+            gap: 7px;
         }
 
-        .change-password-link:hover i {
-            color: #ffffff;
+        .navbar .nav-link {
+            color: #cbd5e1;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 14px !important;
+            border-radius: 9px;
+            transition: 0.3s;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .change-password-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: #e0e7ff;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.07);
+            transition: 0.3s;
+        }
+
+        .change-password-link:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 10px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #dc2626;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* MAIN CONTAINER */
+
+        .dashboard-container {
+            max-width: 1150px;
+            margin: 40px auto;
+        }
+
+        /* PAGE HEADING */
+
+        .page-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .eyebrow {
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .page-heading h1 {
+            color: var(--navy);
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            margin-bottom: 7px;
+        }
+
+        .heading-description {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            color: #475569;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 11px 17px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-home:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* PROFILE BANNER */
+
+        .profile-banner {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 23px;
+            padding: 34px;
+            border-radius: 18px;
+            background: linear-gradient(115deg, #172554, #3730a3, #6366f1);
+            color: white;
+            box-shadow: 0 12px 30px rgba(55, 48, 163, 0.17);
+            margin-bottom: 25px;
+        }
+
+        .profile-banner::after {
+            content: "";
+            position: absolute;
+            width: 270px;
+            height: 270px;
+            border: 35px solid rgba(255,255,255,0.06);
+            border-radius: 50%;
+            right: -75px;
+            top: -130px;
+        }
+
+        .avatar {
+            width: 82px;
+            height: 82px;
+            min-width: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 22px;
+            font-size: 42px;
+        }
+
+        .profile-heading {
+            position: relative;
+            z-index: 1;
+            min-width: 0;
+        }
+
+        .profile-label {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #c7d2fe;
+            margin-bottom: 8px;
+        }
+
+        .profile-heading h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 9px;
+            overflow-wrap: anywhere;
+        }
+
+        .profile-heading p {
+            font-size: 12px;
+            color: #e0e7ff;
+            margin: 0;
+        }
+
+        .class-badge {
+            position: relative;
+            z-index: 1;
+            margin-left: auto;
+            min-width: 115px;
+            text-align: center;
+            padding: 15px 18px;
+            border-radius: 13px;
+            background: rgba(255,255,255,0.13);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .class-badge i {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .class-badge span {
+            display: block;
+            color: #c7d2fe;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .class-badge strong {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        /* GENERAL SECTIONS */
+
+        .content-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 7px 25px rgba(15, 23, 42, 0.045);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 23px 26px;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .heading-icon {
+            width: 43px;
+            height: 43px;
+            min-width: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e0e7ff;
+            color: var(--primary);
+            border-radius: 12px;
+            font-size: 20px;
+        }
+
+        .section-heading h3 {
+            color: var(--navy);
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 0;
+        }
+
+        .section-body {
+            padding: 25px 26px;
+        }
+
+        /* PERSONAL DETAILS */
+
+        .detail-card {
+            height: 100%;
+            min-height: 83px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            background: #f8fafc;
+            border-radius: 12px;
+            transition: 0.25s;
+        }
+
+        .detail-card:hover {
+            background: #f1f5ff;
+            border-color: #c7d2fe;
+            transform: translateY(-2px);
+        }
+
+        .detail-icon {
+            width: 43px;
+            height: 43px;
+            min-width: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            font-size: 19px;
+        }
+
+        .purple {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .blue {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .green {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .orange {
+            background: #ffedd5;
+            color: #ea580c;
+        }
+
+        .pink {
+            background: #fce7f3;
+            color: #db2777;
+        }
+
+        .teal {
+            background: #ccfbf1;
+            color: #0f766e;
+        }
+
+        .red {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .detail-content {
+            min-width: 0;
+        }
+
+        .detail-content span {
+            display: block;
+            color: #94a3b8;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 6px;
+        }
+
+        .detail-content strong {
+            display: block;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        /* RESULT SECTIONS */
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 20px 25px;
+            color: white;
+        }
+
+        .exam-header {
+            background: linear-gradient(110deg, #3730a3, #6366f1);
+        }
+
+        .annual-header {
+            background: linear-gradient(110deg, #172554, #334155);
+        }
+
+        .result-title {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .result-title-icon {
+            width: 43px;
+            height: 43px;
+            min-width: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.15);
+            font-size: 20px;
+        }
+
+        .result-title h5 {
+            font-size: 15px;
+            font-weight: 800;
+            margin: 0 0 4px;
+        }
+
+        .result-title p {
+            font-size: 11px;
+            color: #e0e7ff;
+            margin: 0;
+        }
+
+        .result-count {
+            padding: 7px 12px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.15);
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* TABLE */
+
+        .table-responsive {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .table {
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+
+        .table thead th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 15px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table tbody td {
+            color: #475569;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 15px 14px;
+            vertical-align: middle;
+            border-color: #edf0f5;
+        }
+
+        .table tbody tr:hover {
+            background: #f8faff;
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .marks-value {
+            color: var(--navy);
+            font-weight: 800;
+        }
+
+        .percentage-value {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .badge {
+            padding: 7px 12px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .badge-pass {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-fail {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* EMPTY STATES */
+
+        .empty-state {
+            text-align: center;
+            padding: 35px 20px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+        }
+
+        .empty-icon {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            background: #e0e7ff;
+            color: var(--primary);
+            font-size: 24px;
+            margin: 0 auto 13px;
+        }
+
+        .empty-state h6 {
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .empty-state p {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0;
+        }
+
+        /* DASHBOARD NOTE */
+
+        .dashboard-note {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 17px 20px;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 11px;
+            color: #475569;
+            font-size: 11px;
+            margin-top: 25px;
+        }
+
+        .dashboard-note i {
+            color: #16a34a;
+            font-size: 17px;
+        }
+
+        /* FOOTER */
+
+        .dashboard-footer {
+            margin-top: 45px;
+            padding: 22px 15px;
+            text-align: center;
+            background: white;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 991px) {
+            .navbar-nav {
+                align-items: flex-start !important;
+                padding-top: 15px;
+            }
+
+            .navbar-nav .nav-item {
+                margin: 5px 0 !important;
+            }
+        }
+
+        @media(max-width: 650px) {
+            .dashboard-container {
+                margin: 25px auto;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+            }
+
+            .page-heading h1 {
+                font-size: 23px;
+            }
+
+            .heading-description {
+                font-size: 11px;
+            }
+
+            .profile-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 25px 18px;
+            }
+
+            .profile-heading h2 {
+                font-size: 21px;
+            }
+
+            .class-badge {
+                margin: 5px auto 0;
+                width: 130px;
+            }
+
+            .section-header,
+            .section-body {
+                padding: 19px;
+            }
+
+            .result-header {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 18px;
+            }
+        }
+
+        @media(max-width: 420px) {
+            .page-heading {
+                flex-direction: column;
+            }
+
+            .btn-home {
+                align-self: flex-start;
+            }
+
+            .detail-card {
+                padding: 13px;
+            }
+
+            .result-title h5 {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Navigation -->
+    <!-- NAVIGATION -->
+
     <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+
         <div class="container">
 
-            <a class="navbar-brand fw-bold" href="/students/index">
-                🎓 EduManage
+            <a class="navbar-brand text-decoration-none" href="/students/index">
+                <i class="bi bi-mortarboard-fill me-1"></i>
+                Edu<span>Manage</span>
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dashboardNavbar"
-                aria-controls="dashboardNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#dashboardNavbar"
+                aria-controls="dashboardNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
 
                 <span class="navbar-toggler-icon"></span>
+
             </button>
 
             <div class="collapse navbar-collapse" id="dashboardNavbar">
-                <ul class="navbar-nav ms-auto align-items-lg-center">
 
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="/students/index">
-                            <i class="bi bi-house-door"></i> Index
-                        </a>
-                    </li> -->
+                <ul class="navbar-nav ms-auto align-items-lg-center">
 
                     <li class="nav-item">
                         <a class="nav-link active" href="/students/dashboard">
-                            <i class="bi bi-person-vcard"></i> My Dashboard
+                            <i class="bi bi-person-vcard me-1"></i>
+                            My Dashboard
                         </a>
                     </li>
 
-                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0 ">
+                    <li class="nav-item ms-lg-2">
                         <a href="/students/change-password" class="change-password-link">
-                            <i class="bi bi-key me-2"></i>Change Password</a>
-                    </li>
-
-                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                        <a href="/students/logout" class="btn btn-logout">
-                            <i class="bi bi-box-arrow-right"></i> Logout
+                            <i class="bi bi-key me-2"></i>
+                            Change Password
                         </a>
                     </li>
+
+                    <li class="nav-item ms-lg-3">
+                        <a href="/students/logout" class="btn btn-logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Logout
+                        </a>
+                    </li>
+
                 </ul>
+
             </div>
+
         </div>
+
     </nav>
+
 
     <main class="container dashboard-container">
 
-        <!-- Page Heading -->
+        <!-- PAGE HEADING -->
+
         <div class="page-heading">
+
             <div>
+
                 <p class="eyebrow">STUDENT PORTAL</p>
+
                 <h1>My Dashboard</h1>
+
                 <p class="heading-description">
-                    View your personal information and academic details.
+                    Manage your profile and track your academic performance.
                 </p>
+
             </div>
 
-            <a href="/students/index" class="btn btn-home">
-                <i class="bi bi-arrow-left"></i> Back
+            <a href="/students/index" class="btn-home">
+                <i class="bi bi-arrow-left"></i>
+                Back to Home
             </a>
+
         </div>
 
-        <!-- Profile Header -->
+
+        <!-- STUDENT PROFILE BANNER -->
+
         <section class="profile-banner">
 
             <div class="avatar">
@@ -118,148 +776,186 @@
             </div>
 
             <div class="profile-heading">
+
                 <span class="profile-label">STUDENT PROFILE</span>
+
                 <h2>
-                    <%= student.name %>
+                    <%= student.name || "Student" %>
                 </h2>
+
                 <p>
-                    <i class="bi bi-person-vcard"></i>
+                    <i class="bi bi-person-vcard me-1"></i>
                     Register Number:
-                    <strong>
-                        <%= student.register_number %>
-                    </strong>
+                    <strong><%= student.register_number || "Not available" %></strong>
                 </p>
+
             </div>
 
             <div class="class-badge">
+
                 <i class="bi bi-mortarboard-fill"></i>
-                <span>Class</span>
+
+                <span>YOUR CLASS</span>
+
                 <strong>
                     <%= student.class || "Not assigned" %>
                 </strong>
+
             </div>
 
         </section>
 
-        <!-- Details -->
-        <section class="details-section">
 
-            <div class="section-heading">
+        <!-- PERSONAL INFORMATION -->
+
+        <section class="content-card">
+
+            <div class="section-header">
+
                 <div class="heading-icon">
                     <i class="bi bi-person-lines-fill"></i>
                 </div>
 
-                <div>
+                <div class="section-heading">
+
                     <h3>Personal Information</h3>
+
                     <p>Your registered student details</p>
+
                 </div>
+
             </div>
 
-            <div class="row g-3">
 
-                <div class="col-md-6">
-                    <div class="detail-card">
-                        <div class="detail-icon purple">
-                            <i class="bi bi-person"></i>
+            <div class="section-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+
+                        <div class="detail-card">
+
+                            <div class="detail-icon purple">
+                                <i class="bi bi-person"></i>
+                            </div>
+
+                            <div class="detail-content">
+                                <span>Full Name</span>
+                                <strong><%= student.name || "Not provided" %></strong>
+                            </div>
+
                         </div>
 
-                        <div class="detail-content">
-                            <span>Full Name</span>
-                            <strong>
-                                <%= student.name || "Not provided" %>
-                            </strong>
-                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="detail-card">
-                        <div class="detail-icon blue">
-                            <i class="bi bi-card-text"></i>
+
+                    <div class="col-md-6">
+
+                        <div class="detail-card">
+
+                            <div class="detail-icon blue">
+                                <i class="bi bi-card-text"></i>
+                            </div>
+
+                            <div class="detail-content">
+                                <span>Register Number</span>
+                                <strong><%= student.register_number || "Not provided" %></strong>
+                            </div>
+
                         </div>
 
-                        <div class="detail-content">
-                            <span>Register Number</span>
-                            <strong>
-                                <%= student.register_number || "Not provided" %>
-                            </strong>
-                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="detail-card">
-                        <div class="detail-icon green">
-                            <i class="bi bi-envelope"></i>
+
+                    <div class="col-md-6">
+
+                        <div class="detail-card">
+
+                            <div class="detail-icon green">
+                                <i class="bi bi-envelope"></i>
+                            </div>
+
+                            <div class="detail-content">
+                                <span>Email Address</span>
+                                <strong><%= student.email || "Not provided" %></strong>
+                            </div>
+
                         </div>
 
-                        <div class="detail-content">
-                            <span>Email Address</span>
-                            <strong class="breakable">
-                                <%= student.email || "Not provided" %>
-                            </strong>
-                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="detail-card">
-                        <div class="detail-icon orange">
-                            <i class="bi bi-telephone"></i>
+
+                    <div class="col-md-6">
+
+                        <div class="detail-card">
+
+                            <div class="detail-icon orange">
+                                <i class="bi bi-telephone"></i>
+                            </div>
+
+                            <div class="detail-content">
+                                <span>Mobile Number</span>
+                                <strong><%= student.mobile || "Not provided" %></strong>
+                            </div>
+
                         </div>
 
-                        <div class="detail-content">
-                            <span>Mobile Number</span>
-                            <strong>
-                                <%= student.mobile || "Not provided" %>
-                            </strong>
-                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="detail-card">
-                        <div class="detail-icon pink">
-                            <i class="bi bi-mortarboard"></i>
+
+                    <div class="col-md-6">
+
+                        <div class="detail-card">
+
+                            <div class="detail-icon pink">
+                                <i class="bi bi-mortarboard"></i>
+                            </div>
+
+                            <div class="detail-content">
+                                <span>Current Class</span>
+                                <strong><%= student.class || "Not assigned" %></strong>
+                            </div>
+
                         </div>
 
-                        <div class="detail-content">
-                            <span>Current Class</span>
-                            <strong>
-                                <%= student.class || "Not assigned" %>
-                            </strong>
-                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="detail-card">
-                        <div class="detail-icon teal">
-                            <i class="bi bi-person-vcard"></i>
+
+                    <div class="col-md-6">
+
+                        <div class="detail-card">
+
+                            <div class="detail-icon teal">
+                                <i class="bi bi-person-vcard"></i>
+                            </div>
+
+                            <div class="detail-content">
+                                <span>Aadhaar Number</span>
+                                <strong><%= student.aadhaar || "Not provided" %></strong>
+                            </div>
+
                         </div>
 
-                        <div class="detail-content">
-                            <span>Aadhaar Number</span>
-                            <strong>
-                                <%= student.aadhaar || "Not provided" %>
-                            </strong>
-                        </div>
                     </div>
-                </div>
 
-                <div class="col-12">
-                    <div class="detail-card address-card">
-                        <div class="detail-icon red">
-                            <i class="bi bi-geo-alt"></i>
+
+                    <div class="col-12">
+
+                        <div class="detail-card">
+
+                            <div class="detail-icon red">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+
+                            <div class="detail-content">
+                                <span>Residential Address</span>
+                                <strong><%= student.address || "Not provided" %></strong>
+                            </div>
+
                         </div>
 
-                        <div class="detail-content">
-                            <span>Residential Address</span>
-                            <strong>
-                                <%= student.address || "Not provided" %>
-                            </strong>
-                        </div>
                     </div>
+
                 </div>
 
             </div>
@@ -267,103 +963,303 @@
         </section>
 
 
-        <!-- Annual Examination Results -->
-        <section class="details-section mt-4">
-            <div class="section-heading">
-                <div class="heading-icon">
-                    <i class="bi bi-journal-check"></i>
+        <!-- INDIVIDUAL EXAMINATION MARKS -->
+
+        <%
+            const safeExamMarks =
+                typeof examMarks !== 'undefined' && Array.isArray(examMarks)
+                    ? examMarks : [];
+        %>
+
+        <section class="content-card">
+
+            <div class="result-header exam-header">
+
+                <div class="result-title">
+
+                    <div class="result-title-icon">
+                        <i class="bi bi-journal-check"></i>
+                    </div>
+
+                    <div>
+                        <h5>My Examination Marks</h5>
+                        <p>Individual examination performance</p>
+                    </div>
+
                 </div>
 
-                <div>
-                    <h3>Annual Examination Results</h3>
-                    <p>Your finalized academic performance</p>
-                </div>
+                <span class="result-count">
+                    <%= safeExamMarks.length %> EXAMS
+                </span>
+
             </div>
 
-            <% if (typeof results !=='undefined' && results.length> 0) { %>
 
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Academic Year</th>
-                                <th>Class</th>
-                                <th>Marks Obtained</th>
-                                <th>Total Marks</th>
-                                <th>Percentage</th>
-                                <th>Result</th>
-                            </tr>
-                        </thead>
+            <div class="section-body">
 
-                        <tbody>
-                            <% results.forEach(function(result) { %>
+                <% if (safeExamMarks.length > 0) { %>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover align-middle">
+
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <%= result.academic_year %>
-                                    </td>
+                                    <th>Exam Name</th>
+                                    <th>Academic Year</th>
+                                    <th>Exam Date</th>
+                                    <th>Marks Obtained</th>
+                                    <th>Total Marks</th>
+                                    <th>Percentage</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
 
-                                    <td>
-                                        <%= result.class_at_exam %>
-                                    </td>
+                            <tbody>
 
-                                    <td>
-                                        <%= result.marks %>
-                                    </td>
+                                <% safeExamMarks.forEach(mark => { %>
 
-                                    <td>
-                                        <%= result.total_marks %>
-                                    </td>
+                                    <tr>
 
-                                    <td>
-                                        <%= result.total_marks> 0
-                                            ? ((Number(result.marks) /
-                                            Number(result.total_marks)) * 100)
-                                            .toFixed(2) + '%'
-                                            : 'N/A' %>
-                                    </td>
+                                        <td>
+                                            <strong><%= mark.exam_name %></strong>
+                                        </td>
 
-                                    <td>
-                                        <% if (result.status==='Pass' ) { %>
-                                            <span class="badge bg-success">
-                                                Pass
+                                        <td><%= mark.academic_year %></td>
+
+                                        <td>
+                                            <%= mark.exam_date
+                                                ? new Date(mark.exam_date).toLocaleDateString('en-IN')
+                                                : 'Not specified' %>
+                                        </td>
+
+                                        <td>
+                                            <span class="marks-value">
+                                                <%= mark.marks_obtained %>
                                             </span>
+                                        </td>
+
+                                        <td><%= mark.total_marks %></td>
+
+                                        <td>
+                                            <span class="percentage-value">
+                                                <%= mark.percentage %>%
+                                            </span>
+                                        </td>
+
+                                        <td>
+
+                                            <% if (mark.status === 'Pass') { %>
+
+                                                <span class="badge badge-pass">
+                                                    <i class="bi bi-check-circle me-1"></i>
+                                                    Pass
+                                                </span>
+
                                             <% } else { %>
-                                                <span class="badge bg-danger">
+
+                                                <span class="badge badge-fail">
+                                                    <i class="bi bi-x-circle me-1"></i>
                                                     Fail
                                                 </span>
-                                                <% } %>
-                                    </td>
-                                </tr>
-                                <% }); %>
-                        </tbody>
-                    </table>
-                </div>
+
+                                            <% } %>
+
+                                        </td>
+
+                                    </tr>
+
+                                <% }) %>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
 
                 <% } else { %>
 
-                    <div class="alert alert-info mb-0">
-                        <i class="bi bi-info-circle me-2"></i>
-                        Your annual examination results have not been finalized yet.
-                        Please check again later.
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            <i class="bi bi-journal-x"></i>
+                        </div>
+
+                        <h6>No Examination Marks Available</h6>
+
+                        <p>Your examination marks have not been published yet.</p>
+
                     </div>
 
-                    <% } %>
+                <% } %>
+
+            </div>
+
         </section>
 
 
+        <!-- ANNUAL ACADEMIC RESULTS -->
+
+        <%
+            const safeResults =
+                typeof results !== 'undefined' && Array.isArray(results)
+                    ? results : [];
+        %>
+
+        <section class="content-card">
+
+            <div class="result-header annual-header">
+
+                <div class="result-title">
+
+                    <div class="result-title-icon">
+                        <i class="bi bi-award"></i>
+                    </div>
+
+                    <div>
+                        <h5>Annual Academic Results</h5>
+                        <p>Your finalized year-wise academic performance</p>
+                    </div>
+
+                </div>
+
+                <span class="result-count">
+                    <%= safeResults.length %> RECORDS
+                </span>
+
+            </div>
+
+
+            <div class="section-body">
+
+                <% if (safeResults.length > 0) { %>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover align-middle">
+
+                            <thead>
+                                <tr>
+                                    <th>Academic Year</th>
+                                    <th>Class</th>
+                                    <th>Marks Obtained</th>
+                                    <th>Total Marks</th>
+                                    <th>Percentage</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <% safeResults.forEach(result => { %>
+
+                                    <tr>
+
+                                        <td>
+                                            <strong><%= result.academic_year %></strong>
+                                        </td>
+
+                                        <td>
+                                            Class <%= result.class_at_exam %>
+                                        </td>
+
+                                        <td>
+                                            <span class="marks-value">
+                                                <%= result.marks %>
+                                            </span>
+                                        </td>
+
+                                        <td><%= result.total_marks %></td>
+
+                                        <td>
+                                            <span class="percentage-value">
+                                                <%= Number(result.total_marks) > 0
+                                                    ? ((Number(result.marks) / Number(result.total_marks)) * 100).toFixed(2)
+                                                    : '0.00' %>%
+                                            </span>
+                                        </td>
+
+                                        <td>
+
+                                            <% if (result.status === 'Pass') { %>
+
+                                                <span class="badge badge-pass">
+                                                    <i class="bi bi-check-circle me-1"></i>
+                                                    Pass
+                                                </span>
+
+                                            <% } else { %>
+
+                                                <span class="badge badge-fail">
+                                                    <i class="bi bi-x-circle me-1"></i>
+                                                    Fail
+                                                </span>
+
+                                            <% } %>
+
+                                        </td>
+
+                                    </tr>
+
+                                <% }) %>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                <% } else { %>
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            <i class="bi bi-award"></i>
+                        </div>
+
+                        <h6>No Annual Results Available</h6>
+
+                        <p>
+                            Your annual examination results have not been finalized yet.
+                            Please check again later.
+                        </p>
+
+                    </div>
+
+                <% } %>
+
+            </div>
+
+        </section>
+
+
+        <!-- DASHBOARD NOTE -->
+
         <div class="dashboard-note">
+
             <i class="bi bi-shield-check"></i>
-            Your profile information is displayed from your registered student record.
+
+            <span>
+                Your personal information and published academic results
+                are displayed securely from your registered student record.
+            </span>
+
         </div>
 
     </main>
 
+
+    <!-- FOOTER -->
+
     <footer class="dashboard-footer">
+
         &copy; <%= new Date().getFullYear() %> EduManage.
-            Student Management System.
+        Student Management System.
+
     </footer>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
