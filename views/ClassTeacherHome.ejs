@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,7 +55,7 @@
         }
 
         .navbar .nav-link {
-            color: rgba(255,255,255,.83);
+            color: rgba(255, 255, 255, .83);
             font-size: 14px;
             font-weight: 600;
             padding: 10px 13px !important;
@@ -82,7 +82,7 @@
         }
 
         .btn-logout {
-            border: 1px solid rgba(255,255,255,.55);
+            border: 1px solid rgba(255, 255, 255, .55);
             color: #fff;
             border-radius: 9px;
             padding: 8px 16px;
@@ -116,14 +116,14 @@
             border-radius: 22px;
             color: #fff;
             background: linear-gradient(115deg, #1e1b4b, #4338ca, #6366f1);
-            box-shadow: 0 14px 32px rgba(79,70,229,.18);
+            box-shadow: 0 14px 32px rgba(79, 70, 229, .18);
         }
 
         .welcome-card::before,
         .welcome-card::after {
             content: "";
             position: absolute;
-            border: 35px solid rgba(255,255,255,.06);
+            border: 35px solid rgba(255, 255, 255, .06);
             border-radius: 50%;
             pointer-events: none;
         }
@@ -149,8 +149,8 @@
             display: grid;
             place-items: center;
             border-radius: 22px;
-            background: rgba(255,255,255,.16);
-            border: 1px solid rgba(255,255,255,.24);
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .24);
             font-size: 37px;
         }
 
@@ -176,7 +176,7 @@
         }
 
         .welcome-card p {
-            color: rgba(255,255,255,.83);
+            color: rgba(255, 255, 255, .83);
             font-size: 14px;
             margin-bottom: 15px;
         }
@@ -187,8 +187,8 @@
             gap: 8px;
             padding: 9px 15px;
             border-radius: 30px;
-            background: rgba(255,255,255,.15);
-            border: 1px solid rgba(255,255,255,.17);
+            background: rgba(255, 255, 255, .15);
+            border: 1px solid rgba(255, 255, 255, .17);
             font-size: 13px;
             font-weight: 700;
         }
@@ -201,12 +201,12 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 17px;
-            box-shadow: 0 5px 20px rgba(15,23,42,.035);
+            box-shadow: 0 5px 20px rgba(15, 23, 42, .035);
             transition: .25s ease;
         }
 
         .section-card:hover {
-            box-shadow: 0 12px 28px rgba(15,23,42,.065);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, .065);
         }
 
         .section-heading {
@@ -256,7 +256,7 @@
         .form-control:focus,
         .form-select:focus {
             border-color: #818cf8;
-            box-shadow: 0 0 0 3px rgba(99,102,241,.12);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, .12);
         }
 
         .btn {
@@ -350,13 +350,13 @@
             background: #fff;
             border: 1px solid var(--border);
             border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(15,23,42,.035);
+            box-shadow: 0 4px 15px rgba(15, 23, 42, .035);
             transition: .22s;
         }
 
         .exam-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(15,23,42,.075);
+            box-shadow: 0 12px 25px rgba(15, 23, 42, .075);
         }
 
         .exam-card-top {
@@ -453,13 +453,13 @@
             background: #fff;
             border: 1px solid var(--border);
             border-radius: 17px;
-            box-shadow: 0 5px 18px rgba(15,23,42,.04);
+            box-shadow: 0 5px 18px rgba(15, 23, 42, .04);
             transition: .23s ease;
         }
 
         .student-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 14px 28px rgba(15,23,42,.08);
+            box-shadow: 0 14px 28px rgba(15, 23, 42, .08);
         }
 
         .student-card-header {
@@ -675,10 +675,8 @@
                 <span class="logo-icon">🎓</span> EduManage
             </a>
 
-            <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse" data-bs-target="#teacherNavbar"
-                aria-controls="teacherNavbar" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#teacherNavbar"
+                aria-controls="teacherNavbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -727,8 +725,7 @@
 
                 <h1>
                     Welcome,
-                    <%= typeof teacher !== 'undefined' && teacher.name
-                        ? teacher.name : 'Teacher' %>!
+                    <%= typeof teacher !=='undefined' && teacher.name ? teacher.name : 'Teacher' %>!
                 </h1>
 
                 <p>
@@ -738,8 +735,7 @@
                 <span class="class-badge">
                     <i class="bi bi-mortarboard-fill"></i>
                     Assigned Class:
-                    <%= typeof teacher !== 'undefined' && teacher.class
-                        ? teacher.class : 'Not assigned' %>
+                    <%= typeof teacher !=='undefined' && teacher.class ? teacher.class : 'Not assigned' %>
                 </span>
 
             </div>
@@ -782,33 +778,22 @@
                         <div class="mb-3">
                             <label class="form-label">Academic Year</label>
 
-                            <input type="text"
-                                name="academic_year"
-                                class="form-control"
-                                placeholder="2026-2027"
-                                pattern="[0-9]{4}-[0-9]{4}"
-                                title="Enter the academic year in YYYY-YYYY format."
+                            <input type="text" name="academic_year" class="form-control" placeholder="2026-2027"
+                                pattern="[0-9]{4}-[0-9]{4}" title="Enter the academic year in YYYY-YYYY format."
                                 required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Exam Date</label>
 
-                            <input type="date"
-                                name="exam_date"
-                                class="form-control">
+                            <input type="date" name="exam_date" class="form-control">
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Total Marks</label>
 
-                            <input type="number"
-                                name="total_marks"
-                                class="form-control"
-                                min="1"
-                                step="0.01"
-                                placeholder="100"
-                                required>
+                            <input type="number" name="total_marks" class="form-control" min="1" step="0.01"
+                                placeholder="100" required>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100 py-2">
@@ -843,12 +828,8 @@
                                 Student Email Address
                             </label>
 
-                            <input type="email"
-                                id="studentEmail"
-                                name="email"
-                                class="form-control"
-                                placeholder="student@example.com"
-                                required>
+                            <input type="email" id="studentEmail" name="email" class="form-control"
+                                placeholder="student@example.com" required>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100 py-2">
@@ -858,7 +839,7 @@
 
                     </form>
 
-                    <% if (typeof generatedRegisterNumber !== 'undefined' && generatedRegisterNumber) { %>
+                    <% if (typeof generatedRegisterNumber !=='undefined' && generatedRegisterNumber) { %>
 
                         <div class="invitation-box">
 
@@ -870,7 +851,7 @@
                             <p>
                                 Email:
                                 <strong>
-                                    <%= typeof invitedEmail !== 'undefined' ? invitedEmail : '' %>
+                                    <%= typeof invitedEmail !=='undefined' ? invitedEmail : '' %>
                                 </strong>
                             </p>
 
@@ -881,9 +862,7 @@
                                 </strong>
                             </p>
 
-                            <button type="button"
-                                id="copyRegisterNumber"
-                                class="btn btn-outline-success btn-sm"
+                            <button type="button" id="copyRegisterNumber" class="btn btn-outline-success btn-sm"
                                 data-register-number="<%= generatedRegisterNumber %>">
 
                                 <i class="bi bi-clipboard me-1"></i>
@@ -894,7 +873,7 @@
 
                         </div>
 
-                    <% } %>
+                        <% } %>
 
                 </section>
             </div>
@@ -916,8 +895,7 @@
                         This action may also promote students according to your server-side rules.
                     </p>
 
-                    <form action="/teacher/annual-results/finalize"
-                        method="POST"
+                    <form action="/teacher/annual-results/finalize" method="POST"
                         onsubmit="return confirm('Are you sure you want to finalize these annual results? Please verify all marks before continuing.');">
 
                         <div class="row align-items-end g-3">
@@ -927,14 +905,9 @@
                                     Academic Year
                                 </label>
 
-                                <input type="text"
-                                    id="finalAcademicYear"
-                                    name="academic_year"
-                                    class="form-control"
-                                    placeholder="2026-2027"
-                                    pattern="[0-9]{4}-[0-9]{4}"
-                                    title="Enter the academic year in YYYY-YYYY format."
-                                    required>
+                                <input type="text" id="finalAcademicYear" name="academic_year" class="form-control"
+                                    placeholder="2026-2027" pattern="[0-9]{4}-[0-9]{4}"
+                                    title="Enter the academic year in YYYY-YYYY format." required>
                             </div>
 
                             <div class="col-12 col-md-6">
@@ -975,7 +948,7 @@
 
             <div class="row g-3">
 
-                <% if (typeof exams !== 'undefined' && exams.length > 0) { %>
+                <% if (typeof exams !=='undefined' && exams.length> 0) { %>
 
                     <% exams.forEach(function(exam) { %>
 
@@ -989,34 +962,42 @@
                                         <i class="bi bi-journal-check"></i>
                                     </div>
 
-                                    <% if (exam.status === 'Finalized') { %>
+                                    <% if (exam.status==='Finalized' ) { %>
                                         <span class="badge bg-success">Finalized</span>
-                                    <% } else { %>
-                                        <span class="badge bg-primary">Open</span>
-                                    <% } %>
+                                        <% } else { %>
+                                            <span class="badge bg-primary">Open</span>
+                                            <% } %>
 
                                 </div>
 
-                                <h3><%= exam.exam_name %></h3>
+                                <h3>
+                                    <%= exam.exam_name %>
+                                </h3>
 
                                 <div class="exam-detail">
                                     <i class="bi bi-calendar3"></i>
                                     <span>
-                                        Academic Year: <strong><%= exam.academic_year %></strong>
+                                        Academic Year: <strong>
+                                            <%= exam.academic_year %>
+                                        </strong>
                                     </span>
                                 </div>
 
                                 <div class="exam-detail">
                                     <i class="bi bi-mortarboard"></i>
                                     <span>
-                                        Class: <strong><%= exam.class %></strong>
+                                        Class: <strong>
+                                            <%= exam.class %>
+                                        </strong>
                                     </span>
                                 </div>
 
                                 <div class="exam-detail">
                                     <i class="bi bi-award"></i>
                                     <span>
-                                        Total Marks: <strong><%= exam.total_marks %></strong>
+                                        Total Marks: <strong>
+                                            <%= exam.total_marks %>
+                                        </strong>
                                     </span>
                                 </div>
 
@@ -1030,81 +1011,80 @@
                                             </strong>
                                         </span>
                                     </div>
-                                <% } %>
-
-                                <div class="exam-detail">
-                                    <i class="bi bi-person"></i>
-                                    <span>
-                                        Created By:
-                                        <strong><%= exam.teacher_name || exam.created_by %></strong>
-                                    </span>
-                                </div>
-
-                                <div class="exam-actions">
-
-                                    <% if (exam.status === 'Open') { %>
-
-                                        <form action="/teacher/exams/<%= exam.id %>/finalize"
-                                            method="POST"
-                                            onsubmit="return confirm('Finalize this exam? Marks will become uneditable.');">
-
-                                            <button type="submit" class="btn btn-success w-100">
-                                                <i class="bi bi-lock-fill me-2"></i>
-                                                Finalize Exam
-                                            </button>
-
-                                        </form>
-
-                                    <% } else { %>
-
-                                        <button class="btn btn-secondary w-100" disabled>
-                                            <i class="bi bi-lock-fill me-2"></i>
-                                            Exam Locked
-                                        </button>
-
                                     <% } %>
 
+                                        <div class="exam-detail">
+                                            <i class="bi bi-person"></i>
+                                            <span>
+                                                Created By:
+                                                <strong>
+                                                    <%= exam.teacher_name || exam.created_by %>
+                                                </strong>
+                                            </span>
+                                        </div>
 
-                                    <% if (
-                                        exam.status === 'Open' &&
-                                        typeof teacher !== 'undefined' &&
-                                        String(exam.created_by) === String(teacher.teacher_id)
-                                    ) { %>
+                                        <div class="exam-actions">
 
-                                        <form action="/teacher/exams/<%= exam.id %>/delete"
-                                            method="POST"
-                                            onsubmit="return confirm('Are you sure you want to delete this exam? This action cannot be undone.');">
+                                            <% if (exam.status==='Open' ) { %>
 
-                                            <button type="submit" class="btn btn-outline-danger w-100">
-                                                <i class="bi bi-trash3 me-2"></i>
-                                                Delete Exam
-                                            </button>
+                                                <form action="/teacher/exams/<%= exam.id %>/finalize" method="POST"
+                                                    onsubmit="return confirm('Finalize this exam? Marks will become uneditable.');">
 
-                                        </form>
+                                                    <button type="submit" class="btn btn-success w-100">
+                                                        <i class="bi bi-lock-fill me-2"></i>
+                                                        Finalize Exam
+                                                    </button>
 
-                                    <% } %>
+                                                </form>
 
-                                </div>
+                                                <% } else { %>
+
+                                                    <button class="btn btn-secondary w-100" disabled>
+                                                        <i class="bi bi-lock-fill me-2"></i>
+                                                        Exam Locked
+                                                    </button>
+
+                                                    <% } %>
+
+
+                                                        <% if ( exam.status==='Open' && typeof teacher !=='undefined' &&
+                                                            String(exam.created_by)===String(teacher.teacher_id) ) { %>
+
+                                                            <form action="/teacher/exams/<%= exam.id %>/delete"
+                                                                method="POST"
+                                                                onsubmit="return confirm('Are you sure you want to delete this exam? This action cannot be undone.');">
+
+                                                                <button type="submit"
+                                                                    class="btn btn-outline-danger w-100">
+                                                                    <i class="bi bi-trash3 me-2"></i>
+                                                                    Delete Exam
+                                                                </button>
+
+                                                            </form>
+
+                                                            <% } %>
+
+                                        </div>
 
                             </article>
 
                         </div>
 
-                    <% }); %>
+                        <% }); %>
 
-                <% } else { %>
+                            <% } else { %>
 
-                    <div class="col-12">
-                        <div class="empty-state">
-                            <i class="bi bi-journal-x"></i>
-                            <h4>No Examinations Created</h4>
-                            <p class="mb-0">
-                                Create your first examination using the form above.
-                            </p>
-                        </div>
-                    </div>
+                                <div class="col-12">
+                                    <div class="empty-state">
+                                        <i class="bi bi-journal-x"></i>
+                                        <h4>No Examinations Created</h4>
+                                        <p class="mb-0">
+                                            Create your first examination using the form above.
+                                        </p>
+                                    </div>
+                                </div>
 
-                <% } %>
+                                <% } %>
 
             </div>
 
@@ -1126,19 +1106,16 @@
 
                     <span class="student-count">
                         <i class="bi bi-people"></i>
-                        <%= typeof students !== 'undefined' ? students.length : 0 %>
-                        Students
+                        <%= typeof students !=='undefined' ? students.length : 0 %>
+                            Students
                     </span>
                 </div>
 
                 <div class="search-box">
                     <i class="bi bi-search"></i>
 
-                    <input type="search"
-                        id="studentSearch"
-                        class="form-control"
-                        placeholder="Search name or register number..."
-                        aria-label="Search students">
+                    <input type="search" id="studentSearch" class="form-control"
+                        placeholder="Search name or register number..." aria-label="Search students">
                 </div>
 
             </div>
@@ -1146,7 +1123,7 @@
 
             <div class="row g-4" id="studentList">
 
-                <% if (typeof students !== 'undefined' && students.length > 0) { %>
+                <% if (typeof students !=='undefined' && students.length> 0) { %>
 
                     <% students.forEach(function(student) { %>
 
@@ -1200,7 +1177,8 @@
 
                                     <div class="student-actions">
 
-                                        <form action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/class-change"
+                                        <form
+                                            action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/class-change"
                                             method="POST"
                                             onsubmit="return confirm('Promote this student to the next class?');">
 
@@ -1213,7 +1191,8 @@
 
                                         </form>
 
-                                        <form action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/class-change"
+                                        <form
+                                            action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/class-change"
                                             method="POST"
                                             onsubmit="return confirm('Move this student to the previous class?');">
 
@@ -1232,7 +1211,7 @@
 
 
                                 <!-- EXAM MARKS ENTRY -->
-                                <% if (typeof exams !== 'undefined' && exams.length > 0) { %>
+                                <% if (typeof exams !=='undefined' && exams.length> 0) { %>
 
                                     <div class="student-divider mb-3"></div>
 
@@ -1247,9 +1226,9 @@
 
                                     <% exams.forEach(function(exam) { %>
 
-                                        <form action="/teacher/exams/<%= exam.id %>/student/<%= encodeURIComponent(student.register_number) %>/marks"
-                                            method="POST"
-                                            class="marks-form">
+                                        <form
+                                            action="/teacher/exams/<%= exam.id %>/student/<%= encodeURIComponent(student.register_number) %>/marks"
+                                            method="POST" class="marks-form">
 
                                             <h5>
                                                 <i class="bi bi-journal-text me-1"></i>
@@ -1258,21 +1237,16 @@
 
                                             <p class="text-muted mb-3">
                                                 Academic Year: <%= exam.academic_year %>
-                                                <span class="mx-1">·</span>
-                                                Total: <%= exam.total_marks %>
+                                                    <span class="mx-1">·</span>
+                                                    Total: <%= exam.total_marks %>
                                             </p>
 
-                                            <% if (exam.status === 'Open') { %>
+                                            <% if (exam.status==='Open' ) { %>
 
                                                 <label class="form-label">Marks Obtained</label>
 
-                                                <input type="number"
-                                                    name="marks_obtained"
-                                                    class="form-control"
-                                                    min="0"
-                                                    max="<%= exam.total_marks %>"
-                                                    step="0.01"
-                                                    placeholder="Enter marks"
+                                                <input type="number" name="marks_obtained" class="form-control" min="0"
+                                                    max="<%= exam.total_marks %>" step="0.01" placeholder="Enter marks"
                                                     required>
 
                                                 <button type="submit" class="btn btn-primary btn-sm w-100">
@@ -1280,97 +1254,99 @@
                                                     Save / Update Marks
                                                 </button>
 
-                                            <% } else { %>
+                                                <% } else { %>
 
-                                                <div class="alert alert-success py-2 mb-0 small">
-                                                    <i class="bi bi-lock-fill me-1"></i>
-                                                    This examination is finalized.
-                                                </div>
+                                                    <div class="alert alert-success py-2 mb-0 small">
+                                                        <i class="bi bi-lock-fill me-1"></i>
+                                                        This examination is finalized.
+                                                    </div>
+
+                                                    <% } %>
+
+                                        </form>
+
+                                        <% }); %>
 
                                             <% } %>
 
-                                        </form>
 
-                                    <% }); %>
+                                                <!-- STUDENT ACTIONS -->
+                                                <div class="student-divider"></div>
 
-                                <% } %>
+                                                <div class="student-tools">
+
+                                                    <p class="student-tools-title">
+                                                        <i class="bi bi-gear-fill"></i>
+                                                        Student Actions
+                                                    </p>
+
+                                                    <div class="student-actions">
+
+                                                        <a class="btn btn-outline-primary btn-sm"
+                                                            href="/teacher/student/<%= encodeURIComponent(student.register_number) %>/edit">
+
+                                                            <i class="bi bi-pencil-square me-1"></i>
+                                                            Edit Profile
+
+                                                        </a>
+
+                                                        <form
+                                                            action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/delete"
+                                                            method="POST"
+                                                            onsubmit="return confirm('Are you sure you want to delete this student? This action cannot be undone.');">
+
+                                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                                <i class="bi bi-trash me-1"></i>
+                                                                Delete
+                                                            </button>
+
+                                                        </form>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <a class="view-profile"
+                                                    href="/teacher/student/<%= encodeURIComponent(student.register_number) %>">
+
+                                                    <i class="bi bi-eye-fill"></i>
+                                                    View Student Details
+                                                    <i class="bi bi-arrow-right ms-1"></i>
 
 
-                                <!-- STUDENT ACTIONS -->
-                                <div class="student-divider"></div>
-
-                                <div class="student-tools">
-
-                                    <p class="student-tools-title">
-                                        <i class="bi bi-gear-fill"></i>
-                                        Student Actions
-                                    </p>
-
-                                    <div class="student-actions">
-
-                                        <a class="btn btn-outline-primary btn-sm"
-                                            href="/teacher/student/<%= encodeURIComponent(student.register_number) %>/edit">
-
-                                            <i class="bi bi-pencil-square me-1"></i>
-                                            Edit Profile
-
-                                        </a>
-
-                                        <form action="/teacher/student/<%= encodeURIComponent(student.register_number) %>/delete"
-                                            method="POST"
-                                            onsubmit="return confirm('Are you sure you want to delete this student? This action cannot be undone.');">
-
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                                <i class="bi bi-trash me-1"></i>
-                                                Delete
-                                            </button>
-
-                                        </form>
-
-                                    </div>
-
-                                </div>
-
-                                <a class="view-profile"
-                                    href="/teacher/student/<%= encodeURIComponent(student.register_number) %>">
-
-                                    <i class="bi bi-person-vcard"></i>
-                                    View Student Dashboard
-                                    <i class="bi bi-arrow-right ms-1"></i>
-
-                                </a>
+                                                </a>
 
                             </article>
 
                         </div>
 
-                    <% }); %>
+                        <% }); %>
 
-                <% } else { %>
+                            <% } else { %>
 
-                    <div class="col-12">
-                        <div class="empty-state">
-                            <i class="bi bi-people"></i>
-                            <h4>No Students Found</h4>
-                            <p class="mb-0">
-                                There are currently no students in your assigned class.
-                            </p>
-                        </div>
-                    </div>
+                                <div class="col-12">
+                                    <div class="empty-state">
+                                        <i class="bi bi-people"></i>
+                                        <h4>No Students Found</h4>
+                                        <p class="mb-0">
+                                            There are currently no students in your assigned class.
+                                        </p>
+                                    </div>
+                                </div>
 
-                <% } %>
+                                <% } %>
 
 
-                <!-- SEARCH EMPTY STATE -->
-                <div class="col-12 d-none" id="noSearchResults">
-                    <div class="empty-state">
-                        <i class="bi bi-search"></i>
-                        <h4>No Matching Students</h4>
-                        <p class="mb-0">
-                            Try searching with a different name or registration number.
-                        </p>
-                    </div>
-                </div>
+                                    <!-- SEARCH EMPTY STATE -->
+                                    <div class="col-12 d-none" id="noSearchResults">
+                                        <div class="empty-state">
+                                            <i class="bi bi-search"></i>
+                                            <h4>No Matching Students</h4>
+                                            <p class="mb-0">
+                                                Try searching with a different name or registration number.
+                                            </p>
+                                        </div>
+                                    </div>
 
             </div>
 
@@ -1379,7 +1355,7 @@
 
         <footer class="footer-text">
             © <%= new Date().getFullYear() %> EduManage.
-            Student Management System.
+                Student Management System.
         </footer>
 
     </main>
@@ -1477,4 +1453,5 @@
     </script>
 
 </body>
+
 </html>

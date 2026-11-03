@@ -592,31 +592,117 @@ router.post("/student/:register_number/delete", (req, res) => {
 // VIEW INDIVIDUAL STUDENT
 // ==============================
 
+// router.get("/student/:register_number", (req, res) => {
+//     if (!req.session.teacher_id) {
+//         return res.redirect("/teacher/login");
+//     }
+
+//     const registerNumber = req.params.register_number;
+
+//     const sql = `
+//         SELECT id, name, register_number, email, mobile, class, address
+//         FROM student
+//         WHERE register_number = ?
+//     `;
+
+//     db.query(sql, [registerNumber], (err, result) => {
+//         if (err) {
+//             console.error("Student profile query error:", err);
+//             return res.status(500).send("Database error");
+//         }
+
+//         if (result.length === 0) {
+//             return res.status(404).send("Student not found");
+//         }
+
+//         return res.render("studDashboard.ejs", {
+//             student: result[0]
+//         });
+//     });
+// });
+
+
+// VIEW STUDENT DETAILS WITH EXAM MARKS
 router.get("/student/:register_number", (req, res) => {
+
+    // Check teacher login
     if (!req.session.teacher_id) {
         return res.redirect("/teacher/login");
     }
 
     const registerNumber = req.params.register_number;
+    const teacherId = req.session.teacher_id;
 
-    const sql = `
-        SELECT id, name, register_number, email, mobile, class, address
-        FROM student
-        WHERE register_number = ?
+    // Fetch student details and verify teacher's class
+    const studentSql = `
+        SELECT
+            s.id,
+            s.name,
+            s.register_number,
+            s.email,
+            s.mobile,
+            s.class,
+            s.aadhaar,
+            s.address
+        FROM teacher t
+        INNER JOIN student s
+            ON TRIM(s.class) = TRIM(t.class)
+        WHERE t.teacher_id = ?
+          AND s.register_number = ?
     `;
 
-    db.query(sql, [registerNumber], (err, result) => {
+    db.query(studentSql, [teacherId, registerNumber], (err, result) => {
+
         if (err) {
-            console.error("Student profile query error:", err);
-            return res.status(500).send("Database error");
+            console.error("Student details error:", err);
+            return res.status(500).send("Unable to load student details.");
         }
 
         if (result.length === 0) {
-            return res.status(404).send("Student not found");
+            return res.status(404).send(
+                "Student not found or you are not authorized to view this student."
+            );
         }
 
-        return res.render("studDashboard.ejs", {
-            student: result[0]
+        // Fetch finalized exam marks
+        const marksSql = `
+            SELECT
+                e.id AS exam_id,
+                e.exam_name,
+                e.academic_year,
+                e.exam_date,
+                e.total_marks,
+                em.marks_obtained,
+                ROUND(
+                    (em.marks_obtained / e.total_marks) * 100, 2
+                ) AS percentage,
+                CASE
+                    WHEN (em.marks_obtained / e.total_marks) * 100 >= 35
+                    THEN 'Pass'
+                    ELSE 'Fail'
+                END AS status
+            FROM exam_marks em
+            INNER JOIN exams e
+                ON em.exam_id = e.id
+            WHERE em.register_number = ?
+              AND e.status = 'Finalized'
+              AND e.total_marks > 0
+            ORDER BY e.exam_date DESC
+        `;
+
+        db.query(marksSql, [registerNumber], (marksErr, examMarks) => {
+
+            if (marksErr) {
+                console.error("Student marks error:", marksErr);
+                return res.status(500).send("Unable to load student marks.");
+            }
+
+            // Render student details page
+            res.render("teacherStudentDetails.ejs", {
+                student: result[0],
+                examMarks: examMarks || []
+            });
+
         });
     });
 });
